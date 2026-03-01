@@ -1,0 +1,109 @@
+<?php include 'includes/db.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Student Roadmap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="assets/js/auth.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { 500: '#0ea5e9', 600: '#0284c7' },
+            secondary: { 500: '#8b5cf6', 600: '#7c3aed' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen font-[Poppins]">
+  <?php include 'includes/header.php'; ?>
+
+  <main class="flex-grow container mx-auto px-4 py-12 flex items-center justify-center">
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-slate-100">
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-800">Create Account</h2>
+        <p class="text-slate-500 mt-2">Join us to plan your career</p>
+      </div>
+
+      <form id="signupForm" class="space-y-5">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Full Name</label>
+          <div class="relative">
+            <span class="absolute left-4 top-3.5 text-slate-400"><i class="fas fa-user"></i></span>
+            <input type="text" id="name" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all" placeholder="Enter your full name" required>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
+          <div class="relative">
+            <span class="absolute left-4 top-3.5 text-slate-400"><i class="fas fa-envelope"></i></span>
+            <input type="email" id="email" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all" placeholder="Enter your email" required>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Password</label>
+          <div class="relative">
+            <span class="absolute left-4 top-3.5 text-slate-400"><i class="fas fa-lock"></i></span>
+            <input type="password" id="password" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all" placeholder="Create a password" required>
+          </div>
+        </div>
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-bold rounded-xl hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
+          Create Account
+        </button>
+      </form>
+      <p class="mt-6 text-center text-slate-600 text-sm">
+        Already have an account? <a href="login.php" class="text-primary-600 font-bold hover:underline">Log In</a>
+      </p>
+    </div>
+  </main>
+
+  <!-- FOOTER INCLUDE -->
+  <div class="container mx-auto px-4 py-8">
+    <?php include 'includes/footer.php'; ?>
+  </div>
+
+  <script>
+    // Redirect if already logged in
+    Auth.redirectIfAuthenticated();
+
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerText;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+      submitBtn.disabled = true;
+
+      try {
+        const success = await Auth.signup(name, email, password);
+        if (success) {
+           alert('Account created successfully! Please log in.');
+           window.location.href = 'login.php';
+        } else {
+           alert('Signup failed. Please try again or use a different email.');
+           submitBtn.innerText = originalText;
+           submitBtn.disabled = false;
+        }
+      } catch (error) {
+        console.error('Signup error:', error);
+        alert('An error occurred during signup.');
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!-- Mobile Navigation Menu -->
+<div id="mobileMenu"
+  class="mobile-menu fixed top-0 left-0 w-full h-screen bg-white/95 backdrop-blur-xl z-50 transform -translate-x-full transition-transform duration-300">
+  <div class="p-6 h-full flex flex-col">
+    <div class="flex justify-between items-center mb-8">
+      <div class="flex items-center space-x-3">
+        <div
+          class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
+          <i class="fas fa-graduation-cap text-white text-lg"></i>
+        </div>
+        <span class="text-xl font-bold text-slate-800">StudentRoadmap</span>
+      </div>
+      <button id="closeMenu" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
+        <i class="fas fa-times text-slate-600"></i>
+      </button>
+    </div>
+
+    <nav class="flex-1">
+      <div class="space-y-2">
+        <a href="about.php"
+          class="flex items-center space-x-3 p-4 rounded-xl bg-primary-50 text-primary-700 font-semibold">
+          <i class="fas fa-map text-primary-600"></i>
+          <span>About us </span>
+        </a>
+        <a href="roadmap.php"
+          class="flex items-center space-x-3 p-4 rounded-xl bg-primary-50 text-primary-700 font-semibold">
+          <i class="fas fa-map text-primary-600"></i>
+          <span>Roadmaps</span>
+        </a>
+        <a href="quiz.php" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-slate-50 font-medium">
+          <i class="fas fa-question-circle text-primary-600"></i>
+          <span>Career Quiz</span>
+        </a>
+        <a href="contact.php" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-slate-50 font-medium">
+          <i class="fas fa-envelope text-primary-600"></i>
+          <span>Contact</span>
+        </a>
+      </div>
+    </nav>
+
+    <div id="mobileAuthContainer" class="pt-6 border-t border-slate-200">
+      <div class="flex items-center space-x-4 mb-4">
+        <a href="login.php" class="flex-1">
+          <button
+            class="w-full py-3 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors">
+            Login
+          </button>
+        </a>
+        <a href="signup.php" class="flex-1">
+          <button
+            class="w-full py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-xl hover:bg-primary-50 transition-colors">
+            Sign Up
+          </button>
+        </a>
+      </div>
+      <p class="text-sm text-slate-500 text-center">Get personalized career guidance</p>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="sticky top-0 z-40 header-glass shadow-sm">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <a href="index.php" class="flex items-center space-x-3 group">
+        <div
+          class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+          <i class="fas fa-graduation-cap text-white text-lg"></i>
+        </div>
+        <div>
+          <span class="text-xl font-bold text-slate-800">StudentRoadmap</span>
+          <p class="text-xs text-slate-500">Your Career Navigation Partner</p>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center space-x-8">
+        <a href="roadmap.php"
+          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+          <i class="fas fa-map text-primary-500"></i>
+          <span>Roadmaps</span>
+        </a>
+
+        <a href="quiz.php"
+          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+          <i class="fas fa-question-circle text-primary-500"></i>
+          <span>Career Quiz</span>
+        </a>
+        <a href="about.php"
+          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+          <i class="fas fa-users text-primary-500"></i>
+          <span>About us</span>
+        </a>
+
+        <a href="contact.php"
+          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+          <i class="fas fa-envelope text-primary-500"></i>
+          <span>Contact</span>
+        </a>
+      </nav>
+
+      <!-- Desktop Auth Buttons / Profile -->
+      <div id="desktopAuthContainer" class="hidden lg:flex items-center space-x-4">
+        <!-- Default State (will be updated by JS) -->
+        <a href="login.php" class="px-6 py-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors">
+          Sign In
+        </a>
+        <a href="signup.php"
+          class="px-6 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300">
+          Get Started Free
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="flex lg:hidden items-center space-x-3">
+        <div id="mobileProfileIcon"></div>
+        <button id="menuButton" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
+          <i class="fas fa-bars text-slate-600"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Scripts removed: Handled by Auth.initHeader() in auth.js -->

@@ -1,0 +1,540 @@
+<?php include 'includes/db.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - StudentRoadmap</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Tailwind with optimized plugins -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          screens: {
+            'xs': '475px',
+            '3xl': '1920px',
+          },
+          colors: {
+            green: {
+              50: '#f0fdf4',
+              500: '#22c55e',
+              600: '#16a34a',
+            },
+            primary: {
+              50: '#f0fcff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            },
+            secondary: {
+              500: '#8b5cf6',
+              600: '#7c3aed',
+            },
+            gradient: {
+              start: '#e0f2fe',
+              end: '#f0fcff',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.8s ease-in-out',
+            'slide-in-right': 'slideInRight 0.6s ease-out',
+            'slide-in-left': 'slideInLeft 0.6s ease-out',
+            'bounce-subtle': 'bounceSubtle 2s infinite',
+            'glow': 'glow 2s ease-in-out infinite alternate',
+            'text-reveal': 'textReveal 0.8s ease-out forwards',
+            'pulse-subtle': 'pulseSubtle 3s ease-in-out infinite',
+            'slide-right-to-left': 'slideRightToLeft 20s linear infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'shimmer': 'shimmer 2s infinite',
+            'wave': 'wave 12s linear infinite',
+            'scale-up': 'scaleUp 0.3s ease-out',
+            'blob': 'blob 7s infinite',
+            'gradient-shift': 'gradientShift 3s ease infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            slideInRight: {
+              '0%': { transform: 'translateX(100px)', opacity: '0' },
+              '100%': { transform: 'translateX(0)', opacity: '1' },
+            },
+            slideInLeft: {
+              '0%': { transform: 'translateX(-100px)', opacity: '0' },
+              '100%': { transform: 'translateX(0)', opacity: '1' },
+            },
+            bounceSubtle: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-5px)' },
+            },
+            glow: {
+              '0%': { boxShadow: '0 0 5px rgba(14, 165, 233, 0.3)' },
+              '100%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.6)' },
+            },
+            textReveal: {
+              '0%': {
+                backgroundSize: '0% 100%',
+                opacity: '0',
+                transform: 'translateY(20px)'
+              },
+              '100%': {
+                backgroundSize: '100% 100%',
+                opacity: '1',
+                transform: 'translateY(0)'
+              },
+            },
+            pulseSubtle: {
+              '0%, 100%': { opacity: '1' },
+              '50%': { opacity: '0.8' },
+            },
+            slideRightToLeft: {
+              '0%': { transform: 'translateX(100%)' },
+              '100%': { transform: 'translateX(-100%)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-20px)' },
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '-1000px 0' },
+              '100%': { backgroundPosition: '1000px 0' },
+            },
+            wave: {
+              '0%': { transform: 'translateX(0)' },
+              '100%': { transform: 'translateX(-100%)' },
+            },
+            scaleUp: {
+              '0%': { transform: 'scale(0.95)', opacity: '0' },
+              '100%': { transform: 'scale(1)', opacity: '1' },
+            },
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            },
+            gradientShift: {
+              '0%, 100%': { backgroundPosition: '0% 50%' },
+              '50%': { backgroundPosition: '100% 50%' },
+            },
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- Enhanced Styles -->
+  <style>
+    /* Critical CSS */
+    :root {
+      --primary-color: #0ea5e9;
+      --primary-dark: #0284c7;
+      --secondary-color: #8b5cf6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+    }
+
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Page Background with animated gradient */
+    .page-bg {
+      background: linear-gradient(-45deg, #f0f9ff, #e0f2fe, #f8fafc, #f0f9ff);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Animated background elements */
+    .bg-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.1;
+      z-index: 0;
+    }
+
+    .blob-1 {
+      width: 500px;
+      height: 500px;
+      background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+      top: -250px;
+      right: -250px;
+      animation: blob 20s infinite;
+    }
+
+    .blob-2 {
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(135deg, #8b5cf6, #0ea5e9);
+      bottom: -200px;
+      left: -200px;
+      animation: blob 25s infinite reverse;
+    }
+
+    /* Enhanced Header */
+    .header-glass {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+    }
+
+    /* Enhanced Cards */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow:
+        0 8px 32px rgba(14, 165, 233, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .gradient-border {
+      position: relative;
+      border-radius: 1.5rem;
+    }
+
+    .gradient-border::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(135deg, #0ea5e9, #8b5cf6, #0ea5e9);
+      border-radius: 1.5rem;
+      z-index: -1;
+      opacity: 0.3;
+      filter: blur(10px);
+    }
+
+    /* Enhanced Buttons */
+    .btn-gradient {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .btn-gradient:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(14, 165, 233, 0.3);
+    }
+
+    .btn-gradient::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .btn-gradient:hover::after {
+      left: 100%;
+    }
+
+    /* Stats Counter */
+    .stat-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(240, 249, 255, 0.9));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(14, 165, 233, 0.1);
+    }
+
+    /* Team Cards */
+    .team-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .team-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(14, 165, 233, 0.15);
+    }
+
+    .team-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .team-card:hover::before {
+      opacity: 1;
+    }
+
+    /* About Image Container */
+    .about-image-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      box-shadow: 0 25px 50px rgba(14, 165, 233, 0.15);
+    }
+
+    .about-image-container img {
+      transition: transform 0.8s ease;
+    }
+
+    .about-image-container:hover img {
+      transform: scale(1.05);
+    }
+
+    .about-image-container::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(14, 165, 233, 0.1));
+      border-radius: 1.5rem;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #0284c7, #7c3aed);
+    }
+
+    /* Mobile Menu Animation */
+    .mobile-menu {
+      animation: scaleUp 0.3s ease-out;
+    }
+
+    /* Floating Animation for Elements */
+    .floating {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    /* Responsive Utilities */
+    @media (max-width: 768px) {
+      .mobile-stack {
+        flex-direction: column;
+      }
+
+      .mobile-center {
+        text-align: center;
+      }
+
+      .mobile-padding {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+
+    /* Focus Styles */
+    :focus {
+      outline: 2px solid #0ea5e9;
+      outline-offset: 2px;
+    }
+
+    :focus:not(:focus-visible) {
+      outline: none;
+    }
+  </style>
+</head>
+
+<body class="text-slate-800 page-bg">
+  <!-- Animated Background Elements -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+  </div>
+
+  <!-- HEADER INCLUDE -->
+  <?php include 'includes/header.php'; ?>
+
+  <!-- Main Content -->
+  <main class="relative z-10">
+    <!-- Hero Section -->
+    <section class="py-12 md:py-20">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+          <div class="text-center mb-12 md:mb-16">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 md:mb-6">
+              <span class="bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-500">About
+                Us</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">We're on a mission to guide every student
+              toward a successful and fulfilling career path.</p>
+          </div>
+
+          <!-- About Section with Image Left, Text Right -->
+          <div class="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 mb-20">
+
+            <!-- Image on Left -->
+            <div class="lg:w-1/2 animate-fade-in">
+              <div class="about-image-container floating">
+                <img
+                  src="https://blog.adobe.com/en/publish/2022/09/08/media_199508d79870be49377a327889db41dfa867c18ba.jpeg?width=1200&format=pjpg&optimize=medium"
+                  alt="StudentRoadmap project team working" class="w-full h-auto rounded-3xl">
+              </div>
+            </div>
+
+            <!-- Text on Right -->
+            <div class="lg:w-1/2 animate-slide-in-right">
+              <div class="glass-card p-8 md:p-10 rounded-3xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">Our Story</h2>
+
+                <p class="text-slate-600 mb-6">
+                  This Student Roadmap Website has been developed as a final-year project by diploma 6th-semester
+                  students with the goal of helping learners make informed decisions about their future. Understanding
+                  how confusing it can be to choose the right path after 10th, 12th, or diploma, we created a platform
+                  that provides easy-to-understand roadmaps and guidance to explore strengths and interests. Our project
+                  reflects our commitment to using technology to support students like us, offering a simple, reliable,
+                  and helpful resource built with real student experiences in mind. </p>
+
+
+              </div>
+            </div>
+
+          </div>
+
+
+
+
+          <!-- Team Section -->
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Meet Our Team</h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+              The passionate individuals behind StudentRoadmap who work tirelessly to guide students toward their dream
+              careers.
+            </p>
+          </div>
+
+          <!-- Team Members Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+
+            <!-- Member 1 -->
+            <div class="team-card p-6 rounded-2xl border bg-white shadow-md animate-fade-in">
+              <h3 class="text-xl font-bold text-slate-900 mb-1 text-center">Shreyash Shigwan</h3>
+
+            </div>
+
+            <!-- Member 2 -->
+            <div class="team-card p-6 rounded-2xl border bg-white shadow-md animate-fade-in"
+              style="animation-delay: 0.1s;">
+              <h3 class="text-xl font-bold text-slate-900 mb-1 text-center">Deep Patil</h3>
+
+            </div>
+
+            <!-- Member 3 -->
+            <div class="team-card p-6 rounded-2xl border bg-white shadow-md animate-fade-in"
+              style="animation-delay: 0.2s;">
+              <h3 class="text-xl font-bold text-slate-900 mb-1 text-center">Kinnari Patil</h3>
+
+            </div>
+
+            <!-- Member 4 -->
+            <div class="team-card p-6 rounded-2xl border bg-white shadow-md animate-fade-in"
+              style="animation-delay: 0.3s;">
+              <h3 class="text-xl font-bold text-slate-900 mb-1 text-center">Mrudula Bhoir</h3>
+
+            </div>
+
+          </div>
+
+
+          <!-- CTA Section -->
+          <div class="gradient-border p-8 md:p-12 rounded-3xl text-center mb-20 animate-scale-up">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-6">Ready to Map Your Future?</h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-8">Join thousands of students who have discovered
+              their ideal career path with StudentRoadmap.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+              <button class="btn-gradient px-8 py-4 text-white font-semibold rounded-xl">
+                Start Free Trial
+              </button>
+              <button
+                class="px-8 py-4 border-2 border-primary-500 text-primary-500 font-semibold rounded-xl hover:bg-primary-50 transition-colors">
+                Book a Demo
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER INCLUDE -->
+  <div class="container mx-auto px-4 py-8">
+    <?php include 'includes/footer.php'; ?>
+  </div>
+
+  <script>
+    // Dynamic Include Function removed as we use PHP includes now
+
+    // Mobile Menu logic removed: Handled by Auth.initHeader() in auth.js
+
+    // Call init after loads (with a small delay to ensure DOM update)
+    // Call init after loads (with a small delay to ensure DOM update)
+    // setTimeout(initMobileMenu, 100); // Moved to loadInclude
+
+    // Animation on scroll (simple implementation)
+    document.addEventListener('DOMContentLoaded', () => {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in');
+          }
+        });
+      }, observerOptions);
+
+      // Observe elements for animation
+      document.querySelectorAll('.team-card, .glass-card').forEach((el) => {
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,593 @@
+<?php
+include 'includes/db.php';
+include 'includes/career_data.php';
+
+$slug = isset($_GET['career']) ? $_GET['career'] : '';
+$career = getCareerBySlug($slug);
+
+if (!$career) {
+    // Redirect to main roadmap page if career not found
+    header("Location: roadmap.php");
+    exit();
+}
+?>
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><?php echo $career['title']; ?> Roadmap - StudentRoadmap</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/roadmap.css">
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <!-- PDF Download Template (Hidden) -->
+    <div id="pdf-download-template">
+        <div class="pdf-wrapper">
+            <!-- Career Roadmap Page -->
+            <div class="pdf-page">
+                <div class="pdf-content-header">
+                    <div class="pdf-content-title">Career Roadmap</div>
+                    <div style="font-size: 10pt; color: #94a3b8; font-weight: 600;"><?php echo strtoupper($career['title']); ?></div>
+                </div>
+
+                <div style="margin-top: 5mm;">
+                    <?php foreach ($career['roadmap'] as $index => $step): ?>
+                    <div class="pdf-roadmap-item">
+                        <div class="pdf-step-dot"><?php echo $index + 1; ?></div>
+                        <div class="pdf-step-card">
+                            <div class="pdf-step-h3"><?php echo $step['title']; ?></div>
+                            <div class="pdf-step-p"><?php echo $step['desc']; ?></div>
+                            
+                            <?php if (isset($step['paths'])): ?>
+                            <div class="pdf-path-container">
+                                <?php foreach ($step['paths'] as $path): ?>
+                                <div class="pdf-path-item">
+                                    <div style="font-weight: 800; font-size: 10pt; color: #334155; margin-bottom: 1mm; text-transform: uppercase;"><?php echo $path['title']; ?></div>
+                                    <div style="font-size: 9pt; color: #64748b; line-height: 1.4;"><?php echo $path['desc']; ?></div>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="pdf-pg-footer">
+                    <div>Career Roadmap: <?php echo $career['title']; ?></div>
+                    <div>Page 1</div>
+                </div>
+            </div>
+
+            <!-- Page 2: Details & Insights -->
+            <div class="pdf-page">
+                <div class="pdf-content-header">
+                    <div class="pdf-content-title">Career Insights</div>
+                    <div style="font-size: 10pt; color: #94a3b8; font-weight: 600;"><?php echo strtoupper($career['title']); ?></div>
+                </div>
+
+                <div class="pdf-sec-title">Overview</div>
+                <div style="font-size: 11pt; color: #475569; line-height: 1.7; margin-bottom: 10mm; text-align: justify;">
+                    <?php echo $career['overview'] ?? $career['details']; ?>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10mm;">
+                    <div>
+                        <div class="pdf-sec-title">Required Skills</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 2mm;">
+                            <?php foreach (($career['skills'] ?? []) as $skill): ?>
+                            <span style="background: #f8fafc; padding: 1.5mm 3.5mm; border-radius: 2mm; font-size: 9pt; border: 1px solid #e2e8f0; color: #475569; font-weight: 500;"><?php echo $skill; ?></span>
+                            <?php endforeach; ?>
+                        </div>
+
+                        <?php if (isset($career['fees'])): ?>
+                        <div class="pdf-sec-title">Average Fees</div>
+                        <div style="background: #f8fafc; padding: 4mm; border-radius: 3mm; border: 1px solid #e2e8f0;">
+                            <?php foreach ($career['fees'] as $type => $amount): ?>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2mm; font-size: 10pt; border-bottom: 1px dashed #e2e8f0; padding-bottom: 2mm;">
+                                <span style="color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 8pt;"><?php echo $type; ?></span>
+                                <span style="font-weight: 800; color: #0f172a; background: #fff; padding: 1mm 3mm; border-radius: 1.5mm; border: 1px solid #f1f5f9;"><?php echo $amount; ?></span>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <div>
+                        <?php if (isset($career['colleges'])): ?>
+                        <div class="pdf-sec-title">Top Institutions</div>
+                        <?php foreach ($career['colleges'] as $region => $colleges): ?>
+                        <div style="margin-bottom: 4mm;">
+                            <div style="font-size: 8pt; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 2mm; letter-spacing: 1px; display: flex; align-items: center; gap: 2mm;">
+                                <span style="width: 1.5mm; height: 1.5mm; background: #94a3b8; border-radius: 50%;"></span>
+                                <?php echo $region; ?>
+                            </div>
+                            <ul style="padding-left: 4mm; margin: 0; list-style-type: none;">
+                                <?php foreach ($colleges as $college): ?>
+                                <li style="font-size: 9.5pt; color: #475569; margin-bottom: 1.5mm; position: relative; line-height: 1.3;">
+                                    <span style="position: absolute; left: -3.5mm; color: #cbd5e1;">•</span>
+                                    <?php echo $college; ?>
+                                </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="pdf-pg-footer">
+                    <div>Career Insights: <?php echo $career['title']; ?></div>
+                    <div>Page 2</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Auth.requireAuth();
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#f0fcff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc', 400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1' },
+                        secondary: { 500: '#8b5cf6', 600: '#7c3aed' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f8fafc; }
+        
+        /* Premium PDF Download Styles */
+        #pdf-download-template {
+            display: none;
+            background: #f1f5f9;
+            width: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: -1;
+        }
+
+        .pdf-wrapper {
+            width: 794px;
+            margin: 0 auto;
+            background: white;
+        }
+
+        .pdf-page {
+            width: 794px;
+            min-height: 1123px;
+            padding: 25mm 20mm;
+            margin: 0;
+            position: relative;
+            background: white;
+            box-sizing: border-box;
+            page-break-after: always;
+            overflow: hidden;
+        }
+
+        /* Content Header */
+        .pdf-content-header {
+            border-bottom: 3px solid #f1f5f9;
+            padding-bottom: 5mm;
+            margin-bottom: 10mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .pdf-content-title {
+            font-size: 24pt;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        /* Roadmap Styling */
+        .pdf-roadmap-item {
+            position: relative;
+            padding-left: 15mm;
+            margin-bottom: 10mm;
+            page-break-inside: avoid;
+        }
+
+        .pdf-roadmap-item::before {
+            content: "";
+            position: absolute;
+            left: 5.5mm;
+            top: 10mm;
+            bottom: -10mm;
+            width: 1px;
+            background: #e2e8f0;
+        }
+
+        .pdf-roadmap-item:last-child::before {
+            display: none;
+        }
+
+        .pdf-step-dot {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 11mm;
+            height: 11mm;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14pt;
+            color: #475569;
+            z-index: 2;
+        }
+
+        .pdf-step-card {
+            background: white;
+            border: 1px solid #f1f5f9;
+            border-radius: 4mm;
+            padding: 6mm;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .pdf-step-h3 {
+            font-size: 16pt;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 2mm;
+        }
+
+        .pdf-step-p {
+            font-size: 11pt;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Path Cards */
+        .pdf-path-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4mm;
+            margin-top: 5mm;
+        }
+
+        .pdf-path-item {
+            background: #f8fafc;
+            border-left: 4px solid #94a3b8;
+            padding: 4mm;
+            border-radius: 2mm;
+        }
+
+        /* Section Title */
+        .pdf-sec-title {
+            font-size: 18pt;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 12mm 0 6mm 0;
+            display: flex;
+            align-items: center;
+            gap: 3mm;
+        }
+
+        .pdf-sec-title::after {
+            content: "";
+            flex-grow: 1;
+            height: 1px;
+            background: #f1f5f9;
+        }
+
+        /* Footer */
+        .pdf-pg-footer {
+            position: absolute;
+            bottom: 10mm;
+            left: 20mm;
+            right: 20mm;
+            display: flex;
+            justify-content: space-between;
+            font-size: 9pt;
+            color: #94a3b8;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 4mm;
+        }
+
+        @media print {
+            .no-print, header, footer, .back-button, button { display: none !important; }
+            body { background: white !important; }
+            main { margin-top: -60px !important; }
+            .container { width: 100% !important; max-width: none !important; padding: 0 !important; }
+            .bg-slate-50 { background: white !important; }
+            .shadow-xl, .shadow-lg { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+            
+            /* Page Break for PDF */
+            .pdf-page-break { 
+                break-before: page !important;
+                margin-top: 50px !important;
+            }
+
+            /* Fix Roadmap for PDF */
+            .roadmap-container { 
+                padding-left: 0 !important; 
+                margin-left: 0 !important;
+                position: relative !important;
+            }
+            .roadmap-line { 
+                left: 23px !important; 
+                background-color: #e2e8f0 !important;
+                width: 2px !important;
+                display: block !important;
+                height: 100% !important;
+                z-index: 1 !important;
+            }
+            .roadmap-step { 
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                margin-bottom: 2rem !important;
+                display: flex !important;
+                gap: 1.5rem !important;
+                align-items: flex-start !important;
+                position: relative !important;
+            }
+            .step-number {
+                background-color: #ffffff !important;
+                border: 2px solid #e2e8f0 !important;
+                color: #475569 !important;
+                width: 48px !important;
+                height: 48px !important;
+                min-width: 48px !important;
+                z-index: 10 !important;
+                position: relative !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                border-radius: 9999px !important;
+            }
+            .step-card {
+                background-color: #ffffff !important;
+                border: 1px solid #e2e8f0 !important;
+                box-shadow: none !important;
+                flex-grow: 1 !important;
+                padding: 1.5rem !important;
+                border-radius: 1rem !important;
+            }
+            .path-card {
+                border-left: 4px solid #94a3b8 !important;
+                background-color: #f8fafc !important;
+                margin-top: 1rem !important;
+            }
+
+            /* Ensure colors print */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+<body class="text-slate-800 bg-slate-50">
+
+    <?php include 'includes/header.php'; ?>
+
+    <main id="roadmap-content" class="min-h-screen pb-20">
+        <!-- Hero Section -->
+        <div class="relative bg-gradient-to-r from-<?php echo $career['category_color']; ?>-600 to-<?php echo $career['category_color']; ?>-800 text-white pt-24 pb-16 overflow-hidden">
+            <!-- Background Decoration -->
+            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-white opacity-10 blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-60 h-60 rounded-full bg-white opacity-10 blur-3xl"></div>
+
+            <div class="container mx-auto px-4 relative z-10">
+                <a href="roadmap.php" class="no-print inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i> Back to All Careers
+                </a>
+                
+                <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
+                    <div class="w-24 h-24 md:w-32 md:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl md:text-6xl shadow-xl border border-white/30">
+                        <?php echo $career['icon']; ?>
+                    </div>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between w-full gap-6">
+                        <div class="text-center md:text-left">
+                            <h1 class="text-4xl md:text-5xl font-bold mb-2"><?php echo $career['title']; ?> Roadmap</h1>
+                            <p class="text-xl text-white/90 max-w-2xl font-light leading-relaxed">
+                                Step-by-step guide to becoming a successful <?php echo $career['title']; ?>.
+                            </p>
+                        </div>
+                        <div class="no-print flex flex-wrap gap-3">
+                            <button onclick="downloadRoadmapPDF()" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-<?php echo $career['category_color']; ?>-600 font-bold rounded-xl shadow-lg transition-all transform hover:scale-105 whitespace-nowrap">
+                                <i class="fas fa-file-pdf text-xl"></i>
+                                Download PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 -mt-10 relative z-20">
+            <div class="flex flex-col gap-8">
+                
+                <!-- Section 1: Roadmap (Full Width) -->
+                <div class="w-full">
+                    <div class="bg-white rounded-3xl shadow-xl p-8 mb-8">
+                        <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                            <i class="fas fa-road text-<?php echo $career['category_color']; ?>-600 mr-3"></i> 
+                            Career Roadmap
+                        </h2>
+                        
+                        <div class="roadmap-container relative pl-4">
+                            <!-- Vertical Line -->
+                            <div class="roadmap-line absolute left-[39px] top-4 bottom-4 w-1 bg-slate-100 rounded-full"></div>
+
+                            <?php foreach ($career['roadmap'] as $index => $step): ?>
+                            <div class="roadmap-step relative flex gap-6 mb-10 last:mb-0 group">
+                                <!-- Number/Icon -->
+                                <div class="step-number relative z-10 flex-shrink-0 w-12 h-12 rounded-full bg-<?php echo $career['category_color']; ?>-100 text-<?php echo $career['category_color']; ?>-600 font-bold text-lg flex items-center justify-center border-4 border-white shadow-md group-hover:scale-110 transition-transform duration-300">
+                                    <?php echo $index + 1; ?>
+                                </div>
+                                
+                                <!-- Content -->
+                                <div class="step-card bg-slate-50 rounded-2xl p-6 flex-grow border border-slate-100 hover:shadow-md transition-shadow duration-300">
+                                    <h3 class="text-lg font-bold text-slate-900 mb-2"><?php echo $step['title']; ?></h3>
+                                    <p class="text-slate-600"><?php echo $step['desc']; ?></p>
+
+                                    <?php if (isset($step['paths'])): ?>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                                        <?php foreach ($step['paths'] as $path): ?>
+                                        <div class="path-card bg-white p-5 rounded-xl border-l-4 border-<?php echo $career['category_color']; ?>-400 shadow-sm hover:shadow-md transition-all">
+                                            <h4 class="font-bold text-slate-800 mb-2 text-sm uppercase tracking-wide"><?php echo $path['title']; ?></h4>
+                                            <p class="text-sm text-slate-600 leading-relaxed"><?php echo $path['desc']; ?></p>
+                                        </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Details & Insights (Below Roadmap) -->
+                <div class="pdf-page-break grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Overview & Skills Column -->
+                    <div class="lg:col-span-2 space-y-8">
+                        <div class="bg-white rounded-3xl shadow-lg p-8 border-t-4 border-<?php echo $career['category_color']; ?>-500">
+                            <h3 class="text-xl font-bold text-slate-800 mb-4">Overview</h3>
+                            <p class="text-slate-600 leading-relaxed mb-6">
+                                <?php echo $career['overview'] ?? $career['details']; ?>
+                            </p>
+                            
+                            <h3 class="text-xl font-bold text-slate-800 mb-4 mt-8">Key Skills</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <?php 
+                                $skills = $career['skills'] ?? ['Dedication', 'Hard Work', 'Passion'];
+                                foreach ($skills as $skill): 
+                                ?>
+                                <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium">
+                                    <?php echo $skill; ?>
+                                </span>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+
+                        <?php if (isset($career['colleges'])): ?>
+                        <div class="bg-white rounded-3xl shadow-lg p-8 border-t-4 border-<?php echo $career['category_color']; ?>-500">
+                            <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                <i class="fas fa-university text-<?php echo $career['category_color']; ?>-500"></i>
+                                Top Colleges
+                            </h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <?php foreach ($career['colleges'] as $region => $colleges): ?>
+                                    <div class="mb-6 last:mb-0">
+                                        <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                            <?php if ($region === 'India'): ?>
+                                                🇮🇳 <?php echo $region; ?>
+                                            <?php else: ?>
+                                                📍 <?php echo $region; ?>
+                                            <?php endif; ?>
+                                        </h4>
+                                        <ul class="space-y-3">
+                                            <?php foreach ($colleges as $college): ?>
+                                                <li class="flex items-start gap-3 text-sm text-slate-600 group">
+                                                    <i class="fas fa-check-circle text-<?php echo $career['category_color']; ?>-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                                                    <a href="<?php echo getCollegeUrl($college); ?>" target="_blank" class="group-hover:text-blue-600 transition-colors cursor-pointer"><?php echo $college; ?></a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Sidebar Info Column -->
+                    <div class="lg:col-span-1 space-y-8">
+                        <?php if (isset($career['fees'])): ?>
+                        <div class="bg-white rounded-3xl shadow-lg p-8 border-t-4 border-<?php echo $career['category_color']; ?>-500">
+                            <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                                <i class="fas fa-indian-rupee-sign text-<?php echo $career['category_color']; ?>-500"></i>
+                                Average Fees
+                            </h3>
+                            <div class="space-y-4">
+                                <?php foreach ($career['fees'] as $type => $amount): ?>
+                                <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1"><?php echo $type; ?></div>
+                                    <div class="text-lg font-bold text-<?php echo $career['category_color']; ?>-700"><?php echo $amount; ?></div>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+
+                        <!-- Call to Action -->
+                        <div class="no-print bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 text-center text-white shadow-lg">
+                            <i class="fas fa-lightbulb text-yellow-400 text-4xl mb-4"></i>
+                            <h3 class="text-xl font-bold mb-2">Ready to Start?</h3>
+                            <p class="text-slate-300 mb-6 text-sm">Every expert was once a beginner. Start your journey today!</p>
+                            <a href="#" class="block w-full py-3 rounded-xl bg-white text-slate-900 font-bold hover:bg-gray-100 transition-colors">
+                                Find Resources
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+
+    <div class="container mx-auto px-4 py-8">
+        <?php include 'includes/footer.php'; ?>
+
+    <script>
+        function downloadRoadmapPDF() {
+            const template = document.getElementById('pdf-download-template');
+            const element = template.querySelector('.pdf-wrapper');
+            template.style.display = 'block'; // Show temporarily for capture
+            
+            const careerTitle = "<?php echo $career['title']; ?>";
+            
+            const opt = {
+                margin:       0,
+                filename:     `${careerTitle}_Roadmap.pdf`,
+                image:        { type: 'jpeg', quality: 1.0 },
+                html2canvas:  { 
+                    scale: 3, 
+                    useCORS: true, 
+                    logging: false,
+                    letterRendering: true,
+                    width: 794,
+                    windowWidth: 794,
+                    x: 0,
+                    y: 0,
+                    scrollX: 0,
+                    scrollY: 0
+                },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                template.style.display = 'none'; // Hide again
+            });
+        }
+    </script>
+
+</body>
+</html>
