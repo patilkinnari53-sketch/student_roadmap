@@ -38,11 +38,11 @@
     <div>
       <h4 class="font-bold text-lg mb-6">Quick Links</h4>
       <ul class="space-y-3">
-        <li><a href="roadmap.php" class="text-slate-400 hover:text-white transition-colors">Career Roadmaps</a></li>
-        <li><a href="quiz.php" class="text-slate-400 hover:text-white transition-colors">Career Assessment</a></li>
-        <li><a href="courses.php" class="text-slate-400 hover:text-white transition-colors">Course Finder</a></li>
-        <li><a href="mentors.php" class="text-slate-400 hover:text-white transition-colors">Find a Mentor</a></li>
-        <li><a href="blog.php" class="text-slate-400 hover:text-white transition-colors">Career Blog</a></li>
+        <li><a href="roadmap.html" class="text-slate-400 hover:text-white transition-colors">Career Roadmaps</a></li>
+        <li><a href="quiz.html" class="text-slate-400 hover:text-white transition-colors">Career Assessment</a></li>
+        <li><a href="courses.html" class="text-slate-400 hover:text-white transition-colors">Course Finder</a></li>
+        <li><a href="mentors.html" class="text-slate-400 hover:text-white transition-colors">Find a Mentor</a></li>
+        <li><a href="blog.html" class="text-slate-400 hover:text-white transition-colors">Career Blog</a></li>
       </ul>
     </div>
 
@@ -50,11 +50,11 @@
     <div>
       <h4 class="font-bold text-lg mb-6">Resources</h4>
       <ul class="space-y-3">
-        <li><a href="faq.php" class="text-slate-400 hover:text-white transition-colors">FAQ</a></li>
-        <li><a href="guides.php" class="text-slate-400 hover:text-white transition-colors">Study Guides</a></li>
-        <li><a href="scholarships.php" class="text-slate-400 hover:text-white transition-colors">Scholarships</a></li>
-        <li><a href="exams.php" class="text-slate-400 hover:text-white transition-colors">Exam Calendar</a></li>
-        <li><a href="tools.php" class="text-slate-400 hover:text-white transition-colors">Career Tools</a></li>
+        <li><a href="faq.html" class="text-slate-400 hover:text-white transition-colors">FAQ</a></li>
+        <li><a href="guides.html" class="text-slate-400 hover:text-white transition-colors">Study Guides</a></li>
+        <li><a href="scholarships.html" class="text-slate-400 hover:text-white transition-colors">Scholarships</a></li>
+        <li><a href="exams.html" class="text-slate-400 hover:text-white transition-colors">Exam Calendar</a></li>
+        <li><a href="tools.html" class="text-slate-400 hover:text-white transition-colors">Career Tools</a></li>
       </ul>
     </div>
 
@@ -96,16 +96,235 @@
     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
       <p class="text-slate-400 text-sm">© 2024 StudentRoadmap. All rights reserved.</p>
       <div class="flex items-center space-x-6 text-sm text-slate-400">
-        <a href="privacy.php" class="hover:text-white transition-colors">Privacy Policy</a>
-        <a href="terms.php" class="hover:text-white transition-colors">Terms of Service</a>
-        <a href="cookies.php" class="hover:text-white transition-colors">Cookie Policy</a>
+        <a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a>
+        <a href="cookies.html" class="hover:text-white transition-colors">Cookie Policy</a>
       </div>
     </div>
   </div>
 </footer>
 
 <!-- Chatbot -->
-<link rel="stylesheet" href="assets/css/chatbot.css">
+<style>
+  /* Chatbot Styles */
+  .chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+
+  .chatbot-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(14, 165, 233, 0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chatbot-toggle:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 15px 40px rgba(14, 165, 233, 0.4);
+  }
+
+  .chatbot-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+  }
+
+  .chatbot-window.active {
+    display: flex;
+  }
+
+  .chatbot-header {
+    background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chatbot-header-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .chatbot-avatar {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chatbot-title {
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .chatbot-status {
+    font-size: 12px;
+    opacity: 0.8;
+  }
+
+  .chatbot-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f8fafc;
+  }
+
+  .message {
+    margin-bottom: 15px;
+    max-width: 80%;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .user-message {
+    margin-left: auto;
+  }
+
+  .message-content {
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .user-message .message-content {
+    background: #0ea5e9;
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+
+  .bot-message .message-content {
+    background: white;
+    color: #1e293b;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .chatbot-input-area {
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    gap: 10px;
+  }
+
+  .chatbot-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 25px;
+    outline: none;
+    font-size: 14px;
+    transition: border-color 0.3s;
+  }
+
+  .chatbot-input:focus {
+    border-color: #0ea5e9;
+  }
+
+  .chatbot-send {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chatbot-send:hover {
+    transform: scale(1.1);
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Typing indicator */
+  .typing-indicator {
+    display: flex;
+    gap: 5px;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 18px;
+    width: fit-content;
+    border-bottom-left-radius: 4px;
+  }
+
+  .typing-indicator span {
+    width: 8px;
+    height: 8px;
+    background: #94a3b8;
+    border-radius: 50%;
+    animation: typing 1s infinite ease-in-out;
+  }
+
+  .typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes typing {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+</style>
+
 <div class="chatbot-container">
     <button id="chatbotToggle" class="chatbot-toggle" aria-label="Open Chat">
         <i class="fas fa-comment-dots"></i>
@@ -128,7 +347,7 @@
         </div>
         
         <div id="chatbotMessages" class="chatbot-messages">
-            <!-- Messages will appear here -->
+            <!-- Welcome message will be inserted by JavaScript -->
         </div>
         
         <form id="chatbotForm" class="chatbot-input-area">
@@ -141,4 +360,130 @@
 </div>
 
 <!-- Chatbot Script -->
-<script src="assets/js/chatbot.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const chatbotToggle = document.getElementById('chatbotToggle');
+    const chatbotWindow = document.getElementById('chatbotWindow');
+    const closeChatbot = document.getElementById('closeChatbot');
+    const chatbotForm = document.getElementById('chatbotForm');
+    const chatbotInput = document.getElementById('chatbotInput');
+    const chatbotMessages = document.getElementById('chatbotMessages');
+
+    // Predefined responses for demo
+    const responses = {
+      'hello': 'Hi there! 👋 How can I help you with your career planning today?',
+      'hi': 'Hello! Ready to explore career options? Ask me anything!',
+      'career': 'We offer guidance for various careers including Engineering, Medical, Commerce, Arts, and more! Which field interests you?',
+      'engineering': 'Great choice! For engineering, you need to take PCM in 10+2 and clear entrance exams like JEE. Would you like to see the complete roadmap?',
+      'medical': 'Medical is a noble profession! You\'ll need PCB in 10+2 and clear NEET. The journey includes MBBS, specialization, and internships. Want details?',
+      'commerce': 'Commerce opens doors to CA, CS, MBA, and more! After 12th, you can pursue B.Com, BBA, or professional courses. Tell me your interest!',
+      'arts': 'Arts offers creative careers in design, media, psychology, and more! What creative field excites you the most?',
+      'default': 'That\'s interesting! Could you tell me more about your educational background and interests? I can provide personalized guidance.'
+    };
+
+    // Add welcome message
+    function addWelcomeMessage() {
+      const welcomeDiv = document.createElement('div');
+      welcomeDiv.className = 'message bot-message';
+      welcomeDiv.innerHTML = '<div class="message-content">👋 Welcome to StudentRoadmap! I\'m your career assistant. Ask me about different career paths, entrance exams, or study tips!</div>';
+      chatbotMessages.appendChild(welcomeDiv);
+    }
+
+    // Add message to chat
+    function addMessage(text, isUser = false) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+      messageDiv.innerHTML = `<div class="message-content">${text}</div>`;
+      chatbotMessages.appendChild(messageDiv);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    // Show typing indicator
+    function showTypingIndicator() {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'message bot-message';
+      typingDiv.id = 'typingIndicator';
+      typingDiv.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+      chatbotMessages.appendChild(typingDiv);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    // Remove typing indicator
+    function removeTypingIndicator() {
+      const typingIndicator = document.getElementById('typingIndicator');
+      if (typingIndicator) {
+        typingIndicator.remove();
+      }
+    }
+
+    // Get bot response
+    function getBotResponse(userInput) {
+      const input = userInput.toLowerCase();
+      
+      // Check for keywords
+      for (const [key, response] of Object.entries(responses)) {
+        if (input.includes(key)) {
+          return response;
+        }
+      }
+      
+      return responses.default;
+    }
+
+    // Toggle chatbot
+    chatbotToggle.addEventListener('click', () => {
+      chatbotWindow.classList.add('active');
+      if (chatbotMessages.children.length === 0) {
+        addWelcomeMessage();
+      }
+    });
+
+    closeChatbot.addEventListener('click', () => {
+      chatbotWindow.classList.remove('active');
+    });
+
+    // Handle form submission
+    chatbotForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const userMessage = chatbotInput.value.trim();
+      if (!userMessage) return;
+
+      // Add user message
+      addMessage(userMessage, true);
+      chatbotInput.value = '';
+
+      // Show typing indicator
+      showTypingIndicator();
+
+      // Simulate bot typing delay
+      setTimeout(() => {
+        removeTypingIndicator();
+        const botResponse = getBotResponse(userMessage);
+        addMessage(botResponse);
+      }, 1500);
+    });
+
+    // Handle enter key
+    chatbotInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        chatbotForm.dispatchEvent(new Event('submit'));
+      }
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && chatbotWindow.classList.contains('active')) {
+        chatbotWindow.classList.remove('active');
+      }
+    });
+
+    // Click outside to close (optional)
+    document.addEventListener('click', (e) => {
+      if (!chatbotWindow.contains(e.target) && !chatbotToggle.contains(e.target) && chatbotWindow.classList.contains('active')) {
+        chatbotWindow.classList.remove('active');
+      }
+    });
+  });
+</script>
