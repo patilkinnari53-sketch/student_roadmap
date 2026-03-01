@@ -1,4 +1,3 @@
-<?php include 'includes/db.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +9,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Tailwind with optimized plugins -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
-  <script src="assets/js/auth.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -201,6 +199,113 @@
       animation: blob 25s infinite reverse;
     }
 
+    /* Header Styles */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .header-glass {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+      padding: 1rem 2rem;
+    }
+
+    /* Navigation Menu */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      color: #1e293b;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: #0ea5e9;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Mobile menu button */
+    .mobile-menu-btn {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    .mobile-menu-btn span {
+      width: 25px;
+      height: 2px;
+      background: #1e293b;
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1.5rem;
+        border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .mobile-menu-btn {
+        display: flex;
+      }
+
+      .mobile-menu-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+      }
+
+      .mobile-menu-btn.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .mobile-menu-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(8px, -8px);
+      }
+    }
+
     /* Enhanced Header */
     .header-glass {
       background: rgba(255, 255, 255, 0.85);
@@ -275,6 +380,10 @@
       position: relative;
       overflow: hidden;
       transition: all 0.3s ease;
+      padding: 2rem 1.5rem;
+      border-radius: 1.5rem;
+      border: 1px solid rgba(14, 165, 233, 0.1);
+      text-align: center;
     }
 
     .team-card:hover {
@@ -298,6 +407,21 @@
       opacity: 1;
     }
 
+    .team-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.5rem;
+      font-weight: bold;
+      box-shadow: 0 10px 20px rgba(14, 165, 233, 0.2);
+    }
+
     /* About Image Container */
     .about-image-container {
       position: relative;
@@ -308,6 +432,9 @@
 
     .about-image-container img {
       transition: transform 0.8s ease;
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
     .about-image-container:hover img {
@@ -320,6 +447,46 @@
       inset: 0;
       background: linear-gradient(to bottom, transparent 60%, rgba(14, 165, 233, 0.1));
       border-radius: 1.5rem;
+    }
+
+    /* Footer Styles */
+    footer {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(14, 165, 233, 0.1);
+      padding: 3rem 0 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .footer-link {
+      color: #64748b;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-link:hover {
+      color: #0ea5e9;
+      transform: translateX(5px);
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      background: rgba(14, 165, 233, 0.1);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #0ea5e9;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: #0ea5e9;
+      color: white;
+      transform: translateY(-3px);
     }
 
     /* Custom Scrollbar */
@@ -376,6 +543,24 @@
     :focus:not(:focus-visible) {
       outline: none;
     }
+
+    /* Animation Delays */
+    .animation-delay-200 { animation-delay: 200ms; }
+    .animation-delay-400 { animation-delay: 400ms; }
+    .animation-delay-600 { animation-delay: 600ms; }
+    .animation-delay-800 { animation-delay: 800ms; }
+    .animation-delay-1000 { animation-delay: 1000ms; }
+
+    /* Reveal Animation */
+    @keyframes revealUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal-up {
+      opacity: 0;
+      animation: revealUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
   </style>
 </head>
 
@@ -386,8 +571,61 @@
     <div class="bg-blob blob-2"></div>
   </div>
 
-  <!-- HEADER INCLUDE -->
-  <?php include 'includes/header.php'; ?>
+  <!-- Header Section (Hardcoded) -->
+  <header class="header-glass">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between py-4">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+            <i class="fas fa-graduation-cap text-white text-xl"></i>
+          </div>
+          <span class="text-2xl font-black bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">StudentRoadmap</span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:block">
+          <div class="nav-menu">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="roadmap.html" class="nav-link">Roadmaps</a>
+            <a href="quiz.html" class="nav-link">Career Quiz</a>
+            <a href="resources.html" class="nav-link">Resources</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+          </div>
+        </nav>
+
+        <!-- Auth Buttons -->
+        <div class="hidden md:flex items-center space-x-4">
+          <a href="login.html" class="px-5 py-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors">Log In</a>
+          <a href="signup.html" class="btn-gradient px-6 py-2.5 rounded-xl text-white font-semibold shadow-md shadow-primary-500/30">Sign Up Free</a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn md:hidden" id="mobileMenuBtn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <!-- Mobile Navigation -->
+      <nav class="md:hidden hidden" id="mobileNav">
+        <div class="nav-menu mobile-menu flex-col py-6">
+          <a href="index.html" class="nav-link text-lg">Home</a>
+          <a href="roadmap.html" class="nav-link text-lg">Roadmaps</a>
+          <a href="quiz.html" class="nav-link text-lg">Career Quiz</a>
+          <a href="resources.html" class="nav-link text-lg">Resources</a>
+          <a href="about.html" class="nav-link text-lg">About Us</a>
+          <a href="contact.html" class="nav-link text-lg">Contact</a>
+          <div class="flex flex-col space-y-3 w-full pt-4 border-t border-slate-200">
+            <a href="login.html" class="text-center px-5 py-2 text-primary-600 font-semibold">Log In</a>
+            <a href="signup.html" class="btn-gradient text-center px-6 py-3 rounded-xl text-white font-semibold">Sign Up Free</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
 
   <!-- Main Content -->
   <main class="relative z-10">
@@ -427,16 +665,11 @@
                   how confusing it can be to choose the right path after 10th, 12th, or diploma, we created a platform
                   that provides easy-to-understand roadmaps and guidance to explore strengths and interests. Our project
                   reflects our commitment to using technology to support students like us, offering a simple, reliable,
-                  and helpful resource built with real student experiences in mind. </p>
-
-
+                  and helpful resource built with real student experiences in mind.
+                </p>
               </div>
             </div>
-
           </div>
-
-
-
 
           <!-- Team Section -->
           <div class="text-center mb-12">
@@ -450,35 +683,38 @@
           <!-- Team Members Grid -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
 
-            <!-- Member 1 -->
-            <div class="team-card p-6 rounded-2xl border bg-white shadow-md animate-fade-in">
-              <h3 class="text-xl font-bold text-slate-900 mb-1 text-center">Shreyash Shigwan</h3>
-
+            <!-- Member 1 - Shreyash Shigwan -->
+            <div class="team-card animate-fade-in">
+              <div class="team-avatar">SS</div>
+              <h3 class="text-xl font-bold text-slate-900 mb-1">Shreyash Shigwan</h3>
+              <p class="text-primary-600 font-medium mb-3">Team Lead & Developer</p>
+              <p class="text-slate-500 text-sm">Full-stack developer with passion for creating intuitive user experiences.</p>
             </div>
 
-            <!-- Member 2 -->
-            <div class="team-card p-6 rounded-2xl border bg-white shadow-md animate-fade-in"
-              style="animation-delay: 0.1s;">
-              <h3 class="text-xl font-bold text-slate-900 mb-1 text-center">Deep Patil</h3>
-
+            <!-- Member 2 - Deep Patil -->
+            <div class="team-card animate-fade-in animation-delay-200">
+              <div class="team-avatar">DP</div>
+              <h3 class="text-xl font-bold text-slate-900 mb-1">Deep Patil</h3>
+              <p class="text-primary-600 font-medium mb-3">Backend Developer</p>
+              <p class="text-slate-500 text-sm">Database expert and API specialist focused on robust system architecture.</p>
             </div>
 
-            <!-- Member 3 -->
-            <div class="team-card p-6 rounded-2xl border bg-white shadow-md animate-fade-in"
-              style="animation-delay: 0.2s;">
-              <h3 class="text-xl font-bold text-slate-900 mb-1 text-center">Kinnari Patil</h3>
-
+            <!-- Member 3 - Kinnari Patil -->
+            <div class="team-card animate-fade-in animation-delay-400">
+              <div class="team-avatar">KP</div>
+              <h3 class="text-xl font-bold text-slate-900 mb-1">Kinnari Patil</h3>
+              <p class="text-primary-600 font-medium mb-3">UI/UX Designer</p>
+              <p class="text-slate-500 text-sm">Creative designer crafting beautiful and accessible user interfaces.</p>
             </div>
 
-            <!-- Member 4 -->
-            <div class="team-card p-6 rounded-2xl border bg-white shadow-md animate-fade-in"
-              style="animation-delay: 0.3s;">
-              <h3 class="text-xl font-bold text-slate-900 mb-1 text-center">Mrudula Bhoir</h3>
-
+            <!-- Member 4 - Mrudula Bhoir -->
+            <div class="team-card animate-fade-in animation-delay-600">
+              <div class="team-avatar">MB</div>
+              <h3 class="text-xl font-bold text-slate-900 mb-1">Mrudula Bhoir</h3>
+              <p class="text-primary-600 font-medium mb-3">Content & Research</p>
+              <p class="text-slate-500 text-sm">Educational content creator ensuring accurate career guidance.</p>
             </div>
-
           </div>
-
 
           <!-- CTA Section -->
           <div class="gradient-border p-8 md:p-12 rounded-3xl text-center mb-20 animate-scale-up">
@@ -486,13 +722,13 @@
             <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-8">Join thousands of students who have discovered
               their ideal career path with StudentRoadmap.</p>
             <div class="flex flex-col sm:flex-row justify-center gap-4">
-              <button class="btn-gradient px-8 py-4 text-white font-semibold rounded-xl">
+              <a href="signup.html" class="btn-gradient px-8 py-4 text-white font-semibold rounded-xl">
                 Start Free Trial
-              </button>
-              <button
+              </a>
+              <a href="contact.html"
                 class="px-8 py-4 border-2 border-primary-500 text-primary-500 font-semibold rounded-xl hover:bg-primary-50 transition-colors">
                 Book a Demo
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -500,22 +736,85 @@
     </section>
   </main>
 
-  <!-- FOOTER INCLUDE -->
-  <div class="container mx-auto px-4 py-8">
-    <?php include 'includes/footer.php'; ?>
-  </div>
+  <!-- Footer Section (Hardcoded) -->
+  <footer>
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <!-- About -->
+        <div>
+          <div class="flex items-center space-x-3 mb-6">
+            <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+              <i class="fas fa-graduation-cap text-white text-xl"></i>
+            </div>
+            <span class="text-2xl font-black bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">StudentRoadmap</span>
+          </div>
+          <p class="text-slate-600 mb-6">India's most trusted career guidance platform for students after 10th & 12th.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="text-lg font-bold text-slate-900 mb-6">Quick Links</h4>
+          <ul class="space-y-3">
+            <li><a href="about.html" class="footer-link">About Us</a></li>
+            <li><a href="roadmap.html" class="footer-link">Career Roadmaps</a></li>
+            <li><a href="quiz.html" class="footer-link">Career Quiz</a></li>
+            <li><a href="resources.html" class="footer-link">Resources</a></li>
+            <li><a href="blog.html" class="footer-link">Blog</a></li>
+          </ul>
+        </div>
+
+        <!-- Support -->
+        <div>
+          <h4 class="text-lg font-bold text-slate-900 mb-6">Support</h4>
+          <ul class="space-y-3">
+            <li><a href="contact.html" class="footer-link">Contact Us</a></li>
+            <li><a href="faq.html" class="footer-link">FAQs</a></li>
+            <li><a href="privacy.html" class="footer-link">Privacy Policy</a></li>
+            <li><a href="terms.html" class="footer-link">Terms of Use</a></li>
+            <li><a href="sitemap.html" class="footer-link">Sitemap</a></li>
+          </ul>
+        </div>
+
+        <!-- Newsletter -->
+        <div>
+          <h4 class="text-lg font-bold text-slate-900 mb-6">Stay Updated</h4>
+          <p class="text-slate-600 mb-4">Subscribe to get career tips and updates</p>
+          <form id="newsletterForm" class="space-y-3">
+            <input type="email" placeholder="Your email address" class="newsletter-input w-full px-4 py-3 rounded-xl bg-white/80 backdrop-blur-sm border border-primary-100 focus:outline-none focus:border-primary-500" required>
+            <button type="submit" class="btn-gradient w-full px-6 py-3 rounded-xl text-white font-semibold">
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="border-t border-slate-200 pt-8 text-center">
+        <p class="text-slate-500">&copy; 2024 StudentRoadmap. All rights reserved. Made with <i class="fas fa-heart text-red-500"></i> for Indian students.</p>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    // Dynamic Include Function removed as we use PHP includes now
-
-    // Mobile Menu logic removed: Handled by Auth.initHeader() in auth.js
-
-    // Call init after loads (with a small delay to ensure DOM update)
-    // Call init after loads (with a small delay to ensure DOM update)
-    // setTimeout(initMobileMenu, 100); // Moved to loadInclude
-
-    // Animation on scroll (simple implementation)
+    // Mobile Menu Toggle
     document.addEventListener('DOMContentLoaded', () => {
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const mobileNav = document.getElementById('mobileNav');
+
+      if (mobileMenuBtn && mobileNav) {
+        mobileMenuBtn.addEventListener('click', function() {
+          this.classList.toggle('active');
+          mobileNav.classList.toggle('hidden');
+        });
+      }
+
+      // Animation on scroll (simple implementation)
       const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
@@ -532,6 +831,36 @@
       // Observe elements for animation
       document.querySelectorAll('.team-card, .glass-card').forEach((el) => {
         observer.observe(el);
+      });
+
+      // Newsletter Form Submission
+      const newsletterForm = document.getElementById('newsletterForm');
+      newsletterForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = e.target.querySelector('input[type="email"]').value;
+
+        // Show loading state
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        submitBtn.disabled = true;
+
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Show success message
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Subscribed!';
+        submitBtn.classList.add('bg-green-500', 'hover:bg-green-600');
+
+        // Reset form
+        e.target.reset();
+
+        // Reset button after 3 seconds
+        setTimeout(() => {
+          submitBtn.innerHTML = originalText;
+          submitBtn.classList.remove('bg-green-500', 'hover:bg-green-600');
+          submitBtn.disabled = false;
+        }, 3000);
       });
     });
   </script>
