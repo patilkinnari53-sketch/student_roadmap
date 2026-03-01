@@ -1,7 +1,3 @@
-<?php 
-include 'includes/db.php'; 
-include 'includes/career_data.php';
-?>
 <!DOCTYPE html>
 <html class="light" lang="en">
 
@@ -30,7 +26,6 @@ include 'includes/career_data.php';
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Tailwind with optimized plugins -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
-  <script src="assets/js/auth.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -220,11 +215,111 @@ include 'includes/career_data.php';
       animation: blob 25s infinite reverse;
     }
 
-    /* Enhanced Header */
-    .header-glass {
-      background: rgba(255, 255, 255, 0.85);
+    /* Header Styles - Fixed visibility */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .header-glass {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+      padding: 1rem 2rem;
+    }
+
+    /* Navigation Menu */
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-link {
+      color: #1e293b;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: #0ea5e9;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Mobile menu button */
+    .mobile-menu-btn {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+    }
+
+    .mobile-menu-btn span {
+      width: 25px;
+      height: 2px;
+      background: #1e293b;
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        padding: 2rem;
+        gap: 1.5rem;
+        border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-menu.active {
+        display: flex;
+      }
+
+      .mobile-menu-btn {
+        display: flex;
+      }
+
+      .mobile-menu-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+      }
+
+      .mobile-menu-btn.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .mobile-menu-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(8px, -8px);
+      }
     }
 
     /* Enhanced Slider */
@@ -442,6 +537,46 @@ include 'includes/career_data.php';
       opacity: 1;
     }
 
+    /* Footer Styles */
+    footer {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(14, 165, 233, 0.1);
+      padding: 3rem 0 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .footer-link {
+      color: #64748b;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-link:hover {
+      color: #0ea5e9;
+      transform: translateX(5px);
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      background: rgba(14, 165, 233, 0.1);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #0ea5e9;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: #0ea5e9;
+      color: white;
+      transform: translateY(-3px);
+    }
+
     /* Responsive Utilities */
     @media (max-width: 768px) {
       .mobile-stack {
@@ -510,13 +645,6 @@ include 'includes/career_data.php';
     :focus:not(:focus-visible) {
       outline: none;
     }
-
-    /* Dark mode support (future) */
-    @media (prefers-color-scheme: dark) {
-      .dark\:invert {
-        filter: invert(1);
-      }
-    }
   </style>
 </head>
 
@@ -526,9 +654,63 @@ include 'includes/career_data.php';
     <div class="bg-blob blob-1"></div>
     <div class="bg-blob blob-2"></div>
   </div>
-  <!-- HEADER INCLUDE -->
-  <!-- HEADER INCLUDE -->
-  <?php include 'includes/header.php'; ?>
+
+  <!-- Header Section (Hardcoded HTML) -->
+  <header class="header-glass">
+    <div class="container mx-auto px-4">
+      <div class="flex items-center justify-between py-4">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+            <i class="fas fa-graduation-cap text-white text-xl"></i>
+          </div>
+          <span class="text-2xl font-black bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">StudentRoadmap</span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:block">
+          <div class="nav-menu">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="roadmap.html" class="nav-link">Roadmaps</a>
+            <a href="quiz.html" class="nav-link">Career Quiz</a>
+            <a href="resources.html" class="nav-link">Resources</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+          </div>
+        </nav>
+
+        <!-- Auth Buttons -->
+        <div class="hidden md:flex items-center space-x-4">
+          <a href="login.html" class="px-5 py-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors">Log In</a>
+          <a href="signup.html" class="btn-gradient px-6 py-2.5 rounded-xl text-white font-semibold shadow-md shadow-primary-500/30">Sign Up Free</a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn md:hidden" id="mobileMenuBtn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <!-- Mobile Navigation -->
+      <nav class="md:hidden hidden" id="mobileNav">
+        <div class="nav-menu mobile-menu flex-col py-6">
+          <a href="index.html" class="nav-link text-lg">Home</a>
+          <a href="roadmap.html" class="nav-link text-lg">Roadmaps</a>
+          <a href="quiz.html" class="nav-link text-lg">Career Quiz</a>
+          <a href="resources.html" class="nav-link text-lg">Resources</a>
+          <a href="about.html" class="nav-link text-lg">About Us</a>
+          <a href="contact.html" class="nav-link text-lg">Contact</a>
+          <div class="flex flex-col space-y-3 w-full pt-4 border-t border-slate-200">
+            <a href="login.html" class="text-center px-5 py-2 text-primary-600 font-semibold">Log In</a>
+            <a href="signup.html" class="btn-gradient text-center px-6 py-3 rounded-xl text-white font-semibold">Sign Up Free</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
   <!-- Main Content -->
   <main class="page-bg relative z-10">
     <div class="container mx-auto px-4 py-8">
@@ -834,14 +1016,14 @@ include 'includes/career_data.php';
                   <p class="slide-description">Find higher studies and job roadmaps. Transition from diploma to
                     professional success.</p>
                   <div class="cards-row">
-                    <a href="roadmap.php" class="option-card">
+                    <a href="roadmap.html" class="option-card">
                       <div class="card-icon"><i class="fas fa-tools"></i></div>
                       <div class="card-info">
                         <h4>View Roadmap</h4>
                         <p>Skill upgrades.</p>
                       </div>
                     </a>
-                    <a href="quiz.php" class="option-card">
+                    <a href="quiz.html" class="option-card">
                       <div class="card-icon"><i class="fas fa-lightbulb"></i></div>
                       <div class="card-info">
                         <h4>Take Quiz</h4>
@@ -868,14 +1050,14 @@ include 'includes/career_data.php';
                   <p class="slide-description">Explore career roadmaps after 10th grade and make informed decisions
                     about your future stream.</p>
                   <div class="cards-row">
-                    <a href="roadmap.php" class="option-card">
+                    <a href="roadmap.html" class="option-card">
                       <div class="card-icon"><i class="fas fa-map-marked-alt"></i></div>
                       <div class="card-info">
                         <h4>View Roadmap</h4>
                         <p>Step-by-step guide.</p>
                       </div>
                     </a>
-                    <a href="quiz.php" class="option-card">
+                    <a href="quiz.html" class="option-card">
                       <div class="card-icon"><i class="fas fa-brain"></i></div>
                       <div class="card-info">
                         <h4>Take Quiz</h4>
@@ -904,14 +1086,14 @@ include 'includes/career_data.php';
                   <p class="slide-description">Discover roadmaps after 12th grade. From Engineering to Arts, find your
                     professional calling.</p>
                   <div class="cards-row">
-                    <a href="roadmap.php" class="option-card">
+                    <a href="roadmap.html" class="option-card">
                       <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
                       <div class="card-info">
                         <h4>View Roadmap</h4>
                         <p>Professional guides.</p>
                       </div>
                     </a>
-                    <a href="quiz.php" class="option-card">
+                    <a href="quiz.html" class="option-card">
                       <div class="card-icon"><i class="fas fa-puzzle-piece"></i></div>
                       <div class="card-info">
                         <h4>Take Quiz</h4>
@@ -928,7 +1110,6 @@ include 'includes/career_data.php';
               </div>
             </div>
 
-
             <!-- Slide 4: All Roadmaps -->
             <div class="hero-slide">
               <div class="slide-content">
@@ -940,14 +1121,14 @@ include 'includes/career_data.php';
                   <p class="slide-description">Browse complete career guidance paths. Comprehensive guides for every
                     student level.</p>
                   <div class="cards-row">
-                    <a href="roadmap.php" class="option-card">
+                    <a href="roadmap.html" class="option-card">
                       <div class="card-icon"><i class="fas fa-route"></i></div>
                       <div class="card-info">
                         <h4>View Roadmap</h4>
                         <p>Complete guides.</p>
                       </div>
                     </a>
-                    <a href="quiz.php" class="option-card">
+                    <a href="quiz.html" class="option-card">
                       <div class="card-icon"><i class="fas fa-award"></i></div>
                       <div class="card-info">
                         <h4>Take Quiz</h4>
@@ -1126,12 +1307,12 @@ include 'includes/career_data.php';
 
           <!-- CTA Buttons -->
           <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 reveal-up animation-delay-600">
-            <a href="quiz.php"
+            <a href="quiz.html"
               class="btn-gradient group w-full sm:w-auto px-12 py-6 text-white font-bold rounded-2xl inline-flex items-center justify-center space-x-3 shadow-2xl hover:shadow-primary-500/40 transition-all duration-300 hover:-translate-y-1">
               <i class="fas fa-play-circle text-2xl group-hover:rotate-12 transition-transform"></i>
               <span class="text-lg">Start Free Career Quiz</span>
             </a>
-            <a href="roadmap.php"
+            <a href="roadmap.html"
               class="w-full sm:w-auto px-12 py-6 bg-white border-2 border-slate-200 text-slate-700 font-bold rounded-2xl hover:border-primary-500 hover:text-primary-600 transition-all duration-300 inline-flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl hover:-translate-y-1">
               <i class="fas fa-map-marked-alt text-2xl"></i>
               <span class="text-lg">Explore Roadmaps</span>
@@ -1214,7 +1395,7 @@ include 'includes/career_data.php';
         </div>
       </section>
 
-      <!-- Interactive Roadmap Cards -->
+      <!-- Interactive Roadmap Cards - Hardcoded HTML -->
       <section class="py-16 md:py-28">
         <div class="text-center mb-16 md:mb-20">
           <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-6">
@@ -1226,68 +1407,184 @@ include 'includes/career_data.php';
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          <?php 
-          // Specific careers requested by the user
-          $target_slugs = ['doctor', 'civil-servant', 'software-developer', 'chartered-accountant'];
-          $featured_careers = [];
-          
-          foreach ($career_categories as $cat_slug => $category) {
-              foreach ($category['careers'] as $career) {
-                  if (in_array($career['slug'], $target_slugs)) {
-                      $career['cat_color'] = $category['color'];
-                      $career['cat_icon'] = $category['icon'];
-                      // Store in a way that preserves order of target_slugs
-                      $index = array_search($career['slug'], $target_slugs);
-                      $featured_careers[$index] = $career;
-                  }
-              }
-          }
-          ksort($featured_careers); // Ensure they appear in the requested order
-          
-          foreach ($featured_careers as $career): 
-          ?>
-          <a href="career_roadmap.php?career=<?php echo $career['slug']; ?>"
+          <!-- Doctor Card -->
+          <a href="career_roadmap.html?career=doctor"
             class="group relative overflow-hidden rounded-[2.5rem] glass-card p-10 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/50 flex flex-col">
-            <div
-              class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-<?php echo $career['cat_color']; ?>-500/10 to-transparent rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500/10 to-transparent rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700">
             </div>
 
             <div class="relative z-10 flex flex-col h-full">
-              <div
-                class="w-16 h-16 bg-gradient-to-br from-<?php echo $career['cat_color']; ?>-500 to-<?php echo $career['cat_color']; ?>-400 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-<?php echo $career['cat_color']; ?>-500/20 text-2xl">
-                <?php echo $career['icon']; ?>
+              <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-400 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-500/20 text-2xl text-white">
+                <i class="fas fa-stethoscope"></i>
               </div>
 
-              <h3 class="text-2xl font-bold text-slate-900 mb-4"><?php echo $career['title']; ?></h3>
-              <p class="text-slate-600 mb-8 text-lg leading-relaxed"><?php echo $career['desc']; ?></p>
+              <h3 class="text-2xl font-bold text-slate-900 mb-4">Doctor</h3>
+              <p class="text-slate-600 mb-8 text-lg leading-relaxed">Become a medical professional and make a difference in people's lives through healthcare.</p>
 
               <div class="space-y-4 mt-auto">
-                <?php 
-                // Show first 3 steps of the roadmap as highlights
-                $highlights = array_slice($career['roadmap'], 1, 3);
-                foreach ($highlights as $step): 
-                ?>
                 <div class="flex items-center space-x-4">
-                  <div class="w-10 h-10 bg-<?php echo $career['cat_color']; ?>-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <i class="fas fa-check text-<?php echo $career['cat_color']; ?>-600 text-xs"></i>
+                  <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check text-red-600 text-xs"></i>
                   </div>
-                  <span class="font-semibold text-slate-700 text-sm"><?php echo $step['title']; ?></span>
+                  <span class="font-semibold text-slate-700 text-sm">Complete 10+2 with PCB</span>
                 </div>
-                <?php endforeach; ?>
+                <div class="flex items-center space-x-4">
+                  <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check text-red-600 text-xs"></i>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm">Clear NEET entrance exam</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                  <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check text-red-600 text-xs"></i>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm">Complete MBBS (5.5 years)</span>
+                </div>
               </div>
 
               <div class="mt-10 pt-8 border-t border-slate-100">
-                <span
-                  class="inline-flex items-center space-x-2 text-primary-600 font-bold group-hover:translate-x-2 transition-transform duration-300">
+                <span class="inline-flex items-center space-x-2 text-primary-600 font-bold group-hover:translate-x-2 transition-transform duration-300">
                   <span>View Full Roadmap</span>
                   <i class="fas fa-arrow-right"></i>
                 </span>
               </div>
             </div>
           </a>
-          <?php endforeach; ?>
+
+          <!-- Civil Servant Card -->
+          <a href="career_roadmap.html?career=civil-servant"
+            class="group relative overflow-hidden rounded-[2.5rem] glass-card p-10 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/50 flex flex-col">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700">
+            </div>
+
+            <div class="relative z-10 flex flex-col h-full">
+              <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-400 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-blue-500/20 text-2xl text-white">
+                <i class="fas fa-landmark"></i>
+              </div>
+
+              <h3 class="text-2xl font-bold text-slate-900 mb-4">Civil Servant</h3>
+              <p class="text-slate-600 mb-8 text-lg leading-relaxed">Serve the nation by becoming an IAS, IPS, or IFS officer through the prestigious UPSC exam.</p>
+
+              <div class="space-y-4 mt-auto">
+                <div class="flex items-center space-x-4">
+                  <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check text-blue-600 text-xs"></i>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm">Complete graduation in any stream</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                  <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check text-blue-600 text-xs"></i>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm">Prepare for UPSC CSE exam</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                  <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check text-blue-600 text-xs"></i>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm">Clear Prelims, Mains & Interview</span>
+                </div>
+              </div>
+
+              <div class="mt-10 pt-8 border-t border-slate-100">
+                <span class="inline-flex items-center space-x-2 text-primary-600 font-bold group-hover:translate-x-2 transition-transform duration-300">
+                  <span>View Full Roadmap</span>
+                  <i class="fas fa-arrow-right"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Software Developer Card -->
+          <a href="career_roadmap.html?career=software-developer"
+            class="group relative overflow-hidden rounded-[2.5rem] glass-card p-10 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/50 flex flex-col">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500/10 to-transparent rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700">
+            </div>
+
+            <div class="relative z-10 flex flex-col h-full">
+              <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-green-400 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-green-500/20 text-2xl text-white">
+                <i class="fas fa-code"></i>
+              </div>
+
+              <h3 class="text-2xl font-bold text-slate-900 mb-4">Software Developer</h3>
+              <p class="text-slate-600 mb-8 text-lg leading-relaxed">Build innovative applications and solutions that power the digital world with cutting-edge technology.</p>
+
+              <div class="space-y-4 mt-auto">
+                <div class="flex items-center space-x-4">
+                  <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check text-green-600 text-xs"></i>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm">Complete 10+2 with Mathematics</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                  <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check text-green-600 text-xs"></i>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm">Pursue B.Tech/BE in CS/IT</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                  <div class="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check text-green-600 text-xs"></i>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm">Master programming languages</span>
+                </div>
+              </div>
+
+              <div class="mt-10 pt-8 border-t border-slate-100">
+                <span class="inline-flex items-center space-x-2 text-primary-600 font-bold group-hover:translate-x-2 transition-transform duration-300">
+                  <span>View Full Roadmap</span>
+                  <i class="fas fa-arrow-right"></i>
+                </span>
+              </div>
+            </div>
+          </a>
+
+          <!-- Chartered Accountant Card -->
+          <a href="career_roadmap.html?career=chartered-accountant"
+            class="group relative overflow-hidden rounded-[2.5rem] glass-card p-10 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/50 flex flex-col">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/10 to-transparent rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700">
+            </div>
+
+            <div class="relative z-10 flex flex-col h-full">
+              <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-400 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-purple-500/20 text-2xl text-white">
+                <i class="fas fa-calculator"></i>
+              </div>
+
+              <h3 class="text-2xl font-bold text-slate-900 mb-4">Chartered Accountant</h3>
+              <p class="text-slate-600 mb-8 text-lg leading-relaxed">Master the world of finance, taxation, and auditing with India's most prestigious accounting qualification.</p>
+
+              <div class="space-y-4 mt-auto">
+                <div class="flex items-center space-x-4">
+                  <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check text-purple-600 text-xs"></i>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm">Complete 10+2 with Commerce</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                  <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check text-purple-600 text-xs"></i>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm">Register for CA Foundation</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                  <div class="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <i class="fas fa-check text-purple-600 text-xs"></i>
+                  </div>
+                  <span class="font-semibold text-slate-700 text-sm">Clear CA Intermediate & Final</span>
+                </div>
+              </div>
+
+              <div class="mt-10 pt-8 border-t border-slate-100">
+                <span class="inline-flex items-center space-x-2 text-primary-600 font-bold group-hover:translate-x-2 transition-transform duration-300">
+                  <span>View Full Roadmap</span>
+                  <i class="fas fa-arrow-right"></i>
+                </span>
+              </div>
+            </div>
+          </a>
         </div>
       </section>
+      
       <!-- Quick Assessment Section -->
       <section class="py-16 md:py-28">
         <div class="bg-gradient-to-br from-primary-500/10 via-white to-secondary-500/10 rounded-[3rem] p-10 md:p-20 shadow-inner border border-white/50 relative overflow-hidden">
@@ -1330,7 +1627,7 @@ include 'includes/career_data.php';
                 </div>
               </div>
 
-              <a href="quiz.php"
+              <a href="quiz.html"
                 class="btn-gradient w-full sm:w-auto px-12 py-5 text-white font-bold rounded-2xl inline-flex items-center justify-center space-x-4 shadow-xl hover:scale-105 transition-all">
                 <i class="fas fa-play-circle text-xl"></i>
                 <span>Start Free Assessment Now</span>
@@ -1369,249 +1666,172 @@ include 'includes/career_data.php';
           </div>
         </div>
       </section>
-
-      <!-- FOOTER INCLUDE -->
-      <!-- FOOTER INCLUDE -->
-      <?php include 'includes/footer.php'; ?>
     </div>
   </main>
+
+  <!-- Footer Section (Hardcoded HTML) -->
+  <footer>
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <!-- About -->
+        <div>
+          <div class="flex items-center space-x-3 mb-6">
+            <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/30">
+              <i class="fas fa-graduation-cap text-white text-xl"></i>
+            </div>
+            <span class="text-2xl font-black bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">StudentRoadmap</span>
+          </div>
+          <p class="text-slate-600 mb-6">India's most trusted career guidance platform for students after 10th & 12th.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="text-lg font-bold text-slate-900 mb-6">Quick Links</h4>
+          <ul class="space-y-3">
+            <li><a href="about.html" class="footer-link">About Us</a></li>
+            <li><a href="roadmap.html" class="footer-link">Career Roadmaps</a></li>
+            <li><a href="quiz.html" class="footer-link">Career Quiz</a></li>
+            <li><a href="resources.html" class="footer-link">Resources</a></li>
+            <li><a href="blog.html" class="footer-link">Blog</a></li>
+          </ul>
+        </div>
+
+        <!-- Support -->
+        <div>
+          <h4 class="text-lg font-bold text-slate-900 mb-6">Support</h4>
+          <ul class="space-y-3">
+            <li><a href="contact.html" class="footer-link">Contact Us</a></li>
+            <li><a href="faq.html" class="footer-link">FAQs</a></li>
+            <li><a href="privacy.html" class="footer-link">Privacy Policy</a></li>
+            <li><a href="terms.html" class="footer-link">Terms of Use</a></li>
+            <li><a href="sitemap.html" class="footer-link">Sitemap</a></li>
+          </ul>
+        </div>
+
+        <!-- Newsletter -->
+        <div>
+          <h4 class="text-lg font-bold text-slate-900 mb-6">Stay Updated</h4>
+          <p class="text-slate-600 mb-4">Subscribe to get career tips and updates</p>
+          <form id="newsletterForm" class="space-y-3">
+            <input type="email" placeholder="Your email address" class="newsletter-input w-full px-4 py-3 rounded-xl" required>
+            <button type="submit" class="btn-gradient w-full px-6 py-3 rounded-xl text-white font-semibold">
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="border-t border-slate-200 pt-8 text-center">
+        <p class="text-slate-500">&copy; 2024 StudentRoadmap. All rights reserved. Made with <i class="fas fa-heart text-red-500"></i> for Indian students.</p>
+      </div>
+    </div>
+  </footer>
+
   <!-- Back to Top Button -->
   <button id="backToTop"
     class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4 transition-all">
     <i class="fas fa-arrow-up text-xl"></i>
   </button>
-  <!-- Enhanced JavaScript -->
+
+  <!-- JavaScript -->
   <script>
-    // Dynamic Include Function removed as we use PHP includes now
+    // Mobile Menu Toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const mobileNav = document.getElementById('mobileNav');
 
-    // Initialize mobile menu after header loads
-    // Initialize mobile menu after header loads - Handled inside loadInclude now
-    // loadInclude('header.html', 'header-placeholder').then(initMobileMenu);
-
-    // Back to Top Button
-    const backToTop = document.getElementById('backToTop');
-
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 500) {
-        backToTop.classList.remove('opacity-0', 'translate-y-4');
-        backToTop.classList.add('opacity-100', 'translate-y-0');
-      } else {
-        backToTop.classList.remove('opacity-100', 'translate-y-0');
-        backToTop.classList.add('opacity-0', 'translate-y-4');
+      if (mobileMenuBtn && mobileNav) {
+        mobileMenuBtn.addEventListener('click', function() {
+          this.classList.toggle('active');
+          mobileNav.classList.toggle('hidden');
+        });
       }
-    });
 
-    backToTop?.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
+      // Back to Top Button
+      const backToTop = document.getElementById('backToTop');
 
-    // Animated Stats Counter
-    function animateCounter(element, target, duration = 2000) {
-      let start = 0;
-      const increment = target / (duration / 16);
-      const timer = setInterval(() => {
-        start += increment;
-        if (start >= target) {
-          element.textContent = target.toLocaleString() + '+';
-          clearInterval(timer);
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+          backToTop.classList.remove('opacity-0', 'translate-y-4');
+          backToTop.classList.add('opacity-100', 'translate-y-0');
         } else {
-          element.textContent = Math.floor(start).toLocaleString() + '+';
+          backToTop.classList.remove('opacity-100', 'translate-y-0');
+          backToTop.classList.add('opacity-0', 'translate-y-4');
         }
-      }, 16);
-    }
+      });
 
-    // Initialize stats animation when in viewport
-    const statsElement = document.getElementById('stats-students');
-    if (statsElement) {
-      const observer = new IntersectionObserver((entries) => {
+      backToTop?.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+
+      // Newsletter Form Submission
+      const newsletterForm = document.getElementById('newsletterForm');
+      newsletterForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = e.target.querySelector('input[type="email"]').value;
+
+        // Show loading state
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        submitBtn.disabled = true;
+
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Show success message
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Subscribed!';
+        submitBtn.classList.add('bg-green-500', 'hover:bg-green-600');
+
+        // Reset form
+        e.target.reset();
+
+        // Reset button after 3 seconds
+        setTimeout(() => {
+          submitBtn.innerHTML = originalText;
+          submitBtn.classList.remove('bg-green-500', 'hover:bg-green-600');
+          submitBtn.disabled = false;
+        }, 3000);
+      });
+
+      // Lazy Loading Images
+      const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+      const imageObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            animateCounter(statsElement, 10000);
-            observer.unobserve(entry.target);
+            const img = entry.target;
+            img.src = img.dataset.src || img.src;
+            imageObserver.unobserve(img);
           }
         });
-      }, { threshold: 0.5 });
+      });
 
-      observer.observe(statsElement);
-    }
+      lazyImages.forEach(img => imageObserver.observe(img));
 
-    // Newsletter Form Submission
-    const newsletterForm = document.getElementById('newsletterForm');
-    newsletterForm?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = e.target.querySelector('input[type="email"]').value;
-
-      // Show loading state
-      const submitBtn = e.target.querySelector('button[type="submit"]');
-      const originalText = submitBtn.textContent;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-      submitBtn.disabled = true;
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // Show success message
-      submitBtn.innerHTML = '<i class="fas fa-check"></i> Subscribed!';
-      submitBtn.classList.add('bg-green-500', 'hover:bg-green-600');
-
-      // Reset form
-      e.target.reset();
-
-      // Reset button after 3 seconds
-      setTimeout(() => {
-        submitBtn.innerHTML = originalText;
-        submitBtn.classList.remove('bg-green-500', 'hover:bg-green-600');
-        submitBtn.disabled = false;
-      }, 3000);
-    });
-
-    // Slider Functionality
-    document.addEventListener('DOMContentLoaded', function () {
-      const slidesWrapper = document.getElementById('slidesWrapper');
-      if (!slidesWrapper) return;
-
-      const slides = slidesWrapper.querySelectorAll('.slide');
-      const dots = document.querySelectorAll('.slider-dots div');
-      const prevBtn = document.querySelector('.slider-prev');
-      const nextBtn = document.querySelector('.slider-next');
-
-      let currentSlide = 0;
-      const totalSlides = slides.length;
-      let autoSlideInterval;
-      // Update slider position
-      function updateSlider() {
-        slidesWrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
-
-        // Update dots
-        dots.forEach((dot, index) => {
-          if (index === currentSlide) {
-            dot.classList.remove('bg-primary-300');
-            dot.classList.add('bg-primary-500');
-          } else {
-            dot.classList.remove('bg-primary-500');
-            dot.classList.add('bg-primary-300');
-          }
+      // Add loading animation for cards
+      const cards = document.querySelectorAll('.glass-card');
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.transform = 'translateY(-8px)';
         });
-      }
-      // Next slide
-      function nextSlide() {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        updateSlider();
-      }
-      // Previous slide
-      function prevSlide() {
-        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-        updateSlider();
-      }
-      // Auto slide
-      function startAutoSlide() {
-        autoSlideInterval = setInterval(nextSlide, 5000);
-      }
-      function stopAutoSlide() {
-        if (autoSlideInterval) {
-          clearInterval(autoSlideInterval);
-        }
-      }
-      // Event listeners
-      nextBtn?.addEventListener('click', () => {
-        stopAutoSlide();
-        nextSlide();
-        startAutoSlide();
-      });
-      prevBtn?.addEventListener('click', () => {
-        stopAutoSlide();
-        prevSlide();
-        startAutoSlide();
-      });
-      // Dot click navigation
-      dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-          stopAutoSlide();
-          currentSlide = index;
-          updateSlider();
-          startAutoSlide();
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'translateY(0)';
         });
       });
-      // Pause on hover
-      const sliderContainer = document.querySelector('.slides-container');
-      sliderContainer?.addEventListener('mouseenter', stopAutoSlide);
-      sliderContainer?.addEventListener('mouseleave', startAutoSlide);
-      // Initialize
-      updateSlider();
-      startAutoSlide();
     });
-
-    // Load saved theme removed
-    /*
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-      themeToggle.innerHTML = '<i class="fas fa-sun text-amber-500"></i>';
-    }
-    */
-
-    // Lazy Loading Images
-    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-    const imageObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          img.src = img.dataset.src || img.src;
-          imageObserver.unobserve(img);
-        }
-      });
-    });
-
-    lazyImages.forEach(img => imageObserver.observe(img));
-
-    // Add loading animation for cards
-    const cards = document.querySelectorAll('.roadmap-card, .course-card, .testimonial-card');
-    cards.forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-8px)';
-      });
-
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0)';
-      });
-    });
-
-    // Initialize tooltips
-    const tooltips = document.querySelectorAll('[title]');
-    tooltips.forEach(element => {
-      element.addEventListener('mouseenter', (e) => {
-        const tooltip = document.createElement('div');
-        tooltip.className = 'fixed bg-slate-900 text-white px-3 py-2 rounded-lg text-sm z-50';
-        tooltip.textContent = e.target.title;
-        document.body.appendChild(tooltip);
-
-        const rect = e.target.getBoundingClientRect();
-        tooltip.style.top = `${rect.top - 40}px`;
-        tooltip.style.left = `${rect.left + rect.width / 2 - tooltip.offsetWidth / 2}px`;
-
-        e.target.dataset.tooltipId = tooltip;
-      });
-
-      element.addEventListener('mouseleave', (e) => {
-        if (e.target.dataset.tooltipId) {
-          e.target.dataset.tooltipId.remove();
-          delete e.target.dataset.tooltipId;
-        }
-      });
-    });
-
-    // Performance monitoring
-    if ('performance' in window) {
-      window.addEventListener('load', () => {
-        const timing = performance.timing;
-        const loadTime = timing.loadEventEnd - timing.navigationStart;
-        console.log(`Page loaded in ${loadTime}ms`);
-      });
-    }
   </script>
+
   <!-- Roadmap Popup -->
   <div id="roadmapPopup"
     class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
@@ -1642,7 +1862,7 @@ include 'includes/career_data.php';
           tailored just for you.
         </p>
 
-        <a href="quiz.php"
+        <a href="quiz.html"
           class="btn-gradient w-full py-3.5 px-6 rounded-xl text-white font-semibold shadow-lg shadow-primary-500/25 hover:shadow-primary-500/40 flex items-center justify-center group">
           <span>Get Started Now</span>
           <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
@@ -1658,20 +1878,15 @@ include 'includes/career_data.php';
       const closeBtn = document.getElementById('closePopupBtn');
       const backdrop = document.getElementById('popupBackdrop');
 
-      // key to check if popup has been shown in this session
-      const popupShownKey = 'roadmapPopupShown';
-
       // Show popup on every refresh after 2 seconds
       setTimeout(() => {
         showPopup();
       }, 2000);
 
-
       function showPopup() {
         popup.classList.remove('opacity-0', 'pointer-events-none');
         popupContent.classList.remove('scale-95');
         popupContent.classList.add('scale-100');
-        sessionStorage.setItem(popupShownKey, 'true');
       }
 
       function hidePopup() {
