@@ -10,8 +10,8 @@
       <span style="font-size: 20px; font-weight: bold; color: #1e293b;">StudentRoadmap</span>
     </a>
     
-    <!-- Desktop Navigation -->
-    <nav style="display: flex; gap: 30px;" class="desktop-nav">
+    <!-- Desktop Navigation - ALWAYS VISIBLE ON DESKTOP -->
+    <nav style="display: flex; gap: 30px;">
       <a href="index.html" style="text-decoration: none; color: #4b5563; font-weight: 500;">Home</a>
       <a href="roadmap.html" style="text-decoration: none; color: #4b5563; font-weight: 500;">Roadmaps</a>
       <a href="quiz.html" style="text-decoration: none; color: #4b5563; font-weight: 500;">Quiz</a>
@@ -19,19 +19,19 @@
       <a href="contact.html" style="text-decoration: none; color: #4b5563; font-weight: 500;">Contact</a>
     </nav>
     
-    <!-- Desktop Auth Buttons -->
-    <div style="display: flex; gap: 15px;" class="desktop-auth">
+    <!-- Desktop Auth Buttons - ALWAYS VISIBLE ON DESKTOP -->
+    <div style="display: flex; gap: 15px;">
       <a href="login.html" style="text-decoration: none; color: #0ea5e9; font-weight: 600;">Sign In</a>
       <a href="signup.html" style="background: #0ea5e9; color: white; text-decoration: none; font-weight: 600; padding: 10px 24px; border-radius: 30px;">Get Started</a>
     </div>
     
-    <!-- Mobile Menu Button -->
+    <!-- Mobile Menu Button - HIDDEN ON DESKTOP -->
     <button id="mobileMenuBtn" style="display: none; background: none; border: none; font-size: 24px; cursor: pointer; color: #0ea5e9;">
       ☰
     </button>
   </div>
 
-  <!-- Mobile Menu -->
+  <!-- Mobile Menu - HIDDEN BY DEFAULT -->
   <div id="mobileMenu" style="display: none; background: white; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
     <nav style="display: flex; flex-direction: column; gap: 15px;">
       <a href="index.html" style="text-decoration: none; color: #1e293b; padding: 10px; border-bottom: 1px solid #e2e8f0;">Home</a>
@@ -45,20 +45,52 @@
   </div>
 </header>
 
+<!-- CSS for Mobile Responsiveness -->
 <style>
   @media (max-width: 768px) {
-    .desktop-nav, .desktop-auth {
+    /* Hide desktop navigation and auth buttons on mobile */
+    header > div > nav,
+    header > div > div {
       display: none !important;
     }
+    
+    /* Show mobile menu button on mobile */
     #mobileMenuBtn {
       display: block !important;
     }
   }
+  
+  /* Ensure desktop navigation is always visible on larger screens */
+  @media (min-width: 769px) {
+    header > div > nav {
+      display: flex !important;
+    }
+    header > div > div {
+      display: flex !important;
+    }
+    #mobileMenuBtn {
+      display: none !important;
+    }
+    #mobileMenu {
+      display: none !important;
+    }
+  }
 </style>
 
+<!-- Mobile Menu Toggle Script -->
 <script>
-  document.getElementById('mobileMenuBtn')?.addEventListener('click', function() {
-    const menu = document.getElementById('mobileMenu');
-    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (mobileBtn && mobileMenu) {
+      mobileBtn.addEventListener('click', function() {
+        if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
+          mobileMenu.style.display = 'block';
+        } else {
+          mobileMenu.style.display = 'none';
+        }
+      });
+    }
   });
 </script>
