@@ -21,6 +21,7 @@
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+  <script src="auth.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -209,6 +210,7 @@
       border: none;
       cursor: pointer;
       padding: 10px;
+      z-index: 1001;
     }
 
     .mobile-menu-btn span {
@@ -218,30 +220,42 @@
       transition: all 0.3s ease;
     }
 
-    @media (max-width: 768px) {
-      .nav-menu {
+    /* Mobile Navigation Styles */
+    @media (max-width: 1024px) {
+      .nav-menu.desktop {
         display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(10px);
-        flex-direction: column;
-        padding: 2rem;
-        gap: 1.5rem;
-        border-bottom: 1px solid rgba(14, 165, 233, 0.1);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       }
-
-      .nav-menu.active {
-        display: flex;
-      }
-
+      
       .mobile-menu-btn {
         display: flex;
       }
-
+      
+      #mobileNav {
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: white;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+        z-index: 999;
+      }
+      
+      #mobileNav.active {
+        max-height: 500px;
+      }
+      
+      .nav-menu.mobile {
+        display: flex;
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 1rem;
+      }
+      
       .mobile-menu-btn.active span:nth-child(1) {
         transform: rotate(45deg) translate(8px, 8px);
       }
@@ -274,6 +288,59 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+
+    /* Button Gradient */
+    .btn-gradient {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .btn-gradient:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
+    }
+
+    /* Footer Styles */
+    footer {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(14, 165, 233, 0.1);
+      padding: 3rem 0 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .footer-link {
+      color: #64748b;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-link:hover {
+      color: #0ea5e9;
+      transform: translateX(5px);
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      background: rgba(14, 165, 233, 0.1);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #0ea5e9;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: #0ea5e9;
+      color: white;
+      transform: translateY(-3px);
+    }
   </style>
 </head>
 
@@ -286,7 +353,7 @@
     <div class="blob blob-3"></div>
   </div>
 
-  <!-- Header Section (Hardcoded) -->
+  <!-- Header Section -->
   <header class="header-glass">
     <div class="container mx-auto px-4">
       <div class="flex items-center justify-between py-4">
@@ -302,17 +369,19 @@
         </a>
 
         <!-- Desktop Navigation -->
-        <nav class="hidden lg:flex items-center space-x-8">
-          <a href="index.html" class="nav-link">Home</a>
-          <a href="roadmap.html" class="nav-link">Roadmaps</a>
-          <a href="quiz.html" class="nav-link">Career Quiz</a>
-          <a href="resources.html" class="nav-link">Resources</a>
-          <a href="about.html" class="nav-link">About us</a>
-          <a href="contact.html" class="nav-link">Contact</a>
+        <nav class="hidden lg:block">
+          <div class="nav-menu desktop">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="roadmap.html" class="nav-link">Roadmaps</a>
+            <a href="quiz.html" class="nav-link">Career Quiz</a>
+            <a href="resources.html" class="nav-link">Resources</a>
+            <a href="about.html" class="nav-link">About us</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+          </div>
         </nav>
 
         <!-- Desktop Auth Buttons -->
-        <div class="hidden lg:flex items-center space-x-4">
+        <div id="desktopAuthContainer" class="hidden lg:flex items-center space-x-4">
           <a href="login.html" class="px-6 py-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors">
             Sign In
           </a>
@@ -330,17 +399,17 @@
       </div>
 
       <!-- Mobile Navigation -->
-      <nav class="lg:hidden hidden" id="mobileNav">
-        <div class="nav-menu flex-col py-6">
-          <a href="index.html" class="nav-link text-lg">Home</a>
-          <a href="roadmap.html" class="nav-link text-lg">Roadmaps</a>
-          <a href="quiz.html" class="nav-link text-lg">Career Quiz</a>
-          <a href="resources.html" class="nav-link text-lg">Resources</a>
-          <a href="about.html" class="nav-link text-lg">About us</a>
-          <a href="contact.html" class="nav-link text-lg">Contact</a>
-          <div class="flex flex-col space-y-3 w-full pt-4 border-t border-slate-200">
-            <a href="login.html" class="text-center px-5 py-2 text-primary-600 font-semibold">Sign In</a>
-            <a href="signup.html" class="btn-gradient text-center px-6 py-3 rounded-xl text-white font-semibold bg-gradient-to-r from-primary-500 to-secondary-500">Get Started Free</a>
+      <nav id="mobileNav">
+        <div class="nav-menu mobile">
+          <a href="index.html" class="nav-link text-lg block py-3 px-4 hover:bg-primary-50 rounded-xl transition-colors">Home</a>
+          <a href="roadmap.html" class="nav-link text-lg block py-3 px-4 hover:bg-primary-50 rounded-xl transition-colors">Roadmaps</a>
+          <a href="quiz.html" class="nav-link text-lg block py-3 px-4 hover:bg-primary-50 rounded-xl transition-colors">Career Quiz</a>
+          <a href="resources.html" class="nav-link text-lg block py-3 px-4 hover:bg-primary-50 rounded-xl transition-colors">Resources</a>
+          <a href="about.html" class="nav-link text-lg block py-3 px-4 hover:bg-primary-50 rounded-xl transition-colors">About us</a>
+          <a href="contact.html" class="nav-link text-lg block py-3 px-4 hover:bg-primary-50 rounded-xl transition-colors">Contact</a>
+          <div id="mobileAuthContainer" class="flex flex-col space-y-3 w-full pt-4 mt-4 border-t border-slate-200">
+            <a href="login.html" class="text-center px-5 py-3 text-primary-600 font-semibold hover:bg-primary-50 rounded-xl transition-colors">Sign In</a>
+            <a href="signup.html" class="btn-gradient text-center px-6 py-3 rounded-xl text-white font-semibold">Get Started Free</a>
           </div>
         </div>
       </nav>
@@ -725,7 +794,7 @@
     </div>
   </main>
 
-  <!-- Footer Section (Hardcoded) -->
+  <!-- Footer Section -->
   <footer class="bg-slate-900 text-white rounded-3xl p-8 md:p-12 mt-12">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       <!-- Company Info -->
@@ -817,6 +886,11 @@
     </div>
   </footer>
 
+  <!-- Back to Top Button -->
+  <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
+    <i class="fas fa-arrow-up text-xl"></i>
+  </button>
+
   <script>
     // Mobile Menu Toggle
     document.addEventListener('DOMContentLoaded', () => {
@@ -826,7 +900,42 @@
       if (mobileMenuBtn && mobileNav) {
         mobileMenuBtn.addEventListener('click', function() {
           this.classList.toggle('active');
-          mobileNav.classList.toggle('hidden');
+          mobileNav.classList.toggle('active');
+          
+          // Prevent body scrolling when menu is open
+          if (mobileNav.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+          } else {
+            document.body.style.overflow = '';
+          }
+        });
+
+        // Close menu when clicking on a link
+        const mobileLinks = mobileNav.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            mobileNav.classList.remove('active');
+            mobileMenuBtn.classList.remove('active');
+            document.body.style.overflow = '';
+          });
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+            mobileNav.classList.remove('active');
+            mobileMenuBtn.classList.remove('active');
+            document.body.style.overflow = '';
+          }
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+          if (!mobileNav.contains(e.target) && !mobileMenuBtn.contains(e.target) && mobileNav.classList.contains('active')) {
+            mobileNav.classList.remove('active');
+            mobileMenuBtn.classList.remove('active');
+            document.body.style.overflow = '';
+          }
         });
       }
 
@@ -857,14 +966,30 @@
         });
       });
 
-      // Close mobile menu when clicking on a link
-      const mobileLinks = document.querySelectorAll('#mobileNav .nav-link');
-      mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          mobileNav.classList.add('hidden');
-          mobileMenuBtn.classList.remove('active');
+      // Back to Top Button
+      const backToTop = document.getElementById('backToTop');
+
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+          backToTop.classList.remove('opacity-0', 'translate-y-4');
+          backToTop.classList.add('opacity-100', 'translate-y-0');
+        } else {
+          backToTop.classList.remove('opacity-100', 'translate-y-0');
+          backToTop.classList.add('opacity-0', 'translate-y-4');
+        }
+      });
+
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
         });
       });
+
+      // Initialize auth if available
+      if (window.Auth && typeof Auth.initHeader === 'function') {
+        Auth.initHeader();
+      }
     });
   </script>
 </body>
