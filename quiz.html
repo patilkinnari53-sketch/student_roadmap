@@ -448,70 +448,118 @@
     </button>
 
     <script>
-        // Load Header and Footer with Mobile Menu Support
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load header
-            fetch('components/header.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header').innerHTML = data;
-                    
-                    // Set up mobile menu AFTER header is loaded
-                    setTimeout(setupMobileMenu, 200);
-                })
-                .catch(error => console.error('Error loading header:', error));
-            
-            // Load footer
-            fetch('components/footer.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('footer').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading footer:', error));
-        });
+    
+    // Load Header and Footer with Universal Mobile Menu Support
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load header
+        fetch('components/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+                
+                // Try to find and setup mobile menu after header loads
+                setTimeout(findAndSetupMobileMenu, 300);
+            })
+            .catch(error => console.error('Error loading header:', error));
+        
+        // Load footer
+        fetch('components/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer').innerHTML = data;
+            })
+            .catch(error => console.error('Error loading footer:', error));
+    });
 
-        // Function to setup mobile menu
-        function setupMobileMenu() {
-            const menuBtn = document.getElementById('mobileMenuBtn');
-            const mobileMenu = document.getElementById('mobileMenu');
-            
-            if (menuBtn && mobileMenu) {
-                console.log('Mobile menu found! Setting up...');
-                
-                menuBtn.onclick = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
-                        mobileMenu.style.display = 'block';
-                        console.log('Menu opened');
-                    } else {
-                        mobileMenu.style.display = 'none';
-                        console.log('Menu closed');
-                    }
-                };
-                
-                // Close menu when clicking on links
-                const links = mobileMenu.querySelectorAll('a');
-                links.forEach(link => {
-                    link.onclick = function() {
-                        mobileMenu.style.display = 'none';
-                    };
-                });
-                
-                // Close menu when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (mobileMenu.style.display === 'block' && 
-                        !menuBtn.contains(e.target) && 
-                        !mobileMenu.contains(e.target)) {
-                        mobileMenu.style.display = 'none';
-                    }
-                });
-            } else {
-                console.log('Mobile menu elements not found - retrying in 200ms');
-                setTimeout(setupMobileMenu, 200);
+    // Universal function to find and setup mobile menu
+    function findAndSetupMobileMenu() {
+        console.log('Looking for mobile menu elements...');
+        
+        // Try different possible IDs for the menu button
+        const possibleBtnIds = ['mobileMenuBtn', 'menuBtn', 'mobile-btn', 'menu-button', 'hamburger'];
+        // Try different possible IDs for the menu container
+        const possibleMenuIds = ['mobileMenu', 'mobileNav', 'nav-menu', 'menu', 'navigation'];
+        
+        let menuBtn = null;
+        let mobileMenu = null;
+        
+        // Find menu button
+        for (let id of possibleBtnIds) {
+            menuBtn = document.getElementById(id);
+            if (menuBtn) {
+                console.log('Found menu button with id:', id);
+                break;
             }
         }
+        
+        // If not found by ID, try by class
+        if (!menuBtn) {
+            menuBtn = document.querySelector('.mobile-menu-btn, .menu-btn, .hamburger');
+            if (menuBtn) console.log('Found menu button by class');
+        }
+        
+        // Find mobile menu
+        for (let id of possibleMenuIds) {
+            mobileMenu = document.getElementById(id);
+            if (mobileMenu) {
+                console.log('Found mobile menu with id:', id);
+                break;
+            }
+        }
+        
+        // If not found by ID, try by class
+        if (!mobileMenu) {
+            mobileMenu = document.querySelector('.mobile-menu, .nav-menu.mobile, .menu');
+            if (mobileMenu) console.log('Found mobile menu by class');
+        }
+        
+        // If we found both elements, set up the click handler
+        if (menuBtn && mobileMenu) {
+            console.log('Mobile menu setup successful!');
+            
+            // Remove any existing click handlers
+            menuBtn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
+                    mobileMenu.style.display = 'block';
+                    console.log('Menu opened');
+                } else {
+                    mobileMenu.style.display = 'none';
+                    console.log('Menu closed');
+                }
+            };
+            
+            // Close menu when clicking on links
+            const links = mobileMenu.querySelectorAll('a');
+            links.forEach(link => {
+                link.onclick = function() {
+                    mobileMenu.style.display = 'none';
+                };
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (mobileMenu.style.display === 'block' && 
+                    !menuBtn.contains(e.target) && 
+                    !mobileMenu.contains(e.target)) {
+                    mobileMenu.style.display = 'none';
+                }
+            });
+            
+            return true;
+        } else {
+            console.log('Mobile menu elements not found. Button:', !!menuBtn, 'Menu:', !!mobileMenu);
+            // Try again after a delay
+            setTimeout(findAndSetupMobileMenu, 500);
+            return false;
+        }
+    }
+
+    // --- Your existing quiz code continues below ---
+    // (Keep all your questions, results, and quiz functions here)
+
 
         // --- Quiz Data and Functions (keep all your existing quiz code below) ---
         const questions = [
@@ -954,3 +1002,4 @@
 
 </body>
 </html>
+
