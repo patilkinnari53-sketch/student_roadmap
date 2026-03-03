@@ -2,7 +2,7 @@
 <html class="light" lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
   <title>Defense Services (NDA/CDS) Roadmap - StudentRoadmap</title>
   
   <!-- Fonts & Icons -->
@@ -16,20 +16,63 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+      overflow-x: hidden;
     }
     
-    .roadmap-container { position: relative; padding-left: 2rem; }
+    /* Mobile dropdown menu styles */
+    .mobile-nav {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      background: white;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .mobile-nav.open {
+      max-height: 400px;
+      transition: max-height 0.5s ease-in;
+    }
+    .nav-link {
+      display: block;
+      padding: 0.75rem 1rem;
+      color: #1e293b;
+      font-weight: 500;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .nav-link:last-child { border-bottom: none; }
+    .nav-link:hover { background: #f1f5f9; }
+    
+    /* Mobile first roadmap */
+    .roadmap-container { 
+      position: relative; 
+      padding-left: 1rem; 
+    }
+    @media (min-width: 640px) {
+      .roadmap-container { padding-left: 2rem; }
+    }
+    
     .roadmap-line {
-      position: absolute; left: 27px; top: 0.5rem; bottom: 0.5rem;
+      position: absolute; left: 20px; top: 0.5rem; bottom: 0.5rem;
       width: 3px; background: linear-gradient(to bottom, #dc2626, #b91c1c); border-radius: 999px;
     }
-    .roadmap-step {
-      position: relative; display: flex; gap: 1.5rem; margin-bottom: 2.5rem;
-      opacity: 0; animation: slideIn 0.5s ease-out forwards;
+    @media (min-width: 640px) {
+      .roadmap-line { left: 27px; }
     }
+    
+    .roadmap-step {
+      position: relative; display: flex; gap: 1rem; margin-bottom: 2rem;
+      opacity: 0; animation: slideIn 0.5s ease-out forwards;
+      flex-wrap: wrap;
+    }
+    @media (min-width: 640px) {
+      .roadmap-step { gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: nowrap; }
+    }
+    
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(-20px); }
       to { opacity: 1; transform: translateX(0); }
@@ -43,171 +86,292 @@
     .roadmap-step:nth-child(7) { animation-delay: 0.7s; }
     
     .step-number {
-      width: 3.5rem; height: 3.5rem; background: white; border: 3px solid #dc2626;
+      width: 2.8rem; height: 2.8rem; background: white; border: 3px solid #dc2626;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 1.25rem; color: #dc2626; position: relative; z-index: 10;
+      font-weight: 800; font-size: 1.1rem; color: #dc2626; position: relative; z-index: 10;
       box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); transition: all 0.3s ease;
+      flex-shrink: 0;
+      cursor: pointer;
     }
-    .roadmap-step:hover .step-number {
-      transform: scale(1.1); background: #dc2626; color: white;
+    @media (min-width: 640px) {
+      .step-number { width: 3.5rem; height: 3.5rem; font-size: 1.25rem; }
     }
+    
+    /* Completed step styling */
+    .roadmap-step.completed .step-number {
+      background: #10b981;
+      border-color: #059669;
+      color: white;
+    }
+    
+    .roadmap-step.completed .step-card {
+      border-left: 4px solid #10b981;
+      background: #f0fdf4;
+    }
+    
+    .step-number:hover::after {
+      content: "⚔️ Click to complete";
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.5rem;
+      white-space: nowrap;
+      z-index: 20;
+      pointer-events: none;
+    }
+    
+    .roadmap-step.completed .step-number:hover::after {
+      content: "✓ Completed";
+    }
+    
+    @media (max-width: 640px) {
+      .step-number:hover::after {
+        font-size: 0.6rem;
+        padding: 0.2rem 0.4rem;
+      }
+    }
+    
     .step-card {
-      flex: 1; background: white; border-radius: 1rem; padding: 1.5rem;
+      flex: 1; background: white; border-radius: 1rem; padding: 1rem;
       box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid #f1f5f9;
       transition: all 0.3s ease;
+      min-width: 200px;
     }
+    @media (min-width: 640px) {
+      .step-card { padding: 1.5rem; }
+    }
+    
     .roadmap-step:hover .step-card {
       transform: translateX(5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
       border-color: #fecaca;
     }
+    
     .path-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;
+      display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 0.75rem;
     }
+    @media (min-width: 400px) {
+      .path-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 768px) {
+      .path-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    }
+    
     .path-card {
-      background: #f8fafc; border-left: 4px solid #dc2626; padding: 1rem; border-radius: 0.75rem;
+      background: #f8fafc; border-left: 4px solid #dc2626; padding: 0.75rem; border-radius: 0.75rem;
     }
+    
     .glass-card {
       background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);
       box-shadow: 0 8px 32px rgba(220,38,38,0.1); transition: all 0.3s ease;
     }
     .glass-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(220,38,38,0.15); }
+    
     .btn-gradient {
       background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; transition: all 0.3s ease;
     }
     .btn-gradient:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(220,38,38,0.4); }
+    
+    /* Progress bar */
+    .progress-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #dc2626, #10b981);
+      transition: width 0.3s ease;
+    }
+    
+    /* Completion message */
+    .completion-message {
+      display: none;
+      background: #10b981;
+      color: white;
+      padding: 1rem;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .completion-message.show {
+      display: block;
+      animation: slideDown 0.5s ease;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Better mobile typography */
+    @media (max-width: 640px) {
+      h1 { font-size: 1.8rem !important; }
+      h2 { font-size: 1.5rem !important; }
+      h3 { font-size: 1.2rem !important; }
+      .step-title { font-size: 1.1rem; }
+      .path-title { font-size: 0.95rem; }
+      .path-desc { font-size: 0.85rem; }
+    }
   </style>
 </head>
-<body class="text-slate-800">
+<body class="text-slate-800 min-h-screen">
+  <!-- Header will be loaded here from components/header.html -->
   <div id="header"></div>
 
-  <main class="relative z-10 py-12">
-    <div class="container mx-auto px-4">
+  <main class="relative z-10 py-6 md:py-12">
+    <div class="container mx-auto px-3 sm:px-4">
       
-      <!-- Career Header -->
-      <div class="bg-gradient-to-r from-red-600 to-red-700 text-white rounded-3xl p-8 md:p-12 mb-12 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-20 -mt-20"></div>
-        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full -ml-20 -mb-20"></div>
+      <!-- Career Header - Mobile optimized -->
+      <div class="bg-gradient-to-r from-red-600 to-red-700 text-white rounded-2xl md:rounded-3xl p-5 md:p-8 lg:p-12 mb-6 md:mb-12 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+        <div class="absolute bottom-0 left-0 w-32 h-32 md:w-48 md:h-48 bg-white opacity-10 rounded-full -ml-16 -mb-16"></div>
         
-        <div class="relative flex flex-col md:flex-row items-center gap-8">
-          <div class="w-24 h-24 md:w-32 md:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl md:text-6xl shadow-xl border border-white/30">
+        <div class="relative flex flex-col items-center text-center">
+          <div class="w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl md:text-4xl lg:text-6xl shadow-xl border border-white/30 mb-3">
             ⚔️
           </div>
-          <div class="flex-1 text-center md:text-left">
-            <h1 class="text-3xl md:text-4xl font-bold mb-2">Defense Services (NDA/CDS) Roadmap</h1>
-            <p class="text-lg text-white/90 max-w-2xl">Complete guide to joining Indian Army, Navy, or Air Force</p>
+          <div class="w-full">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Defense Services (NDA/CDS)</h1>
+            <p class="text-sm md:text-lg text-white/90 max-w-2xl mx-auto">Click on each step number as you complete it. Download your personalized defense services roadmap PDF when done!</p>
           </div>
-          <button onclick="downloadPDF()" class="btn-gradient px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2">
-            <i class="fas fa-file-pdf"></i> Download PDF
-          </button>
         </div>
       </div>
 
-      <div class="flex flex-col lg:flex-row gap-8">
+      <!-- Progress Tracker -->
+      <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl mb-4 md:mb-6">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="font-semibold text-sm md:text-base">Your Defense Journey Progress</h3>
+          <span id="progressText" class="text-red-600 font-bold">0/7 Steps</span>
+        </div>
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Completion Message -->
+      <div id="completionMessage" class="completion-message">
+        <i class="fas fa-check-circle text-2xl mb-2"></i>
+        <h3 class="text-lg font-bold">Congratulations! You're Ready to Serve the Nation! 🎉</h3>
+        <p class="mb-3">You've completed all 7 steps! Click below to download your personalized defense services roadmap document.</p>
+        <button onclick="downloadPersonalizedPDF()" class="bg-white text-green-600 font-semibold py-2 px-6 rounded-lg hover:bg-green-50 transition-colors">
+          <i class="fas fa-file-pdf mr-2"></i>Download My Defense Services Roadmap PDF
+        </button>
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-4 md:gap-8">
         <!-- Left Column - Roadmap -->
         <div class="lg:w-2/3">
-          <div class="glass-card p-8 rounded-2xl mb-8">
-            <h2 class="text-2xl font-bold mb-6 flex items-center">
-              <i class="fas fa-road text-red-600 mr-3"></i> Complete Roadmap
+          <div class="glass-card p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl mb-4 md:mb-8">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+              <i class="fas fa-road text-red-600 mr-2 md:mr-3"></i> Complete Defense Services Roadmap
+              <span class="ml-auto text-xs md:text-sm text-slate-500">Click numbers to complete steps</span>
             </h2>
             
             <div class="roadmap-container">
+              <div class="roadmap-line hidden sm:block"></div>
+              
               <!-- Step 1 -->
-              <div class="roadmap-step">
-                <div class="step-number">1</div>
+              <div class="roadmap-step" id="step1">
+                <div class="step-number" onclick="completeStep(1)">1</div>
                 <div class="step-card">
-                  <h3 class="step-title">Class 11-12 Preparation</h3>
-                  <p class="step-desc">Build foundation for defense exams.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Class 11-12 Preparation</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Build foundation for defense exams.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">For NDA</div><div class="path-desc">PCM for Army/Navy/Air Force, PCB for Army (Non-tech)</div></div>
-                    <div class="path-card"><div class="path-title">Physical Fitness</div><div class="path-desc">Regular exercise, running, sports, height/weight standards</div></div>
+                    <div class="path-card"><div class="font-semibold">For NDA</div><div class="text-xs md:text-sm">PCM for Army/Navy/Air Force, PCB for Army (Non-tech)</div></div>
+                    <div class="path-card"><div class="font-semibold">Physical Fitness</div><div class="text-xs md:text-sm">Regular exercise, running, sports, height/weight standards</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 2 -->
-              <div class="roadmap-step">
-                <div class="step-number">2</div>
+              <div class="roadmap-step" id="step2">
+                <div class="step-number" onclick="completeStep(2)">2</div>
                 <div class="step-card">
-                  <h3 class="step-title">NDA Entry (After 12th)</h3>
-                  <p class="step-desc">Join National Defense Academy - for 10+2 candidates.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">NDA Entry (After 12th)</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Join National Defense Academy - for 10+2 candidates.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Eligibility</div><div class="path-desc">12th pass (PCM for Air Force/Navy, any stream for Army)</div></div>
-                    <div class="path-card"><div class="path-title">Age</div><div class="path-desc">16.5 to 19.5 years</div></div>
-                    <div class="path-card"><div class="path-title">Exam Pattern</div><div class="path-desc">Maths (300 marks), General Ability (600 marks)</div></div>
+                    <div class="path-card"><div class="font-semibold">Eligibility</div><div class="text-xs md:text-sm">12th pass (PCM for Air Force/Navy, any stream for Army)</div></div>
+                    <div class="path-card"><div class="font-semibold">Age</div><div class="text-xs md:text-sm">16.5 to 19.5 years</div></div>
+                    <div class="path-card"><div class="font-semibold">Exam Pattern</div><div class="text-xs md:text-sm">Maths (300 marks), General Ability (600 marks)</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 3 -->
-              <div class="roadmap-step">
-                <div class="step-number">3</div>
+              <div class="roadmap-step" id="step3">
+                <div class="step-number" onclick="completeStep(3)">3</div>
                 <div class="step-card">
-                  <h3 class="step-title">CDS Entry (After Graduation)</h3>
-                  <p class="step-desc">Combined Defense Services - for graduates.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">CDS Entry (After Graduation)</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Combined Defense Services - for graduates.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Eligibility</div><div class="path-desc">Graduate (Any stream for Army, B.Sc Physics/Maths for Air Force/Navy)</div></div>
-                    <div class="path-card"><div class="path-title">Age</div><div class="path-desc">19-24 years (varies by academy)</div></div>
-                    <div class="path-card"><div class="path-title">Exam Pattern</div><div class="path-desc">English, GK, Maths (Army), also Physics/Maths for Air Force/Navy</div></div>
+                    <div class="path-card"><div class="font-semibold">Eligibility</div><div class="text-xs md:text-sm">Graduate (Any stream for Army, B.Sc Physics/Maths for Air Force/Navy)</div></div>
+                    <div class="path-card"><div class="font-semibold">Age</div><div class="text-xs md:text-sm">19-24 years (varies by academy)</div></div>
+                    <div class="path-card"><div class="font-semibold">Exam Pattern</div><div class="text-xs md:text-sm">English, GK, Maths (Army), also Physics/Maths for Air Force/Navy</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 4 -->
-              <div class="roadmap-step">
-                <div class="step-number">4</div>
+              <div class="roadmap-step" id="step4">
+                <div class="step-number" onclick="completeStep(4)">4</div>
                 <div class="step-card">
-                  <h3 class="step-title">SSB Interview (5 Days)</h3>
-                  <p class="step-desc">Service Selection Board - the most crucial stage.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">SSB Interview (5 Days)</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Service Selection Board - the most crucial stage.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Stage 1</div><div class="path-desc">Officer Intelligence Rating (OIR), Picture Perception Test</div></div>
-                    <div class="path-card"><div class="path-title">Stage 2</div><div class="path-desc">Psychology Test (Thematic Apperception, Word Association, Situation Tests)</div></div>
-                    <div class="path-card"><div class="path-title">Stage 3</div><div class="path-desc">Group Testing (GTO) - Planning, Command, Discussion, Obstacles</div></div>
-                    <div class="path-card"><div class="path-title">Stage 4</div><div class="path-desc">Personal Interview</div></div>
-                    <div class="path-card"><div class="path-title">Conference</div><div class="path-desc">Final assessment and result</div></div>
+                    <div class="path-card"><div class="font-semibold">Stage 1</div><div class="text-xs md:text-sm">Officer Intelligence Rating (OIR), Picture Perception Test</div></div>
+                    <div class="path-card"><div class="font-semibold">Stage 2</div><div class="text-xs md:text-sm">Psychology Test (Thematic Apperception, Word Association, Situation Tests)</div></div>
+                    <div class="path-card"><div class="font-semibold">Stage 3</div><div class="text-xs md:text-sm">Group Testing (GTO) - Planning, Command, Discussion, Obstacles</div></div>
+                    <div class="path-card"><div class="font-semibold">Stage 4</div><div class="text-xs md:text-sm">Personal Interview</div></div>
+                    <div class="path-card"><div class="font-semibold">Conference</div><div class="text-xs md:text-sm">Final assessment and result</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 5 -->
-              <div class="roadmap-step">
-                <div class="step-number">5</div>
+              <div class="roadmap-step" id="step5">
+                <div class="step-number" onclick="completeStep(5)">5</div>
                 <div class="step-card">
-                  <h3 class="step-title">Medical Examination</h3>
-                  <p class="step-desc">Rigorous medical tests to ensure fitness.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Medical Examination</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Rigorous medical tests to ensure fitness.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Physical Standards</div><div class="path-desc">Height, weight, chest expansion, BMI</div></div>
-                    <div class="path-card"><div class="path-title">Medical Tests</div><div class="path-desc">Vision, hearing, dental, ENT, cardiovascular, X-ray</div></div>
+                    <div class="path-card"><div class="font-semibold">Physical Standards</div><div class="text-xs md:text-sm">Height, weight, chest expansion, BMI</div></div>
+                    <div class="path-card"><div class="font-semibold">Medical Tests</div><div class="text-xs md:text-sm">Vision, hearing, dental, ENT, cardiovascular, X-ray</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 6 -->
-              <div class="roadmap-step">
-                <div class="step-number">6</div>
+              <div class="roadmap-step" id="step6">
+                <div class="step-number" onclick="completeStep(6)">6</div>
                 <div class="step-card">
-                  <h3 class="step-title">Training Academies</h3>
-                  <p class="step-desc">Prestigious defense training institutions.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Training Academies</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Prestigious defense training institutions.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">NDA</div><div class="path-desc">Khadakwasla, Pune - 3 years training</div></div>
-                    <div class="path-card"><div class="path-title">IMA</div><div class="path-desc">Indian Military Academy, Dehradun - 1.5 years</div></div>
-                    <div class="path-card"><div class="path-title">OTA</div><div class="path-desc">Officers Training Academy, Chennai - 1 year (Short Service)</div></div>
-                    <div class="path-card"><div class="path-title">Air Force Academy</div><div class="path-desc">Dundigal, Hyderabad</div></div>
-                    <div class="path-card"><div class="path-title">Naval Academy</div><div class="path-desc">Ezhimala, Kerala</div></div>
+                    <div class="path-card"><div class="font-semibold">NDA</div><div class="text-xs md:text-sm">Khadakwasla, Pune - 3 years training</div></div>
+                    <div class="path-card"><div class="font-semibold">IMA</div><div class="text-xs md:text-sm">Indian Military Academy, Dehradun - 1.5 years</div></div>
+                    <div class="path-card"><div class="font-semibold">OTA</div><div class="text-xs md:text-sm">Officers Training Academy, Chennai - 1 year (Short Service)</div></div>
+                    <div class="path-card"><div class="font-semibold">Air Force Academy</div><div class="text-xs md:text-sm">Dundigal, Hyderabad</div></div>
+                    <div class="path-card"><div class="font-semibold">Naval Academy</div><div class="text-xs md:text-sm">Ezhimala, Kerala</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 7 -->
-              <div class="roadmap-step">
-                <div class="step-number">7</div>
+              <div class="roadmap-step" id="step7">
+                <div class="step-number" onclick="completeStep(7)">7</div>
                 <div class="step-card">
-                  <h3 class="step-title">Career & Benefits</h3>
-                  <p class="step-desc">Life in defense services - honor, adventure, and benefits.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Career & Benefits</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Life in defense services - honor, adventure, and benefits.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Rank Structure</div><div class="path-desc">Lieutenant → Captain → Major → Lt Col → Col → Brig → Maj Gen</div></div>
-                    <div class="path-card"><div class="path-title">Salary</div><div class="path-desc">Starting ₹56,000-70,000/month + allowances</div></div>
-                    <div class="path-card"><div class="path-title">Benefits</div><div class="path-desc">Free medical, accommodation, canteen, pension, travel concessions</div></div>
-                    <div class="path-card"><div class="path-title">Retirement</div><div class="path-desc">Pension after 15-20 years, second career opportunities</div></div>
+                    <div class="path-card"><div class="font-semibold">Rank Structure</div><div class="text-xs md:text-sm">Lieutenant → Captain → Major → Lt Col → Col → Brig → Maj Gen</div></div>
+                    <div class="path-card"><div class="font-semibold">Salary</div><div class="text-xs md:text-sm">Starting ₹56,000-70,000/month + allowances</div></div>
+                    <div class="path-card"><div class="font-semibold">Benefits</div><div class="text-xs md:text-sm">Free medical, accommodation, canteen, pension, travel concessions</div></div>
+                    <div class="path-card"><div class="font-semibold">Retirement</div><div class="text-xs md:text-sm">Pension after 15-20 years, second career opportunities</div></div>
                   </div>
                 </div>
               </div>
@@ -216,63 +380,185 @@
         </div>
         
         <!-- Right Column - Sidebar -->
-        <div class="lg:w-1/3 space-y-6">
-          <div class="glass-card p-6 rounded-2xl">
-            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-info-circle text-red-600 mr-2"></i> Quick Info</h3>
-            <ul class="space-y-3">
-              <li class="flex items-start"><i class="fas fa-clock text-red-500 mt-1 mr-3"></i><div><span class="font-semibold">Entry Points:</span> <span class="text-slate-600">NDA (after 12th), CDS (after graduation)</span></div></li>
-              <li class="flex items-start"><i class="fas fa-graduation-cap text-red-500 mt-1 mr-3"></i><div><span class="font-semibold">Age Limits:</span> <span class="text-slate-600">NDA: 16.5-19.5, CDS: 19-24 years</span></div></li>
-              <li class="flex items-start"><i class="fas fa-venus-mars text-red-500 mt-1 mr-3"></i><div><span class="font-semibold">Gender:</span> <span class="text-slate-600">Male (NDA), Male/Female (CDS for certain entries)</span></div></li>
-              <li class="flex items-start"><i class="fas fa-trophy text-red-500 mt-1 mr-3"></i><div><span class="font-semibold">Starting Salary:</span> <span class="text-slate-600">₹56,000-70,000/month + allowances</span></div></li>
+        <div class="lg:w-1/3 space-y-4 md:space-y-6">
+          <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl">
+            <h3 class="font-bold text-base md:text-lg mb-3 flex items-center"><i class="fas fa-info-circle text-red-600 mr-2"></i> Quick Info</h3>
+            <ul class="space-y-2 md:space-y-3 text-sm md:text-base">
+              <li class="flex items-start"><i class="fas fa-clock text-red-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Entry Points:</span> <span class="text-slate-600">NDA (after 12th), CDS (after graduation)</span></div></li>
+              <li class="flex items-start"><i class="fas fa-graduation-cap text-red-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Age Limits:</span> <span class="text-slate-600">NDA: 16.5-19.5, CDS: 19-24 years</span></div></li>
+              <li class="flex items-start"><i class="fas fa-venus-mars text-red-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Gender:</span> <span class="text-slate-600">Male (NDA), Male/Female (CDS for certain entries)</span></div></li>
+              <li class="flex items-start"><i class="fas fa-trophy text-red-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Starting Salary:</span> <span class="text-slate-600">₹56k-70k/month + allowances</span></div></li>
             </ul>
           </div>
           
-          <div class="glass-card p-6 rounded-2xl">
-            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-building text-red-600 mr-2"></i> Services & Academies</h3>
-            <ul class="space-y-3">
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Indian Army</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Indian Navy</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Indian Air Force</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Coast Guard</li>
+          <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl">
+            <h3 class="font-bold text-base md:text-lg mb-3 flex items-center"><i class="fas fa-building text-red-600 mr-2"></i> Services & Academies</h3>
+            <ul class="space-y-2 text-sm md:text-base">
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Indian Army</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Indian Navy</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Indian Air Force</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Coast Guard</li>
             </ul>
           </div>
           
-          <div class="glass-card p-6 rounded-2xl">
-            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-dumbbell text-red-600 mr-2"></i> Physical Standards</h3>
-            <ul class="space-y-3">
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Height: 157 cm (Army), 165 cm (IAF)</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Chest: 77 cm (min) with 5 cm expansion</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Weight: Proportionate to height</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Vision: 6/6 (better), 6/9 (worse) correctable</li>
+          <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl">
+            <h3 class="font-bold text-base md:text-lg mb-3 flex items-center"><i class="fas fa-dumbbell text-red-600 mr-2"></i> Physical Standards</h3>
+            <ul class="space-y-2 text-sm md:text-base">
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Height: 157 cm (Army), 165 cm (IAF)</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Chest: 77 cm (min) with 5 cm expansion</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Weight: Proportionate to height</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Vision: 6/6 (better), 6/9 (worse) correctable</li>
             </ul>
           </div>
           
-          <div class="bg-gradient-to-br from-red-600 to-red-700 rounded-2xl p-6 text-white">
-            <i class="fas fa-rocket text-3xl mb-4"></i>
-            <h3 class="text-xl font-bold mb-2">Start Your Defense Journey</h3>
-            <a href="quiz.html" class="block w-full bg-white text-red-600 font-semibold py-3 px-4 rounded-xl text-center hover:bg-red-50 transition-colors">
-              Take Quiz <i class="fas fa-arrow-right ml-2"></i>
-            </a>
+          <div class="bg-gradient-to-br from-red-600 to-red-700 rounded-xl md:rounded-2xl p-4 md:p-6 text-white">
+            <i class="fas fa-rocket text-2xl md:text-3xl mb-2 md:mb-4"></i>
+            <h3 class="text-lg md:text-xl font-bold mb-2">Track Your Defense Journey</h3>
+            <p class="text-sm mb-3">Click each step number as you complete it, then download your personalized roadmap!</p>
+            <button onclick="resetProgress()" class="block w-full bg-white text-red-600 font-semibold py-2 md:py-3 px-4 rounded-lg md:rounded-xl text-center hover:bg-red-50 transition-colors text-sm md:text-base">
+              <i class="fas fa-redo-alt mr-2"></i>Reset Progress
+            </button>
           </div>
         </div>
       </div>
       
-      <div id="footer" class="mt-16"></div>
+      <!-- Footer -->
+      <div id="footer" class="mt-8 md:mt-16"></div>
     </div>
   </main>
   
-  <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-red-600 to-red-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
+  <button id="backToTop" class="fixed bottom-4 right-4 md:bottom-8 md:right-8 w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-red-600 to-red-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
     <i class="fas fa-arrow-up"></i>
   </button>
   
   <script>
+    // Array to track completed steps
+    let completedSteps = [];
+    
     document.addEventListener('DOMContentLoaded', () => {
-      fetch('components/header.html').then(r=>r.text()).then(d=>document.getElementById('header').innerHTML=d);
-      fetch('components/footer.html').then(r=>r.text()).then(d=>document.getElementById('footer').innerHTML=d);
+      // Load header from components
+      fetch('components/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header').innerHTML = data;
+          
+          // Initialize dropdown menu after header loads
+          setTimeout(() => {
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            if (menuToggle && mobileMenu) {
+              // Remove any existing event listeners by cloning and replacing
+              const newMenuToggle = menuToggle.cloneNode(true);
+              menuToggle.parentNode.replaceChild(newMenuToggle, menuToggle);
+              
+              newMenuToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                mobileMenu.classList.toggle('open');
+                const icon = newMenuToggle.querySelector('i');
+                if (mobileMenu.classList.contains('open')) {
+                  icon.classList.remove('fa-bars');
+                  icon.classList.add('fa-times');
+                } else {
+                  icon.classList.remove('fa-times');
+                  icon.classList.add('fa-bars');
+                }
+              });
+              
+              // Close menu when clicking links
+              document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                  mobileMenu.classList.remove('open');
+                  const icon = newMenuToggle.querySelector('i');
+                  if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                  }
+                });
+              });
+            }
+          }, 100);
+        })
+        .catch(error => {
+          console.log('Header not found, using fallback');
+          document.getElementById('header').innerHTML = `
+            <nav class="bg-white shadow-md sticky top-0 z-50">
+              <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center py-3">
+                  <a href="#" class="text-xl md:text-2xl font-bold text-red-700 flex items-center">
+                    <i class="fas fa-graduation-cap mr-2 text-red-600"></i> StudentRoadmap
+                  </a>
+                  <div class="hidden md:flex space-x-6 items-center">
+                    <a href="#" class="text-slate-700 hover:text-red-600">Home</a>
+                    <a href="#" class="text-slate-700 hover:text-red-600">Roadmaps</a>
+                    <a href="#" class="text-slate-700 hover:text-red-600">Courses</a>
+                    <a href="#" class="text-slate-700 hover:text-red-600">Quiz</a>
+                    <a href="#" class="text-slate-700 hover:text-red-600">Contact</a>
+                  </div>
+                  <button id="menuToggle" class="md:hidden text-2xl text-red-600">
+                    <i class="fas fa-bars"></i>
+                  </button>
+                </div>
+                <div id="mobileMenu" class="mobile-nav md:hidden">
+                  <a href="#" class="nav-link"><i class="fas fa-home w-6 mr-2 text-red-500"></i>Home</a>
+                  <a href="#" class="nav-link"><i class="fas fa-map-signs w-6 mr-2 text-red-500"></i>Roadmaps</a>
+                  <a href="#" class="nav-link"><i class="fas fa-book-open w-6 mr-2 text-red-500"></i>Courses</a>
+                  <a href="#" class="nav-link"><i class="fas fa-question-circle w-6 mr-2 text-red-500"></i>Quiz</a>
+                  <a href="#" class="nav-link"><i class="fas fa-envelope w-6 mr-2 text-red-500"></i>Contact</a>
+                </div>
+              </div>
+            </nav>
+          `;
+          // Initialize dropdown for fallback header
+          const menuToggle = document.getElementById('menuToggle');
+          const mobileMenu = document.getElementById('mobileMenu');
+          if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+              mobileMenu.classList.toggle('open');
+              const icon = menuToggle.querySelector('i');
+              if (mobileMenu.classList.contains('open')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+              } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+              }
+            });
+          }
+        });
       
+      // Load footer
+      fetch('components/footer.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer').innerHTML = data;
+        })
+        .catch(error => {
+          document.getElementById('footer').innerHTML = '<div class="text-center text-slate-500 text-xs md:text-sm py-4 md:py-6 border-t border-slate-200">© 2025 StudentRoadmap. All rights reserved.</div>';
+        });
+      
+      // Load saved progress from localStorage
+      const saved = localStorage.getItem('defenseProgress');
+      if (saved) {
+        completedSteps = JSON.parse(saved);
+        completedSteps.forEach(step => {
+          const stepElement = document.getElementById(`step${step}`);
+          if (stepElement) {
+            stepElement.classList.add('completed');
+          }
+        });
+        updateProgress();
+        
+        // Show completion message if all steps done
+        if (completedSteps.length === 7) {
+          document.getElementById('completionMessage').classList.add('show');
+        }
+      }
+      
+      // Back to top button
       const backToTop = document.getElementById('backToTop');
       window.addEventListener('scroll', () => {
-        if (window.scrollY > 500) {
+        if (window.scrollY > 300) {
           backToTop.classList.remove('opacity-0', 'translate-y-4');
           backToTop.classList.add('opacity-100', 'translate-y-0');
         } else {
@@ -280,12 +566,140 @@
           backToTop.classList.add('opacity-0', 'translate-y-4');
         }
       });
+      
       backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     });
     
-    function downloadPDF() {
-      const element = document.querySelector('.roadmap-container').cloneNode(true);
-      html2pdf().set({ margin: 1, filename: 'defense-roadmap.pdf' }).from(element).save();
+    function completeStep(stepNumber) {
+      const stepElement = document.getElementById(`step${stepNumber}`);
+      
+      if (!stepElement.classList.contains('completed')) {
+        // Mark as completed
+        stepElement.classList.add('completed');
+        completedSteps.push(stepNumber);
+        completedSteps.sort((a, b) => a - b);
+        
+        // Save to localStorage
+        localStorage.setItem('defenseProgress', JSON.stringify(completedSteps));
+        
+        // Update progress bar
+        updateProgress();
+        
+        // Show completion message if all steps done (7 steps total)
+        if (completedSteps.length === 7) {
+          document.getElementById('completionMessage').classList.add('show');
+        }
+        
+        // Show success toast
+        showToast(`Step ${stepNumber} completed! ⚔️`);
+      }
+    }
+    
+    function updateProgress() {
+      const progress = (completedSteps.length / 7) * 100;
+      document.getElementById('progressFill').style.width = `${progress}%`;
+      document.getElementById('progressText').textContent = `${completedSteps.length}/7 Steps`;
+    }
+    
+    function resetProgress() {
+      // Remove completed class from all steps
+      for (let i = 1; i <= 7; i++) {
+        const step = document.getElementById(`step${i}`);
+        if (step) {
+          step.classList.remove('completed');
+        }
+      }
+      
+      // Clear completed steps array
+      completedSteps = [];
+      
+      // Clear localStorage
+      localStorage.removeItem('defenseProgress');
+      
+      // Update progress bar
+      updateProgress();
+      
+      // Hide completion message
+      document.getElementById('completionMessage').classList.remove('show');
+      
+      showToast('Progress reset successfully');
+    }
+    
+    function showToast(message) {
+      // Create toast element
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-20 right-4 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-bounce';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      // Remove after 2 seconds
+      setTimeout(() => {
+        toast.remove();
+      }, 2000);
+    }
+    
+    function downloadPersonalizedPDF() {
+      if (completedSteps.length === 0) {
+        alert('Please complete at least one step before downloading!');
+        return;
+      }
+      
+      // Create personalized PDF content
+      const content = document.createElement('div');
+      content.innerHTML = `
+        <div style="padding: 30px; font-family: 'Poppins', sans-serif; max-width: 800px; margin: 0 auto;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #dc2626; font-size: 28px; margin-bottom: 10px;">Defense Services (NDA/CDS) Roadmap</h1>
+            <h2 style="color: #4b5563; font-size: 18px;">Your Personalised Defense Journey</h2>
+            <div style="height: 4px; background: linear-gradient(90deg, #dc2626, #10b981); width: 100px; margin: 20px auto;"></div>
+          </div>
+          
+          <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-bottom: 25px;">
+            <p style="font-size: 16px; color: #1e293b; margin-bottom: 15px;">
+              <strong>Congratulations, future Defender of the Nation!</strong> You have successfully completed ${completedSteps.length} out of 7 steps in your defense services journey.
+            </p>
+            <p style="font-size: 14px; color: #64748b;">Generated on: ${new Date().toLocaleDateString()}</p>
+          </div>
+          
+          <h3 style="color: #dc2626; font-size: 20px; margin-bottom: 15px;">Completed Steps:</h3>
+          <div style="margin-bottom: 30px;">
+            ${completedSteps.map(step => {
+              const stepNames = {
+                1: 'Class 11-12 Preparation',
+                2: 'NDA Entry (After 12th)',
+                3: 'CDS Entry (After Graduation)',
+                4: 'SSB Interview (5 Days)',
+                5: 'Medical Examination',
+                6: 'Training Academies',
+                7: 'Career & Benefits'
+              };
+              return `
+                <div style="background: white; border-left: 4px solid #10b981; padding: 12px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  <strong style="color: #059669;">Step ${step}:</strong> ${stepNames[step]}
+                </div>
+              `;
+            }).join('')}
+          </div>
+          
+          <div style="background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; padding: 20px; border-radius: 12px; text-align: center;">
+            <p style="font-size: 18px; margin-bottom: 10px;">⚔️ Service Before Self! ⚔️</p>
+            <p style="font-size: 14px; opacity: 0.9;">Your journey to serve the nation is on the right path. Stay fit, stay focused.</p>
+          </div>
+          
+          <div style="margin-top: 30px; text-align: center; color: #94a3b8; font-size: 12px;">
+            © 2025 StudentRoadmap - Your Personalised Defense Services Roadmap
+          </div>
+        </div>
+      `;
+      
+      // Generate PDF
+      html2pdf().set({
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: `defense-roadmap-completed-${completedSteps.length}-steps.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, letterRendering: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      }).from(content).save();
     }
   </script>
 </body>
