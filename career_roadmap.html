@@ -1,22 +1,9 @@
-<?php
-include 'includes/db.php';
-include 'includes/career_data.php';
-
-$slug = isset($_GET['career']) ? $_GET['career'] : '';
-$career = getCareerBySlug($slug);
-
-if (!$career) {
-    // Redirect to main roadmap page if career not found
-    header("Location: roadmap.php");
-    exit();
-}
-?>
 <!DOCTYPE html>
 <html class="light" lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?php echo $career['title']; ?> Roadmap - StudentRoadmap</title>
+    <title id="pageTitle">Doctor Roadmap - StudentRoadmap</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,120 +13,10 @@ if (!$career) {
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/roadmap.css">
-    
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="assets/js/auth.js"></script>
-    <!-- PDF Download Template (Hidden) -->
-    <div id="pdf-download-template">
-        <div class="pdf-wrapper">
-            <!-- Career Roadmap Page -->
-            <div class="pdf-page">
-                <div class="pdf-content-header">
-                    <div class="pdf-content-title">Career Roadmap</div>
-                    <div style="font-size: 10pt; color: #94a3b8; font-weight: 600;"><?php echo strtoupper($career['title']); ?></div>
-                </div>
-
-                <div style="margin-top: 5mm;">
-                    <?php foreach ($career['roadmap'] as $index => $step): ?>
-                    <div class="pdf-roadmap-item">
-                        <div class="pdf-step-dot"><?php echo $index + 1; ?></div>
-                        <div class="pdf-step-card">
-                            <div class="pdf-step-h3"><?php echo $step['title']; ?></div>
-                            <div class="pdf-step-p"><?php echo $step['desc']; ?></div>
-                            
-                            <?php if (isset($step['paths'])): ?>
-                            <div class="pdf-path-container">
-                                <?php foreach ($step['paths'] as $path): ?>
-                                <div class="pdf-path-item">
-                                    <div style="font-weight: 800; font-size: 10pt; color: #334155; margin-bottom: 1mm; text-transform: uppercase;"><?php echo $path['title']; ?></div>
-                                    <div style="font-size: 9pt; color: #64748b; line-height: 1.4;"><?php echo $path['desc']; ?></div>
-                                </div>
-                                <?php endforeach; ?>
-                            </div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-
-                <div class="pdf-pg-footer">
-                    <div>Career Roadmap: <?php echo $career['title']; ?></div>
-                    <div>Page 1</div>
-                </div>
-            </div>
-
-            <!-- Page 2: Details & Insights -->
-            <div class="pdf-page">
-                <div class="pdf-content-header">
-                    <div class="pdf-content-title">Career Insights</div>
-                    <div style="font-size: 10pt; color: #94a3b8; font-weight: 600;"><?php echo strtoupper($career['title']); ?></div>
-                </div>
-
-                <div class="pdf-sec-title">Overview</div>
-                <div style="font-size: 11pt; color: #475569; line-height: 1.7; margin-bottom: 10mm; text-align: justify;">
-                    <?php echo $career['overview'] ?? $career['details']; ?>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10mm;">
-                    <div>
-                        <div class="pdf-sec-title">Required Skills</div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 2mm;">
-                            <?php foreach (($career['skills'] ?? []) as $skill): ?>
-                            <span style="background: #f8fafc; padding: 1.5mm 3.5mm; border-radius: 2mm; font-size: 9pt; border: 1px solid #e2e8f0; color: #475569; font-weight: 500;"><?php echo $skill; ?></span>
-                            <?php endforeach; ?>
-                        </div>
-
-                        <?php if (isset($career['fees'])): ?>
-                        <div class="pdf-sec-title">Average Fees</div>
-                        <div style="background: #f8fafc; padding: 4mm; border-radius: 3mm; border: 1px solid #e2e8f0;">
-                            <?php foreach ($career['fees'] as $type => $amount): ?>
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2mm; font-size: 10pt; border-bottom: 1px dashed #e2e8f0; padding-bottom: 2mm;">
-                                <span style="color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 8pt;"><?php echo $type; ?></span>
-                                <span style="font-weight: 800; color: #0f172a; background: #fff; padding: 1mm 3mm; border-radius: 1.5mm; border: 1px solid #f1f5f9;"><?php echo $amount; ?></span>
-                            </div>
-                            <?php endforeach; ?>
-                        </div>
-                        <?php endif; ?>
-                    </div>
-
-                    <div>
-                        <?php if (isset($career['colleges'])): ?>
-                        <div class="pdf-sec-title">Top Institutions</div>
-                        <?php foreach ($career['colleges'] as $region => $colleges): ?>
-                        <div style="margin-bottom: 4mm;">
-                            <div style="font-size: 8pt; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 2mm; letter-spacing: 1px; display: flex; align-items: center; gap: 2mm;">
-                                <span style="width: 1.5mm; height: 1.5mm; background: #94a3b8; border-radius: 50%;"></span>
-                                <?php echo $region; ?>
-                            </div>
-                            <ul style="padding-left: 4mm; margin: 0; list-style-type: none;">
-                                <?php foreach ($colleges as $college): ?>
-                                <li style="font-size: 9.5pt; color: #475569; margin-bottom: 1.5mm; position: relative; line-height: 1.3;">
-                                    <span style="position: absolute; left: -3.5mm; color: #cbd5e1;">•</span>
-                                    <?php echo $college; ?>
-                                </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </div>
-                        <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                </div>
-
-                <div class="pdf-pg-footer">
-                    <div>Career Insights: <?php echo $career['title']; ?></div>
-                    <div>Page 2</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        Auth.requireAuth();
-    </script>
+    
     <script>
         tailwind.config = {
             theme: {
@@ -152,8 +29,129 @@ if (!$career) {
             }
         }
     </script>
+    
     <style>
         body { font-family: 'Poppins', sans-serif; background: #f8fafc; }
+        
+        /* Header Styles */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+            padding: 1rem 2rem;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #1e293b;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #0ea5e9;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile menu button */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 2px;
+            background: #1e293b;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu.desktop {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+            }
+        }
+
+        /* Footer Styles */
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(14, 165, 233, 0.1);
+            padding: 3rem 0 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .footer-link {
+            color: #64748b;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-link:hover {
+            color: #0ea5e9;
+            transform: translateX(5px);
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(14, 165, 233, 0.1);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #0ea5e9;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: #0ea5e9;
+            color: white;
+            transform: translateY(-3px);
+        }
         
         /* Premium PDF Download Styles */
         #pdf-download-template {
@@ -308,6 +306,64 @@ if (!$career) {
             padding-top: 4mm;
         }
 
+        /* Roadmap Styles */
+        .roadmap-container {
+            position: relative;
+        }
+        
+        .roadmap-line {
+            position: absolute;
+            left: 39px;
+            top: 1rem;
+            bottom: 1rem;
+            width: 0.25rem;
+            background-color: #e2e8f0;
+            border-radius: 9999px;
+        }
+        
+        .step-number {
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.125rem;
+            border: 4px solid white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .step-card {
+            background-color: #f8fafc;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            flex-grow: 1;
+            border: 1px solid #f1f5f9;
+            transition: box-shadow 0.3s;
+        }
+        
+        .step-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .path-card {
+            background-color: white;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            border-left-width: 4px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+        
+        .path-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
         @media print {
             .no-print, header, footer, .back-button, button { display: none !important; }
             body { background: white !important; }
@@ -379,37 +435,235 @@ if (!$career) {
                 print-color-adjust: exact !important;
             }
         }
+        
+        /* Mobile Menu Styles */
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .mobile-menu.-translate-x-full {
+            transform: translateX(-100%);
+        }
+        
+        .z-50 {
+            z-index: 50;
+        }
     </style>
 </head>
 <body class="text-slate-800 bg-slate-50">
 
-    <?php include 'includes/header.php'; ?>
+    <!-- Mobile Navigation Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed top-0 left-0 w-full h-screen bg-white/95 backdrop-blur-xl z-50 transform -translate-x-full transition-transform duration-300">
+        <div class="p-6 h-full flex flex-col">
+            <div class="flex justify-between items-center mb-8">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-lg"></i>
+                    </div>
+                    <span class="text-xl font-bold text-slate-800">StudentRoadmap</span>
+                </div>
+                <button id="closeMenu" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
+                    <i class="fas fa-times text-slate-600"></i>
+                </button>
+            </div>
 
+            <nav class="flex-1">
+                <div class="space-y-2">
+                    <a href="index.html" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-primary-50 font-medium transition-colors">
+                        <i class="fas fa-home text-primary-600"></i>
+                        <span>Home</span>
+                    </a>
+                    <a href="about.html" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-primary-50 font-medium transition-colors">
+                        <i class="fas fa-users text-primary-600"></i>
+                        <span>About us</span>
+                    </a>
+                    <a href="roadmap.html" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-slate-50 font-medium transition-colors">
+                        <i class="fas fa-map text-primary-600"></i>
+                        <span>Roadmaps</span>
+                    </a>
+                    <a href="quiz.html" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-slate-50 font-medium transition-colors">
+                        <i class="fas fa-question-circle text-primary-600"></i>
+                        <span>Career Quiz</span>
+                    </a>
+                    <a href="resources.html" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-slate-50 font-medium transition-colors">
+                        <i class="fas fa-book-open text-primary-600"></i>
+                        <span>Resources</span>
+                    </a>
+                    <a href="contact.html" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-slate-50 font-medium transition-colors">
+                        <i class="fas fa-envelope text-primary-600"></i>
+                        <span>Contact</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="pt-6 border-t border-slate-200">
+                <div class="flex items-center space-x-4 mb-4">
+                    <a href="login.html" class="flex-1">
+                        <button class="w-full py-3 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors">
+                            Login
+                        </button>
+                    </a>
+                    <a href="signup.html" class="flex-1">
+                        <button class="w-full py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-xl hover:bg-primary-50 transition-colors">
+                            Sign Up
+                        </button>
+                    </a>
+                </div>
+                <p class="text-sm text-slate-500 text-center">Get personalized career guidance</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 header-glass shadow-sm">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-graduation-cap text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold text-slate-800">StudentRoadmap</span>
+                        <p class="text-xs text-slate-500">Your Career Navigation Partner</p>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="index.html" class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-home text-primary-500"></i>
+                        <span>Home</span>
+                    </a>
+                    <a href="roadmap.html" class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-map text-primary-500"></i>
+                        <span>Roadmaps</span>
+                    </a>
+                    <a href="quiz.html" class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-question-circle text-primary-500"></i>
+                        <span>Career Quiz</span>
+                    </a>
+                    <a href="resources.html" class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-book-open text-primary-500"></i>
+                        <span>Resources</span>
+                    </a>
+                    <a href="about.html" class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-users text-primary-500"></i>
+                        <span>About us</span>
+                    </a>
+                    <a href="contact.html" class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+                        <i class="fas fa-envelope text-primary-500"></i>
+                        <span>Contact</span>
+                    </a>
+                </nav>
+
+                <!-- Desktop Auth Buttons -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    <a href="login.html" class="px-6 py-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors">
+                        Sign In
+                    </a>
+                    <a href="signup.html" class="px-6 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300">
+                        Get Started Free
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex lg:hidden items-center space-x-3">
+                    <button id="menuButton" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
+                        <i class="fas fa-bars text-slate-600"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- PDF Download Template -->
+    <div id="pdf-download-template">
+        <div class="pdf-wrapper">
+            <!-- Career Roadmap Page -->
+            <div class="pdf-page">
+                <div class="pdf-content-header">
+                    <div class="pdf-content-title">Career Roadmap</div>
+                    <div style="font-size: 10pt; color: #94a3b8; font-weight: 600;" id="pdfCareerTitle">DOCTOR</div>
+                </div>
+
+                <div style="margin-top: 5mm;" id="pdfRoadmapContainer">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+
+                <div class="pdf-pg-footer">
+                    <div>Career Roadmap: <span id="pdfCareerName1">Doctor</span></div>
+                    <div>Page 1</div>
+                </div>
+            </div>
+
+            <!-- Page 2: Details & Insights -->
+            <div class="pdf-page">
+                <div class="pdf-content-header">
+                    <div class="pdf-content-title">Career Insights</div>
+                    <div style="font-size: 10pt; color: #94a3b8; font-weight: 600;" id="pdfCareerTitle2">DOCTOR</div>
+                </div>
+
+                <div class="pdf-sec-title">Overview</div>
+                <div style="font-size: 11pt; color: #475569; line-height: 1.7; margin-bottom: 10mm; text-align: justify;" id="pdfOverview">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10mm;">
+                    <div>
+                        <div class="pdf-sec-title">Required Skills</div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 2mm;" id="pdfSkills">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+
+                        <div class="pdf-sec-title">Average Fees</div>
+                        <div style="background: #f8fafc; padding: 4mm; border-radius: 3mm; border: 1px solid #e2e8f0;" id="pdfFees">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="pdf-sec-title">Top Institutions</div>
+                        <div id="pdfColleges">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pdf-pg-footer">
+                    <div>Career Insights: <span id="pdfCareerName2">Doctor</span></div>
+                    <div>Page 2</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
     <main id="roadmap-content" class="min-h-screen pb-20">
-        <!-- Hero Section -->
-        <div class="relative bg-gradient-to-r from-<?php echo $career['category_color']; ?>-600 to-<?php echo $career['category_color']; ?>-800 text-white pt-24 pb-16 overflow-hidden">
+        <!-- Hero Section - Will be updated by JavaScript -->
+        <div id="heroSection" class="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white pt-24 pb-16 overflow-hidden">
             <!-- Background Decoration -->
             <div class="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 rounded-full bg-white opacity-10 blur-3xl"></div>
             <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-60 h-60 rounded-full bg-white opacity-10 blur-3xl"></div>
 
             <div class="container mx-auto px-4 relative z-10">
-                <a href="roadmap.php" class="no-print inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors">
+                <a href="roadmap.html" class="no-print inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors">
                     <i class="fas fa-arrow-left mr-2"></i> Back to All Careers
                 </a>
                 
                 <div class="flex flex-col md:flex-row items-center md:items-start gap-8">
-                    <div class="w-24 h-24 md:w-32 md:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl md:text-6xl shadow-xl border border-white/30">
-                        <?php echo $career['icon']; ?>
+                    <div id="heroIcon" class="w-24 h-24 md:w-32 md:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl md:text-6xl shadow-xl border border-white/30">
+                        👨‍⚕️
                     </div>
                     <div class="flex flex-col md:flex-row md:items-center justify-between w-full gap-6">
                         <div class="text-center md:text-left">
-                            <h1 class="text-4xl md:text-5xl font-bold mb-2"><?php echo $career['title']; ?> Roadmap</h1>
-                            <p class="text-xl text-white/90 max-w-2xl font-light leading-relaxed">
-                                Step-by-step guide to becoming a successful <?php echo $career['title']; ?>.
+                            <h1 id="careerTitle" class="text-4xl md:text-5xl font-bold mb-2">Doctor Roadmap</h1>
+                            <p id="careerSubtitle" class="text-xl text-white/90 max-w-2xl font-light leading-relaxed">
+                                Step-by-step guide to becoming a successful Doctor.
                             </p>
                         </div>
                         <div class="no-print flex flex-wrap gap-3">
-                            <button onclick="downloadRoadmapPDF()" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-<?php echo $career['category_color']; ?>-600 font-bold rounded-xl shadow-lg transition-all transform hover:scale-105 whitespace-nowrap">
+                            <button onclick="downloadRoadmapPDF()" id="downloadPdfBtn" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 font-bold rounded-xl shadow-lg transition-all transform hover:scale-105 whitespace-nowrap">
                                 <i class="fas fa-file-pdf text-xl"></i>
                                 Download PDF
                             </button>
@@ -426,39 +680,15 @@ if (!$career) {
                 <div class="w-full">
                     <div class="bg-white rounded-3xl shadow-xl p-8 mb-8">
                         <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">
-                            <i class="fas fa-road text-<?php echo $career['category_color']; ?>-600 mr-3"></i> 
+                            <i id="roadmapIcon" class="fas fa-road text-blue-600 mr-3"></i> 
                             Career Roadmap
                         </h2>
                         
-                        <div class="roadmap-container relative pl-4">
+                        <div class="roadmap-container relative pl-4" id="roadmapContainer">
                             <!-- Vertical Line -->
                             <div class="roadmap-line absolute left-[39px] top-4 bottom-4 w-1 bg-slate-100 rounded-full"></div>
 
-                            <?php foreach ($career['roadmap'] as $index => $step): ?>
-                            <div class="roadmap-step relative flex gap-6 mb-10 last:mb-0 group">
-                                <!-- Number/Icon -->
-                                <div class="step-number relative z-10 flex-shrink-0 w-12 h-12 rounded-full bg-<?php echo $career['category_color']; ?>-100 text-<?php echo $career['category_color']; ?>-600 font-bold text-lg flex items-center justify-center border-4 border-white shadow-md group-hover:scale-110 transition-transform duration-300">
-                                    <?php echo $index + 1; ?>
-                                </div>
-                                
-                                <!-- Content -->
-                                <div class="step-card bg-slate-50 rounded-2xl p-6 flex-grow border border-slate-100 hover:shadow-md transition-shadow duration-300">
-                                    <h3 class="text-lg font-bold text-slate-900 mb-2"><?php echo $step['title']; ?></h3>
-                                    <p class="text-slate-600"><?php echo $step['desc']; ?></p>
-
-                                    <?php if (isset($step['paths'])): ?>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                                        <?php foreach ($step['paths'] as $path): ?>
-                                        <div class="path-card bg-white p-5 rounded-xl border-l-4 border-<?php echo $career['category_color']; ?>-400 shadow-sm hover:shadow-md transition-all">
-                                            <h4 class="font-bold text-slate-800 mb-2 text-sm uppercase tracking-wide"><?php echo $path['title']; ?></h4>
-                                            <p class="text-sm text-slate-600 leading-relaxed"><?php echo $path['desc']; ?></p>
-                                        </div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                            <?php endforeach; ?>
+                            <!-- Roadmap steps will be inserted by JavaScript -->
                         </div>
                     </div>
                 </div>
@@ -467,82 +697,48 @@ if (!$career) {
                 <div class="pdf-page-break grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <!-- Overview & Skills Column -->
                     <div class="lg:col-span-2 space-y-8">
-                        <div class="bg-white rounded-3xl shadow-lg p-8 border-t-4 border-<?php echo $career['category_color']; ?>-500">
+                        <div id="overviewSection" class="bg-white rounded-3xl shadow-lg p-8 border-t-4 border-blue-500">
                             <h3 class="text-xl font-bold text-slate-800 mb-4">Overview</h3>
-                            <p class="text-slate-600 leading-relaxed mb-6">
-                                <?php echo $career['overview'] ?? $career['details']; ?>
+                            <p id="overviewText" class="text-slate-600 leading-relaxed mb-6">
+                                <!-- Will be populated by JavaScript -->
                             </p>
                             
                             <h3 class="text-xl font-bold text-slate-800 mb-4 mt-8">Key Skills</h3>
-                            <div class="flex flex-wrap gap-2">
-                                <?php 
-                                $skills = $career['skills'] ?? ['Dedication', 'Hard Work', 'Passion'];
-                                foreach ($skills as $skill): 
-                                ?>
-                                <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-sm font-medium">
-                                    <?php echo $skill; ?>
-                                </span>
-                                <?php endforeach; ?>
+                            <div id="skillsContainer" class="flex flex-wrap gap-2">
+                                <!-- Will be populated by JavaScript -->
                             </div>
                         </div>
 
-                        <?php if (isset($career['colleges'])): ?>
-                        <div class="bg-white rounded-3xl shadow-lg p-8 border-t-4 border-<?php echo $career['category_color']; ?>-500">
+                        <div id="collegesSection" class="bg-white rounded-3xl shadow-lg p-8 border-t-4 border-blue-500">
                             <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                                <i class="fas fa-university text-<?php echo $career['category_color']; ?>-500"></i>
+                                <i class="fas fa-university text-blue-500"></i>
                                 Top Colleges
                             </h3>
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <?php foreach ($career['colleges'] as $region => $colleges): ?>
-                                    <div class="mb-6 last:mb-0">
-                                        <h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                                            <?php if ($region === 'India'): ?>
-                                                🇮🇳 <?php echo $region; ?>
-                                            <?php else: ?>
-                                                📍 <?php echo $region; ?>
-                                            <?php endif; ?>
-                                        </h4>
-                                        <ul class="space-y-3">
-                                            <?php foreach ($colleges as $college): ?>
-                                                <li class="flex items-start gap-3 text-sm text-slate-600 group">
-                                                    <i class="fas fa-check-circle text-<?php echo $career['category_color']; ?>-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                                                    <a href="<?php echo getCollegeUrl($college); ?>" target="_blank" class="group-hover:text-blue-600 transition-colors cursor-pointer"><?php echo $college; ?></a>
-                                                </li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </div>
-                                <?php endforeach; ?>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="collegesContainer">
+                                <!-- Will be populated by JavaScript -->
                             </div>
                         </div>
-                        <?php endif; ?>
                     </div>
 
                     <!-- Sidebar Info Column -->
                     <div class="lg:col-span-1 space-y-8">
-                        <?php if (isset($career['fees'])): ?>
-                        <div class="bg-white rounded-3xl shadow-lg p-8 border-t-4 border-<?php echo $career['category_color']; ?>-500">
+                        <div id="feesSection" class="bg-white rounded-3xl shadow-lg p-8 border-t-4 border-blue-500">
                             <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                                <i class="fas fa-indian-rupee-sign text-<?php echo $career['category_color']; ?>-500"></i>
+                                <i class="fas fa-indian-rupee-sign text-blue-500"></i>
                                 Average Fees
                             </h3>
-                            <div class="space-y-4">
-                                <?php foreach ($career['fees'] as $type => $amount): ?>
-                                <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
-                                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1"><?php echo $type; ?></div>
-                                    <div class="text-lg font-bold text-<?php echo $career['category_color']; ?>-700"><?php echo $amount; ?></div>
-                                </div>
-                                <?php endforeach; ?>
+                            <div class="space-y-4" id="feesContainer">
+                                <!-- Will be populated by JavaScript -->
                             </div>
                         </div>
-                        <?php endif; ?>
 
                         <!-- Call to Action -->
                         <div class="no-print bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-8 text-center text-white shadow-lg">
                             <i class="fas fa-lightbulb text-yellow-400 text-4xl mb-4"></i>
                             <h3 class="text-xl font-bold mb-2">Ready to Start?</h3>
                             <p class="text-slate-300 mb-6 text-sm">Every expert was once a beginner. Start your journey today!</p>
-                            <a href="#" class="block w-full py-3 rounded-xl bg-white text-slate-900 font-bold hover:bg-gray-100 transition-colors">
+                            <a href="resources.html" class="block w-full py-3 rounded-xl bg-white text-slate-900 font-bold hover:bg-gray-100 transition-colors">
                                 Find Resources
                             </a>
                         </div>
@@ -553,16 +749,659 @@ if (!$career) {
         </div>
     </main>
 
-    <div class="container mx-auto px-4 py-8">
-        <?php include 'includes/footer.php'; ?>
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white rounded-3xl p-8 md:p-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Company Info -->
+            <div>
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold">StudentRoadmap</span>
+                        <p class="text-sm text-slate-400">Your Career Navigation Partner</p>
+                    </div>
+                </div>
+                <p class="text-slate-400 mb-6">
+                    Empowering Indian students with data-driven career guidance, personalized roadmaps, and expert mentorship.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h4 class="font-bold text-lg mb-6">Quick Links</h4>
+                <ul class="space-y-3">
+                    <li><a href="roadmap.html" class="text-slate-400 hover:text-white transition-colors">Career Roadmaps</a></li>
+                    <li><a href="quiz.html" class="text-slate-400 hover:text-white transition-colors">Career Assessment</a></li>
+                    <li><a href="resources.html" class="text-slate-400 hover:text-white transition-colors">Resources</a></li>
+                    <li><a href="about.html" class="text-slate-400 hover:text-white transition-colors">About Us</a></li>
+                    <li><a href="contact.html" class="text-slate-400 hover:text-white transition-colors">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Resources -->
+            <div>
+                <h4 class="font-bold text-lg mb-6">Resources</h4>
+                <ul class="space-y-3">
+                    <li><a href="faq.html" class="text-slate-400 hover:text-white transition-colors">FAQ</a></li>
+                    <li><a href="guides.html" class="text-slate-400 hover:text-white transition-colors">Study Guides</a></li>
+                    <li><a href="scholarships.html" class="text-slate-400 hover:text-white transition-colors">Scholarships</a></li>
+                    <li><a href="exams.html" class="text-slate-400 hover:text-white transition-colors">Exam Calendar</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <h4 class="font-bold text-lg mb-6">Contact Us</h4>
+                <ul class="space-y-4">
+                    <li class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-400">Call Us</p>
+                            <p class="font-medium">+91 98765 43210</p>
+                        </div>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-400">Email Us</p>
+                            <p class="font-medium">help@studentroadmap.com</p>
+                        </div>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-400">Office Address</p>
+                            <p class="font-medium">Delhi, India</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-slate-800 mt-12 pt-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-slate-400 text-sm">© 2024 StudentRoadmap. All rights reserved.</p>
+                <div class="flex items-center space-x-6 text-sm text-slate-400">
+                    <a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="cookies.html" class="hover:text-white transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
+        <i class="fas fa-arrow-up text-xl"></i>
+    </button>
 
     <script>
+        // Career Data
+        const careerData = {
+            doctor: {
+                title: 'Doctor',
+                icon: '👨‍⚕️',
+                category: 'medical',
+                category_color: 'blue',
+                subtitle: 'Step-by-step guide to becoming a successful Doctor.',
+                overview: 'Medicine is one of the most respected and rewarding professions. Doctors diagnose and treat illnesses, conduct research, and promote public health. The journey requires dedication, academic excellence, and a genuine desire to help others. After completing MBBS, you can specialize in various fields like Cardiology, Neurology, Pediatrics, or Surgery.',
+                details: 'Medical professionals are in high demand globally. The path requires 5.5 years of MBBS including internship, followed by specialization for 3+ years.',
+                skills: ['Empathy', 'Scientific Temper', 'Patience', 'Communication', 'Problem Solving', 'Teamwork'],
+                fees: {
+                    'Government College': '₹50,000 - ₹2,00,000',
+                    'Private College': '₹15,00,000 - ₹60,00,000',
+                    'PG Specialization': '₹2,00,000 - ₹40,00,000'
+                },
+                colleges: {
+                    'India': ['AIIMS Delhi', 'CMC Vellore', 'JIPMER Puducherry', 'KGMU Lucknow', 'Armed Forces Medical College'],
+                    'Top Government': ['Maulana Azad Medical College', 'Grant Medical College', 'Seth GS Medical College'],
+                    'Top Private': ['St. John\'s Medical College', 'Kasturba Medical College', 'Christian Medical College']
+                },
+                roadmap: [
+                    {
+                        title: 'Complete 10+2 with PCB',
+                        desc: 'Pass 10+2 with Physics, Chemistry, Biology/Biotechnology. Minimum 50% marks for general category (40% for reserved).',
+                        paths: [
+                            { title: 'Science Stream', desc: 'Choose Science with Biology in 11th and 12th grade.' },
+                            { title: 'PCB Focus', desc: 'Focus on Biology, Chemistry, and Physics as core subjects.' }
+                        ]
+                    },
+                    {
+                        title: 'Clear NEET Entrance Exam',
+                        desc: 'Qualify National Eligibility cum Entrance Test (NEET-UG) with high rank for admission to MBBS/BDS courses.',
+                        paths: [
+                            { title: 'Self Study', desc: 'Study NCERT thoroughly, practice MCQs, take mock tests.' },
+                            { title: 'Coaching', desc: 'Join reputed coaching institutes like Aakash, Allen, Resonance.' }
+                        ]
+                    },
+                    {
+                        title: 'Complete MBBS (5.5 years)',
+                        desc: 'Pursue Bachelor of Medicine and Bachelor of Surgery including 1 year compulsory internship.',
+                        paths: [
+                            { title: 'Pre-Clinical (1.5 yrs)', desc: 'Study anatomy, physiology, biochemistry in first year.' },
+                            { title: 'Para-Clinical (1 yr)', desc: 'Study pathology, pharmacology, microbiology, forensic medicine.' },
+                            { title: 'Clinical (2 yrs)', desc: 'Study medicine, surgery, pediatrics, OBG, and other clinical subjects.' },
+                            { title: 'Internship (1 yr)', desc: 'Rotatory internship in various departments for practical experience.' }
+                        ]
+                    },
+                    {
+                        title: 'Choose Specialization (MD/MS)',
+                        desc: 'Clear NEET-PG for admission to postgraduate courses. MD for medicine branches, MS for surgery branches.',
+                        paths: [
+                            { title: 'Medical Specialties', desc: 'MD in General Medicine, Pediatrics, Dermatology, Psychiatry, Radiology, etc.' },
+                            { title: 'Surgical Specialties', desc: 'MS in General Surgery, Orthopedics, ENT, Ophthalmology, etc.' },
+                            { title: 'Super Specialties', desc: 'DM/MCh for further specialization like Cardiology, Neurology, Gastroenterology.' }
+                        ]
+                    },
+                    {
+                        title: 'Register with Medical Council',
+                        desc: 'Register with the National Medical Commission or State Medical Council to practice legally in India.',
+                        paths: [
+                            { title: 'Permanent Registration', desc: 'Get permanent registration after completing MBBS/internship.' },
+                            { title: 'License Renewal', desc: 'Renew license periodically as per council requirements.' }
+                        ]
+                    },
+                    {
+                        title: 'Start Professional Practice',
+                        desc: 'Begin your career as a doctor in hospitals, clinics, or start your own practice.',
+                        paths: [
+                            { title: 'Government Jobs', desc: 'Work in government hospitals, PHCs, or teaching institutions.' },
+                            { title: 'Private Practice', desc: 'Set up your own clinic or work in private hospitals.' },
+                            { title: 'Higher Studies', desc: 'Pursue super specialization, research, or teaching career.' }
+                        ]
+                    }
+                ]
+            },
+            'software-developer': {
+                title: 'Software Developer',
+                icon: '💻',
+                category: 'engineering',
+                category_color: 'green',
+                subtitle: 'Step-by-step guide to becoming a successful Software Developer.',
+                overview: 'Software development is one of the fastest-growing careers. Developers design, build, and maintain software applications, websites, and systems. The field offers excellent salary, remote work opportunities, and continuous learning. You can work in product companies, service-based firms, or as a freelancer.',
+                details: 'Software development requires strong programming skills and problem-solving abilities. The path typically involves a degree in computer science or related field, but self-taught developers are also successful.',
+                skills: ['Programming', 'Problem Solving', 'Logical Thinking', 'Team Collaboration', 'Continuous Learning', 'Communication'],
+                fees: {
+                    'Government College': '₹50,000 - ₹2,50,000',
+                    'Private College': '₹3,00,000 - ₹15,00,000',
+                    'Online Courses': '₹10,000 - ₹1,00,000'
+                },
+                colleges: {
+                    'IITs': ['IIT Bombay', 'IIT Delhi', 'IIT Madras', 'IIT Kanpur', 'IIT Kharagpur'],
+                    'NITs': ['NIT Trichy', 'NIT Surathkal', 'NIT Warangal', 'NIT Calicut'],
+                    'Top Private': ['BITS Pilani', 'IIIT Hyderabad', 'VIT Vellore', 'SRM University']
+                },
+                roadmap: [
+                    {
+                        title: 'Complete 10+2 with Mathematics',
+                        desc: 'Pass 10+2 with Physics, Chemistry, Mathematics (PCM) or Computer Science. Minimum 60% marks for top colleges.',
+                        paths: [
+                            { title: 'PCM Stream', desc: 'Choose Physics, Chemistry, Mathematics in 11th and 12th.' },
+                            { title: 'PCM with CS', desc: 'Take Computer Science as an additional subject if available.' }
+                        ]
+                    },
+                    {
+                        title: 'Pursue B.Tech/BE in CS/IT',
+                        desc: 'Join a reputed engineering college for Bachelor of Technology in Computer Science or Information Technology.',
+                        paths: [
+                            { title: 'JEE Main/Advanced', desc: 'Clear JEE for admission to IITs, NITs, IIITs.' },
+                            { title: 'State Entrance Exams', desc: 'Clear state-level exams like MHT-CET, KCET, WBJEE.' },
+                            { title: 'Private University Exams', desc: 'Clear exams like BITSAT, VITEEE, SRMJEE.' }
+                        ]
+                    },
+                    {
+                        title: 'Master Programming Languages',
+                        desc: 'Learn core programming languages and concepts during your degree.',
+                        paths: [
+                            { title: 'Core Languages', desc: 'Master C, C++, Java, Python, or JavaScript.' },
+                            { title: 'Web Development', desc: 'Learn HTML, CSS, JavaScript, React, Node.js.' },
+                            { title: 'Mobile Development', desc: 'Learn Android (Kotlin) or iOS (Swift) development.' },
+                            { title: 'Database', desc: 'Learn SQL, MongoDB, or other database technologies.' }
+                        ]
+                    },
+                    {
+                        title: 'Build Projects & Internships',
+                        desc: 'Create a portfolio of projects and gain industry experience through internships.',
+                        paths: [
+                            { title: 'Personal Projects', desc: 'Build apps, websites, or tools to showcase your skills.' },
+                            { title: 'Internships', desc: 'Apply for internships at tech companies during college breaks.' },
+                            { title: 'Open Source', desc: 'Contribute to open source projects on GitHub.' }
+                        ]
+                    },
+                    {
+                        title: 'Campus Placements / Job Search',
+                        desc: 'Participate in campus placements or apply for jobs through online platforms.',
+                        paths: [
+                            { title: 'Core Companies', desc: 'Apply to product-based companies like Google, Microsoft, Amazon.' },
+                            { title: 'Service-Based', desc: 'Join service companies like TCS, Infosys, Wipro.' },
+                            { title: 'Startups', desc: 'Work with innovative startups for faster growth.' }
+                        ]
+                    },
+                    {
+                        title: 'Continuous Learning & Growth',
+                        desc: 'Keep learning new technologies and advance in your career.',
+                        paths: [
+                            { title: 'Higher Studies', desc: 'Pursue M.Tech, MS abroad, or MBA for management roles.' },
+                            { title: 'Certifications', desc: 'Get certified in cloud, AI/ML, cybersecurity, etc.' },
+                            { title: 'Specialization', desc: 'Specialize in AI/ML, Data Science, DevOps, or Blockchain.' }
+                        ]
+                    }
+                ]
+            },
+            'civil-servant': {
+                title: 'Civil Servant',
+                icon: '🏛️',
+                category: 'competitive',
+                category_color: 'purple',
+                subtitle: 'Step-by-step guide to becoming a Civil Servant (IAS/IPS/IFS).',
+                overview: 'Civil services offer a prestigious career serving the nation. As an IAS, IPS, or IFS officer, you can shape policies, maintain law and order, or represent India globally. The UPSC exam is one of the toughest but most rewarding examinations in India.',
+                details: 'Civil servants play a crucial role in governance and administration. The selection process takes about 1-2 years and requires extensive preparation.',
+                skills: ['Leadership', 'Administrative Skills', 'Decision Making', 'Communication', 'Integrity', 'Problem Solving'],
+                fees: {
+                    'Coaching': '₹1,00,000 - ₹3,00,000',
+                    'Study Materials': '₹10,000 - ₹30,000',
+                    'Test Series': '₹10,000 - ₹25,000'
+                },
+                colleges: {
+                    'Central Universities': ['Delhi University', 'JNU', 'BHU', 'Aligarh Muslim University'],
+                    'Top Colleges': ['St. Stephen\'s College', 'Lady Shri Ram College', 'Hindu College', 'Presidency College']
+                },
+                roadmap: [
+                    {
+                        title: 'Complete Graduation',
+                        desc: 'Graduate in any discipline from a recognized university. Final year students can also apply.',
+                        paths: [
+                            { title: 'Any Stream', desc: 'Choose any subject - Arts, Science, Commerce, or Engineering.' },
+                            { title: 'Recommended Subjects', desc: 'History, Political Science, Geography, Public Administration, Sociology are helpful.' }
+                        ]
+                    },
+                    {
+                        title: 'Choose Optional Subjects',
+                        desc: 'Select optional subjects for UPSC Mains based on your interest and background.',
+                        paths: [
+                            { title: 'Humanities', desc: 'History, Geography, Political Science, Sociology, Philosophy.' },
+                            { title: 'Science', desc: 'Mathematics, Physics, Chemistry, Botany, Zoology.' },
+                            { title: 'Commerce', desc: 'Commerce & Accountancy, Economics.' },
+                            { title: 'Literature', desc: 'Any Indian language or English literature.' }
+                        ]
+                    },
+                    {
+                        title: 'Clear UPSC CSE Prelims',
+                        desc: 'Qualify the preliminary examination consisting of two papers - General Studies and CSAT.',
+                        paths: [
+                            { title: 'General Studies I', desc: 'Covers History, Geography, Polity, Economy, Science, Environment.' },
+                            { title: 'CSAT', desc: 'Tests comprehension, logical reasoning, and quantitative aptitude.' }
+                        ]
+                    },
+                    {
+                        title: 'Qualify UPSC CSE Mains',
+                        desc: 'Clear the written examination with 9 papers including essay, optional, and language papers.',
+                        paths: [
+                            { title: 'Compulsory Papers', desc: 'Essay, General Studies (4 papers), and language papers.' },
+                            { title: 'Optional Papers', desc: 'Two papers on your chosen optional subject.' }
+                        ]
+                    },
+                    {
+                        title: 'Clear Personality Test',
+                        desc: 'Appear for the interview/personality test conducted by UPSC board.',
+                        paths: [
+                            { title: 'Interview Preparation', desc: 'Prepare for questions on your background, current affairs, and opinion-based questions.' },
+                            { title: 'Mock Interviews', desc: 'Practice with mock interviews at coaching centers.' }
+                        ]
+                    },
+                    {
+                        title: 'Training at LBSNAA',
+                        desc: 'Undergo foundational training at Lal Bahadur Shastri National Academy of Administration.',
+                        paths: [
+                            { title: 'Foundation Course', desc: 'Common training for all civil services at LBSNAA.' },
+                            { title: 'Specialized Training', desc: 'Service-specific training for IAS, IPS, IFS at respective academies.' }
+                        ]
+                    }
+                ]
+            },
+            'chartered-accountant': {
+                title: 'Chartered Accountant',
+                icon: '📊',
+                category: 'commerce',
+                category_color: 'orange',
+                subtitle: 'Step-by-step guide to becoming a Chartered Accountant.',
+                overview: 'Chartered Accountancy is one of the most prestigious and rewarding careers in finance. CAs handle accounting, taxation, auditing, and financial management for individuals and organizations. The ICAI offers this qualification with a structured 3-level program.',
+                details: 'CA is a highly respected qualification in India and globally. The course requires dedication, analytical skills, and practical training.',
+                skills: ['Analytical Skills', 'Attention to Detail', 'Financial Knowledge', 'Integrity', 'Communication', 'Problem Solving'],
+                fees: {
+                    'CA Foundation': '₹10,000 - ₹15,000',
+                    'CA Intermediate': '₹15,000 - ₹20,000',
+                    'CA Final': '₹20,000 - ₹25,000',
+                    'Coaching': '₹50,000 - ₹1,50,000'
+                },
+                colleges: {
+                    'ICAI Branches': ['ICAI - All major cities', 'Regional offices across India'],
+                    'Coaching Institutes': ['Pranav Jain', 'CA Bhanwar Borana', 'CA Parveen Sharma', 'CA Final Club']
+                },
+                roadmap: [
+                    {
+                        title: 'Complete 10+2 (Any Stream)',
+                        desc: 'Pass 10+2 from a recognized board. Commerce background is helpful but not mandatory.',
+                        paths: [
+                            { title: 'Commerce Stream', desc: 'Choose Commerce with Accounts, Economics, and Business Studies.' },
+                            { title: 'Other Streams', desc: 'Science or Arts students can also pursue CA.' }
+                        ]
+                    },
+                    {
+                        title: 'Register for CA Foundation',
+                        desc: 'Register with ICAI for CA Foundation course after 10+2.',
+                        paths: [
+                            { title: 'Self Study', desc: 'Study ICAI modules and practice previous years papers.' },
+                            { title: 'Coaching', desc: 'Join reputed CA coaching institutes for guidance.' }
+                        ]
+                    },
+                    {
+                        title: 'Clear CA Foundation',
+                        desc: 'Qualify the Foundation examination after 4 months of study.',
+                        paths: [
+                            { title: 'Papers', desc: 'Four papers - Principles of Accounting, Business Laws, Mathematics, Economics.' },
+                            { title: 'Study Plan', desc: 'Dedicate 6-8 hours daily for preparation.' }
+                        ]
+                    },
+                    {
+                        title: 'CA Intermediate',
+                        desc: 'Register and clear CA Intermediate while undergoing practical training.',
+                        paths: [
+                            { title: 'Group I', desc: 'Accounting, Corporate Laws, Costing, Taxation.' },
+                            { title: 'Group II', desc: 'Auditing, Financial Management, Information Technology.' },
+                            { title: 'IT Training', desc: 'Complete 100 hours of Information Technology training.' }
+                        ]
+                    },
+                    {
+                        title: 'Complete Articleship (3 years)',
+                        desc: 'Undergo practical training under a practicing CA while preparing for Final.',
+                        paths: [
+                            { title: 'Practical Exposure', desc: 'Work on audits, tax returns, accounting, and client interactions.' },
+                            { title: 'Study Leave', desc: 'Take leave for exam preparation as per ICAI rules.' }
+                        ]
+                    },
+                    {
+                        title: 'CA Final & Membership',
+                        desc: 'Clear CA Final examination and become an ICAI member.',
+                        paths: [
+                            { title: 'Final Groups', desc: 'Clear both groups of CA Final covering advanced topics.' },
+                            { title: 'Membership', desc: 'Apply for ICAI membership and certificate of practice.' }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Helper function to get URL parameter
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name) || 'doctor'; // Default to doctor
+        }
+
+        // Function to get college URL (placeholder)
+        function getCollegeUrl(college) {
+            return '#';
+        }
+
+        // Load career data based on URL parameter
+        document.addEventListener('DOMContentLoaded', function() {
+            const careerSlug = getUrlParameter('career');
+            const career = careerData[careerSlug] || careerData.doctor;
+            const color = career.category_color;
+            
+            // Update page title
+            document.getElementById('pageTitle').textContent = `${career.title} Roadmap - StudentRoadmap`;
+            
+            // Update hero section
+            const heroSection = document.getElementById('heroSection');
+            heroSection.className = `relative bg-gradient-to-r from-${color}-600 to-${color}-800 text-white pt-24 pb-16 overflow-hidden`;
+            
+            document.getElementById('heroIcon').innerHTML = career.icon;
+            document.getElementById('careerTitle').textContent = `${career.title} Roadmap`;
+            document.getElementById('careerSubtitle').textContent = career.subtitle;
+            document.getElementById('downloadPdfBtn').className = `inline-flex items-center gap-2 px-6 py-3 bg-white text-${color}-600 font-bold rounded-xl shadow-lg transition-all transform hover:scale-105 whitespace-nowrap`;
+            
+            // Update roadmap icon
+            document.getElementById('roadmapIcon').className = `fas fa-road text-${color}-600 mr-3`;
+            
+            // Update overview section
+            document.getElementById('overviewSection').className = `bg-white rounded-3xl shadow-lg p-8 border-t-4 border-${color}-500`;
+            document.getElementById('overviewText').textContent = career.overview;
+            
+            // Update skills
+            const skillsContainer = document.getElementById('skillsContainer');
+            skillsContainer.innerHTML = '';
+            career.skills.forEach(skill => {
+                const span = document.createElement('span');
+                span.className = `px-3 py-1 bg-${color}-100 text-${color}-600 rounded-full text-sm font-medium`;
+                span.textContent = skill;
+                skillsContainer.appendChild(span);
+            });
+            
+            // Update fees section
+            document.getElementById('feesSection').className = `bg-white rounded-3xl shadow-lg p-8 border-t-4 border-${color}-500`;
+            const feesContainer = document.getElementById('feesContainer');
+            feesContainer.innerHTML = '';
+            if (career.fees) {
+                for (const [type, amount] of Object.entries(career.fees)) {
+                    const div = document.createElement('div');
+                    div.className = 'bg-slate-50 rounded-xl p-4 border border-slate-100';
+                    div.innerHTML = `
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">${type}</div>
+                        <div class="text-lg font-bold text-${color}-700">${amount}</div>
+                    `;
+                    feesContainer.appendChild(div);
+                }
+            }
+            
+            // Update colleges section
+            document.getElementById('collegesSection').className = `bg-white rounded-3xl shadow-lg p-8 border-t-4 border-${color}-500`;
+            const collegesContainer = document.getElementById('collegesContainer');
+            collegesContainer.innerHTML = '';
+            if (career.colleges) {
+                for (const [region, colleges] of Object.entries(career.colleges)) {
+                    const regionDiv = document.createElement('div');
+                    regionDiv.className = 'mb-6 last:mb-0';
+                    
+                    let regionHTML = `<h4 class="text-sm font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">`;
+                    if (region === 'India') {
+                        regionHTML += `🇮🇳 ${region}`;
+                    } else {
+                        regionHTML += `📍 ${region}`;
+                    }
+                    regionHTML += `</h4><ul class="space-y-3">`;
+                    
+                    colleges.forEach(college => {
+                        regionHTML += `
+                            <li class="flex items-start gap-3 text-sm text-slate-600 group">
+                                <i class="fas fa-check-circle text-${color}-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                                <a href="${getCollegeUrl(college)}" target="_blank" class="group-hover:text-blue-600 transition-colors cursor-pointer">${college}</a>
+                            </li>
+                        `;
+                    });
+                    
+                    regionHTML += '</ul>';
+                    regionDiv.innerHTML = regionHTML;
+                    collegesContainer.appendChild(regionDiv);
+                }
+            }
+            
+            // Generate roadmap steps
+            const roadmapContainer = document.getElementById('roadmapContainer');
+            roadmapContainer.innerHTML = '<div class="roadmap-line absolute left-[39px] top-4 bottom-4 w-1 bg-slate-100 rounded-full"></div>';
+            
+            career.roadmap.forEach((step, index) => {
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'roadmap-step relative flex gap-6 mb-10 last:mb-0 group';
+                
+                let pathsHTML = '';
+                if (step.paths) {
+                    pathsHTML = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">';
+                    step.paths.forEach(path => {
+                        pathsHTML += `
+                            <div class="path-card bg-white p-5 rounded-xl border-l-4 border-${color}-400 shadow-sm hover:shadow-md transition-all">
+                                <h4 class="font-bold text-slate-800 mb-2 text-sm uppercase tracking-wide">${path.title}</h4>
+                                <p class="text-sm text-slate-600 leading-relaxed">${path.desc}</p>
+                            </div>
+                        `;
+                    });
+                    pathsHTML += '</div>';
+                }
+                
+                stepDiv.innerHTML = `
+                    <div class="step-number relative z-10 flex-shrink-0 w-12 h-12 rounded-full bg-${color}-100 text-${color}-600 font-bold text-lg flex items-center justify-center border-4 border-white shadow-md group-hover:scale-110 transition-transform duration-300">
+                        ${index + 1}
+                    </div>
+                    <div class="step-card bg-slate-50 rounded-2xl p-6 flex-grow border border-slate-100 hover:shadow-md transition-shadow duration-300">
+                        <h3 class="text-lg font-bold text-slate-900 mb-2">${step.title}</h3>
+                        <p class="text-slate-600">${step.desc}</p>
+                        ${pathsHTML}
+                    </div>
+                `;
+                
+                roadmapContainer.appendChild(stepDiv);
+            });
+            
+            // Update PDF template data
+            document.getElementById('pdfCareerTitle').textContent = career.title.toUpperCase();
+            document.getElementById('pdfCareerTitle2').textContent = career.title.toUpperCase();
+            document.getElementById('pdfCareerName1').textContent = career.title;
+            document.getElementById('pdfCareerName2').textContent = career.title;
+            
+            // PDF Overview
+            document.getElementById('pdfOverview').textContent = career.overview;
+            
+            // PDF Skills
+            const pdfSkills = document.getElementById('pdfSkills');
+            pdfSkills.innerHTML = '';
+            career.skills.forEach(skill => {
+                const span = document.createElement('span');
+                span.style.background = '#f8fafc';
+                span.style.padding = '1.5mm 3.5mm';
+                span.style.borderRadius = '2mm';
+                span.style.fontSize = '9pt';
+                span.style.border = '1px solid #e2e8f0';
+                span.style.color = '#475569';
+                span.style.fontWeight = '500';
+                span.textContent = skill;
+                pdfSkills.appendChild(span);
+            });
+            
+            // PDF Fees
+            const pdfFees = document.getElementById('pdfFees');
+            pdfFees.innerHTML = '';
+            if (career.fees) {
+                for (const [type, amount] of Object.entries(career.fees)) {
+                    const div = document.createElement('div');
+                    div.style.display = 'flex';
+                    div.style.justifyContent = 'space-between';
+                    div.style.alignItems = 'center';
+                    div.style.marginBottom = '2mm';
+                    div.style.fontSize = '10pt';
+                    div.style.borderBottom = '1px dashed #e2e8f0';
+                    div.style.paddingBottom = '2mm';
+                    div.innerHTML = `
+                        <span style="color: #64748b; font-weight: 600; text-transform: uppercase; font-size: 8pt;">${type}</span>
+                        <span style="font-weight: 800; color: #0f172a; background: #fff; padding: 1mm 3mm; border-radius: 1.5mm; border: 1px solid #f1f5f9;">${amount}</span>
+                    `;
+                    pdfFees.appendChild(div);
+                }
+            }
+            
+            // PDF Colleges
+            const pdfColleges = document.getElementById('pdfColleges');
+            pdfColleges.innerHTML = '';
+            if (career.colleges) {
+                for (const [region, colleges] of Object.entries(career.colleges)) {
+                    const regionDiv = document.createElement('div');
+                    regionDiv.style.marginBottom = '4mm';
+                    
+                    let regionHTML = `
+                        <div style="font-size: 8pt; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 2mm; letter-spacing: 1px; display: flex; align-items: center; gap: 2mm;">
+                            <span style="width: 1.5mm; height: 1.5mm; background: #94a3b8; border-radius: 50%;"></span>
+                            ${region}
+                        </div>
+                        <ul style="padding-left: 4mm; margin: 0; list-style-type: none;">
+                    `;
+                    
+                    colleges.forEach(college => {
+                        regionHTML += `
+                            <li style="font-size: 9.5pt; color: #475569; margin-bottom: 1.5mm; position: relative; line-height: 1.3;">
+                                <span style="position: absolute; left: -3.5mm; color: #cbd5e1;">•</span>
+                                ${college}
+                            </li>
+                        `;
+                    });
+                    
+                    regionHTML += '</ul>';
+                    regionDiv.innerHTML = regionHTML;
+                    pdfColleges.appendChild(regionDiv);
+                }
+            }
+            
+            // PDF Roadmap
+            const pdfRoadmapContainer = document.getElementById('pdfRoadmapContainer');
+            pdfRoadmapContainer.innerHTML = '';
+            
+            career.roadmap.forEach((step, index) => {
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'pdf-roadmap-item';
+                
+                let pathsHTML = '';
+                if (step.paths) {
+                    pathsHTML = '<div class="pdf-path-container">';
+                    step.paths.forEach(path => {
+                        pathsHTML += `
+                            <div class="pdf-path-item">
+                                <div style="font-weight: 800; font-size: 10pt; color: #334155; margin-bottom: 1mm; text-transform: uppercase;">${path.title}</div>
+                                <div style="font-size: 9pt; color: #64748b; line-height: 1.4;">${path.desc}</div>
+                            </div>
+                        `;
+                    });
+                    pathsHTML += '</div>';
+                }
+                
+                stepDiv.innerHTML = `
+                    <div class="pdf-step-dot">${index + 1}</div>
+                    <div class="pdf-step-card">
+                        <div class="pdf-step-h3">${step.title}</div>
+                        <div class="pdf-step-p">${step.desc}</div>
+                        ${pathsHTML}
+                    </div>
+                `;
+                
+                pdfRoadmapContainer.appendChild(stepDiv);
+            });
+        });
+
+        // PDF Download Function
         function downloadRoadmapPDF() {
             const template = document.getElementById('pdf-download-template');
             const element = template.querySelector('.pdf-wrapper');
             template.style.display = 'block'; // Show temporarily for capture
             
-            const careerTitle = "<?php echo $career['title']; ?>";
+            const careerTitle = document.getElementById('careerTitle').textContent.replace(' Roadmap', '');
             
             const opt = {
                 margin:       0,
@@ -587,6 +1426,67 @@ if (!$career) {
                 template.style.display = 'none'; // Hide again
             });
         }
+
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('menuButton');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            if (menuButton && closeMenu && mobileMenu) {
+                menuButton.addEventListener('click', function() {
+                    mobileMenu.classList.remove('-translate-x-full');
+                    document.body.style.overflow = 'hidden';
+                });
+
+                closeMenu.addEventListener('click', function() {
+                    mobileMenu.classList.add('-translate-x-full');
+                    document.body.style.overflow = '';
+                });
+
+                mobileMenu.addEventListener('click', function(e) {
+                    if (e.target === mobileMenu) {
+                        mobileMenu.classList.add('-translate-x-full');
+                        document.body.style.overflow = '';
+                    }
+                });
+
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && !mobileMenu.classList.contains('-translate-x-full')) {
+                        mobileMenu.classList.add('-translate-x-full');
+                        document.body.style.overflow = '';
+                    }
+                });
+
+                const mobileLinks = mobileMenu.querySelectorAll('a');
+                mobileLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        mobileMenu.classList.add('-translate-x-full');
+                        document.body.style.overflow = '';
+                    });
+                });
+            }
+
+            // Back to Top Button
+            const backToTop = document.getElementById('backToTop');
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    backToTop.classList.remove('opacity-0', 'translate-y-4');
+                    backToTop.classList.add('opacity-100', 'translate-y-0');
+                } else {
+                    backToTop.classList.remove('opacity-100', 'translate-y-0');
+                    backToTop.classList.add('opacity-0', 'translate-y-4');
+                }
+            });
+
+            backToTop?.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
     </script>
 
 </body>
