@@ -2,7 +2,7 @@
 <html class="light" lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
   <title>Journalist Roadmap - StudentRoadmap</title>
   
   <!-- Fonts & Icons -->
@@ -16,20 +16,63 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+      overflow-x: hidden;
     }
     
-    .roadmap-container { position: relative; padding-left: 2rem; }
+    /* Mobile dropdown menu styles - for header */
+    .mobile-nav {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      background: white;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .mobile-nav.open {
+      max-height: 400px;
+      transition: max-height 0.5s ease-in;
+    }
+    .nav-link {
+      display: block;
+      padding: 0.75rem 1rem;
+      color: #1e293b;
+      font-weight: 500;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .nav-link:last-child { border-bottom: none; }
+    .nav-link:hover { background: #f1f5f9; }
+    
+    /* Mobile first roadmap */
+    .roadmap-container { 
+      position: relative; 
+      padding-left: 1rem; 
+    }
+    @media (min-width: 640px) {
+      .roadmap-container { padding-left: 2rem; }
+    }
+    
     .roadmap-line {
-      position: absolute; left: 27px; top: 0.5rem; bottom: 0.5rem;
+      position: absolute; left: 20px; top: 0.5rem; bottom: 0.5rem;
       width: 3px; background: linear-gradient(to bottom, #f97316, #ea580c); border-radius: 999px;
     }
-    .roadmap-step {
-      position: relative; display: flex; gap: 1.5rem; margin-bottom: 2.5rem;
-      opacity: 0; animation: slideIn 0.5s ease-out forwards;
+    @media (min-width: 640px) {
+      .roadmap-line { left: 27px; }
     }
+    
+    .roadmap-step {
+      position: relative; display: flex; gap: 1rem; margin-bottom: 2rem;
+      opacity: 0; animation: slideIn 0.5s ease-out forwards;
+      flex-wrap: wrap;
+    }
+    @media (min-width: 640px) {
+      .roadmap-step { gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: nowrap; }
+    }
+    
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(-20px); }
       to { opacity: 1; transform: translateX(0); }
@@ -42,152 +85,273 @@
     .roadmap-step:nth-child(6) { animation-delay: 0.6s; }
     
     .step-number {
-      width: 3.5rem; height: 3.5rem; background: white; border: 3px solid #f97316;
+      width: 2.8rem; height: 2.8rem; background: white; border: 3px solid #f97316;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 1.25rem; color: #f97316; position: relative; z-index: 10;
+      font-weight: 800; font-size: 1.1rem; color: #f97316; position: relative; z-index: 10;
       box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); transition: all 0.3s ease;
+      flex-shrink: 0;
+      cursor: pointer;
     }
-    .roadmap-step:hover .step-number {
-      transform: scale(1.1); background: #f97316; color: white;
+    @media (min-width: 640px) {
+      .step-number { width: 3.5rem; height: 3.5rem; font-size: 1.25rem; }
     }
+    
+    /* Completed step styling */
+    .roadmap-step.completed .step-number {
+      background: #10b981;
+      border-color: #059669;
+      color: white;
+    }
+    
+    .roadmap-step.completed .step-card {
+      border-left: 4px solid #10b981;
+      background: #f0fdf4;
+    }
+    
+    .step-number:hover::after {
+      content: "📰 Click to complete";
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.5rem;
+      white-space: nowrap;
+      z-index: 20;
+      pointer-events: none;
+    }
+    
+    .roadmap-step.completed .step-number:hover::after {
+      content: "✓ Completed";
+    }
+    
+    @media (max-width: 640px) {
+      .step-number:hover::after {
+        font-size: 0.6rem;
+        padding: 0.2rem 0.4rem;
+      }
+    }
+    
     .step-card {
-      flex: 1; background: white; border-radius: 1rem; padding: 1.5rem;
+      flex: 1; background: white; border-radius: 1rem; padding: 1rem;
       box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid #f1f5f9;
       transition: all 0.3s ease;
+      min-width: 200px;
     }
+    @media (min-width: 640px) {
+      .step-card { padding: 1.5rem; }
+    }
+    
     .roadmap-step:hover .step-card {
       transform: translateX(5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
       border-color: #fed7aa;
     }
+    
     .path-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;
+      display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 0.75rem;
     }
+    @media (min-width: 400px) {
+      .path-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 768px) {
+      .path-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    }
+    
     .path-card {
-      background: #f8fafc; border-left: 4px solid #f97316; padding: 1rem; border-radius: 0.75rem;
+      background: #f8fafc; border-left: 4px solid #f97316; padding: 0.75rem; border-radius: 0.75rem;
     }
+    
     .glass-card {
       background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);
       box-shadow: 0 8px 32px rgba(249,115,22,0.1); transition: all 0.3s ease;
     }
     .glass-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(249,115,22,0.15); }
+    
     .btn-gradient {
       background: linear-gradient(135deg, #f97316, #ea580c); color: white; transition: all 0.3s ease;
     }
     .btn-gradient:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(249,115,22,0.4); }
+    
+    /* Progress bar */
+    .progress-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f97316, #10b981);
+      transition: width 0.3s ease;
+    }
+    
+    /* Completion message */
+    .completion-message {
+      display: none;
+      background: #10b981;
+      color: white;
+      padding: 1rem;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .completion-message.show {
+      display: block;
+      animation: slideDown 0.5s ease;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Better mobile typography */
+    @media (max-width: 640px) {
+      h1 { font-size: 1.8rem !important; }
+      h2 { font-size: 1.5rem !important; }
+      h3 { font-size: 1.2rem !important; }
+      .step-title { font-size: 1.1rem; }
+      .path-title { font-size: 0.95rem; }
+      .path-desc { font-size: 0.85rem; }
+    }
   </style>
 </head>
-<body class="text-slate-800">
+<body class="text-slate-800 min-h-screen">
+  <!-- Header will be loaded here from components/header.html -->
   <div id="header"></div>
 
-  <main class="relative z-10 py-12">
-    <div class="container mx-auto px-4">
+  <main class="relative z-10 py-6 md:py-12">
+    <div class="container mx-auto px-3 sm:px-4">
       
-      <!-- Career Header -->
-      <div class="bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-3xl p-8 md:p-12 mb-12 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-20 -mt-20"></div>
-        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full -ml-20 -mb-20"></div>
+      <!-- Career Header - Mobile optimized -->
+      <div class="bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-2xl md:rounded-3xl p-5 md:p-8 lg:p-12 mb-6 md:mb-12 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+        <div class="absolute bottom-0 left-0 w-32 h-32 md:w-48 md:h-48 bg-white opacity-10 rounded-full -ml-16 -mb-16"></div>
         
-        <div class="relative flex flex-col md:flex-row items-center gap-8">
-          <div class="w-24 h-24 md:w-32 md:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl md:text-6xl shadow-xl border border-white/30">
+        <div class="relative flex flex-col items-center text-center">
+          <div class="w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl md:text-4xl lg:text-6xl shadow-xl border border-white/30 mb-3">
             📰
           </div>
-          <div class="flex-1 text-center md:text-left">
-            <h1 class="text-3xl md:text-4xl font-bold mb-2">Journalist Roadmap</h1>
-            <p class="text-lg text-white/90 max-w-2xl">Complete guide to becoming a journalist in India</p>
+          <div class="w-full">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Journalist</h1>
+            <p class="text-sm md:text-lg text-white/90 max-w-2xl mx-auto">Click on each step number as you complete it. Download your personalized journalism roadmap PDF when done!</p>
           </div>
-          <button onclick="downloadPDF()" class="btn-gradient px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2">
-            <i class="fas fa-file-pdf"></i> Download PDF
-          </button>
         </div>
       </div>
 
-      <div class="flex flex-col lg:flex-row gap-8">
+      <!-- Progress Tracker -->
+      <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl mb-4 md:mb-6">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="font-semibold text-sm md:text-base">Your Journalism Journey Progress</h3>
+          <span id="progressText" class="text-orange-600 font-bold">0/6 Steps</span>
+        </div>
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Completion Message -->
+      <div id="completionMessage" class="completion-message">
+        <i class="fas fa-check-circle text-2xl mb-2"></i>
+        <h3 class="text-lg font-bold">Congratulations Journalist! 🎉</h3>
+        <p class="mb-3">You've completed all 6 steps! Click below to download your personalized journalism roadmap document.</p>
+        <button onclick="downloadPersonalizedPDF()" class="bg-white text-green-600 font-semibold py-2 px-6 rounded-lg hover:bg-green-50 transition-colors">
+          <i class="fas fa-file-pdf mr-2"></i>Download My Journalist Roadmap PDF
+        </button>
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-4 md:gap-8">
         <!-- Left Column - Roadmap -->
         <div class="lg:w-2/3">
-          <div class="glass-card p-8 rounded-2xl mb-8">
-            <h2 class="text-2xl font-bold mb-6 flex items-center">
-              <i class="fas fa-road text-orange-600 mr-3"></i> Complete Roadmap
+          <div class="glass-card p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl mb-4 md:mb-8">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+              <i class="fas fa-road text-orange-600 mr-2 md:mr-3"></i> Complete Journalism Roadmap
+              <span class="ml-auto text-xs md:text-sm text-slate-500">Click numbers to complete steps</span>
             </h2>
             
             <div class="roadmap-container">
+              <div class="roadmap-line hidden sm:block"></div>
+              
               <!-- Step 1 -->
-              <div class="roadmap-step">
-                <div class="step-number">1</div>
+              <div class="roadmap-step" id="step1">
+                <div class="step-number" onclick="completeStep(1)">1</div>
                 <div class="step-card">
-                  <h3 class="step-title">Class 12 (Any Stream)</h3>
-                  <p class="step-desc">Complete 12th grade. Humanities/Arts with English preferred.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Class 12 (Any Stream)</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Complete 12th grade. Humanities/Arts with English preferred.</p>
                 </div>
               </div>
               
               <!-- Step 2 -->
-              <div class="roadmap-step">
-                <div class="step-number">2</div>
+              <div class="roadmap-step" id="step2">
+                <div class="step-number" onclick="completeStep(2)">2</div>
                 <div class="step-card">
-                  <h3 class="step-title">Undergraduate Degree</h3>
-                  <p class="step-desc">Choose the right program for journalism.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Undergraduate Degree</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Choose the right program for journalism.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">BA Journalism</div><div class="path-desc">3 years - Mass Comm, Journalism, Media Studies</div></div>
-                    <div class="path-card"><div class="path-title">BJMC</div><div class="path-desc">3 years - Bachelor of Journalism & Mass Comm</div></div>
-                    <div class="path-card"><div class="path-title">BA English/Hons</div><div class="path-desc">3 years - Good foundation for writing</div></div>
+                    <div class="path-card"><div class="font-semibold">BA Journalism</div><div class="text-xs md:text-sm">3 years - Mass Comm, Journalism, Media Studies</div></div>
+                    <div class="path-card"><div class="font-semibold">BJMC</div><div class="text-xs md:text-sm">3 years - Bachelor of Journalism & Mass Comm</div></div>
+                    <div class="path-card"><div class="font-semibold">BA English/Hons</div><div class="text-xs md:text-sm">3 years - Good foundation for writing</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 3 -->
-              <div class="roadmap-step">
-                <div class="step-number">3</div>
+              <div class="roadmap-step" id="step3">
+                <div class="step-number" onclick="completeStep(3)">3</div>
                 <div class="step-card">
-                  <h3 class="step-title">Develop Core Skills</h3>
-                  <p class="step-desc">Master essential journalism skills.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Develop Core Skills</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Master essential journalism skills.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Writing</div><div class="path-desc">News writing, Feature writing, Editing, Proofreading</div></div>
-                    <div class="path-card"><div class="path-title">Multimedia</div><div class="path-desc">Photography, Video editing, Audio production</div></div>
-                    <div class="path-card"><div class="path-title">Digital</div><div class="path-desc">Social media, SEO, Content management</div></div>
+                    <div class="path-card"><div class="font-semibold">Writing</div><div class="text-xs md:text-sm">News writing, Feature writing, Editing, Proofreading</div></div>
+                    <div class="path-card"><div class="font-semibold">Multimedia</div><div class="text-xs md:text-sm">Photography, Video editing, Audio production</div></div>
+                    <div class="path-card"><div class="font-semibold">Digital</div><div class="text-xs md:text-sm">Social media, SEO, Content management</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 4 -->
-              <div class="roadmap-step">
-                <div class="step-number">4</div>
+              <div class="roadmap-step" id="step4">
+                <div class="step-number" onclick="completeStep(4)">4</div>
                 <div class="step-card">
-                  <h3 class="step-title">Internships & Experience</h3>
-                  <p class="step-desc">Gain practical experience in media houses.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Internships & Experience</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Gain practical experience in media houses.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Print Media</div><div class="path-desc">Newspapers, Magazines - Times of India, Hindu</div></div>
-                    <div class="path-card"><div class="path-title">Digital Media</div><div class="path-desc">News portals, YouTube channels, Blogs</div></div>
-                    <div class="path-card"><div class="path-title">Broadcast</div><div class="path-desc">TV channels - NDTV, CNN-News18, Republic</div></div>
+                    <div class="path-card"><div class="font-semibold">Print Media</div><div class="text-xs md:text-sm">Newspapers, Magazines - Times of India, Hindu</div></div>
+                    <div class="path-card"><div class="font-semibold">Digital Media</div><div class="text-xs md:text-sm">News portals, YouTube channels, Blogs</div></div>
+                    <div class="path-card"><div class="font-semibold">Broadcast</div><div class="text-xs md:text-sm">TV channels - NDTV, CNN-News18, Republic</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 5 -->
-              <div class="roadmap-step">
-                <div class="step-number">5</div>
+              <div class="roadmap-step" id="step5">
+                <div class="step-number" onclick="completeStep(5)">5</div>
                 <div class="step-card">
-                  <h3 class="step-title">Specializations</h3>
-                  <p class="step-desc">Choose your area of expertise.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Specializations</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Choose your area of expertise.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Political</div><div class="path-desc">Cover politics, parliament, elections</div></div>
-                    <div class="path-card"><div class="path-title">Business</div><div class="path-desc">Markets, economy, corporate news</div></div>
-                    <div class="path-card"><div class="path-title">Sports</div><div class="path-desc">Sports events, athlete interviews</div></div>
-                    <div class="path-card"><div class="path-title">Entertainment</div><div class="path-desc">Bollywood, celebrity news, reviews</div></div>
+                    <div class="path-card"><div class="font-semibold">Political</div><div class="text-xs md:text-sm">Cover politics, parliament, elections</div></div>
+                    <div class="path-card"><div class="font-semibold">Business</div><div class="text-xs md:text-sm">Markets, economy, corporate news</div></div>
+                    <div class="path-card"><div class="font-semibold">Sports</div><div class="text-xs md:text-sm">Sports events, athlete interviews</div></div>
+                    <div class="path-card"><div class="font-semibold">Entertainment</div><div class="text-xs md:text-sm">Bollywood, celebrity news, reviews</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 6 -->
-              <div class="roadmap-step">
-                <div class="step-number">6</div>
+              <div class="roadmap-step" id="step6">
+                <div class="step-number" onclick="completeStep(6)">6</div>
                 <div class="step-card">
-                  <h3 class="step-title">Career Growth & Earnings</h3>
-                  <p class="step-desc">Journalism offers diverse career paths.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Career Growth & Earnings</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Journalism offers diverse career paths.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Reporter</div><div class="path-desc">0-2 years (₹2.5-5 LPA)</div></div>
-                    <div class="path-card"><div class="path-title">Senior Reporter</div><div class="path-desc">2-5 years (₹5-8 LPA)</div></div>
-                    <div class="path-card"><div class="path-title">Editor</div><div class="path-desc">5-10 years (₹8-15 LPA)</div></div>
-                    <div class="path-card"><div class="path-title">News Anchor</div><div class="path-desc">(₹6-20 LPA depending on channel)</div></div>
-                    <div class="path-card"><div class="path-title">Freelance</div><div class="path-desc">₹1000-5000 per article</div></div>
+                    <div class="path-card"><div class="font-semibold">Reporter</div><div class="text-xs md:text-sm">0-2 years (₹2.5-5 LPA)</div></div>
+                    <div class="path-card"><div class="font-semibold">Senior Reporter</div><div class="text-xs md:text-sm">2-5 years (₹5-8 LPA)</div></div>
+                    <div class="path-card"><div class="font-semibold">Editor</div><div class="text-xs md:text-sm">5-10 years (₹8-15 LPA)</div></div>
+                    <div class="path-card"><div class="font-semibold">News Anchor</div><div class="text-xs md:text-sm">₹6-20 LPA depending on channel</div></div>
+                    <div class="path-card"><div class="font-semibold">Freelance</div><div class="text-xs md:text-sm">₹1000-5000 per article</div></div>
                   </div>
                 </div>
               </div>
@@ -196,63 +360,105 @@
         </div>
         
         <!-- Right Column - Sidebar -->
-        <div class="lg:w-1/3 space-y-6">
-          <div class="glass-card p-6 rounded-2xl">
-            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-info-circle text-orange-600 mr-2"></i> Quick Info</h3>
-            <ul class="space-y-3">
-              <li class="flex items-start"><i class="fas fa-clock text-orange-500 mt-1 mr-3"></i><div><span class="font-semibold">Duration:</span> <span class="text-slate-600">3 years (Graduation)</span></div></li>
-              <li class="flex items-start"><i class="fas fa-graduation-cap text-orange-500 mt-1 mr-3"></i><div><span class="font-semibold">Entrance Exams:</span> <span class="text-slate-600">IIMC, XIC, ACJ entrance tests</span></div></li>
-              <li class="flex items-start"><i class="fas fa-rupee-sign text-orange-500 mt-1 mr-3"></i><div><span class="font-semibold">Course Fees:</span> <span class="text-slate-600">₹30,000-5 Lakhs</span></div></li>
-              <li class="flex items-start"><i class="fas fa-trophy text-orange-500 mt-1 mr-3"></i><div><span class="font-semibold">Starting Salary:</span> <span class="text-slate-600">₹2.5-5 LPA</span></div></li>
+        <div class="lg:w-1/3 space-y-4 md:space-y-6">
+          <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl">
+            <h3 class="font-bold text-base md:text-lg mb-3 flex items-center"><i class="fas fa-info-circle text-orange-600 mr-2"></i> Quick Info</h3>
+            <ul class="space-y-2 md:space-y-3 text-sm md:text-base">
+              <li class="flex items-start"><i class="fas fa-clock text-orange-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Duration:</span> <span class="text-slate-600">3 years (Graduation)</span></div></li>
+              <li class="flex items-start"><i class="fas fa-graduation-cap text-orange-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Entrance Exams:</span> <span class="text-slate-600">IIMC, XIC, ACJ entrance tests</span></div></li>
+              <li class="flex items-start"><i class="fas fa-rupee-sign text-orange-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Course Fees:</span> <span class="text-slate-600">₹30k-5 Lakhs</span></div></li>
+              <li class="flex items-start"><i class="fas fa-trophy text-orange-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Starting Salary:</span> <span class="text-slate-600">₹2.5-5 LPA</span></div></li>
             </ul>
           </div>
           
-          <div class="glass-card p-6 rounded-2xl">
-            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-university text-orange-600 mr-2"></i> Top Institutes</h3>
-            <ul class="space-y-3">
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>IIMC, Delhi</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Xavier's Institute of Comm, Mumbai</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Asian College of Journalism, Chennai</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Symbiosis, Pune</li>
+          <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl">
+            <h3 class="font-bold text-base md:text-lg mb-3 flex items-center"><i class="fas fa-university text-orange-600 mr-2"></i> Top Institutes</h3>
+            <ul class="space-y-2 text-sm md:text-base">
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>IIMC, Delhi</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Xavier's Institute of Comm, Mumbai</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Asian College of Journalism, Chennai</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Symbiosis, Pune</li>
             </ul>
           </div>
           
-          <div class="glass-card p-6 rounded-2xl">
-            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-brain text-orange-600 mr-2"></i> Key Skills</h3>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-sm">Writing</span>
-              <span class="px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-sm">Research</span>
-              <span class="px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-sm">Communication</span>
-              <span class="px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-sm">Ethics</span>
+          <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl">
+            <h3 class="font-bold text-base md:text-lg mb-3 flex items-center"><i class="fas fa-brain text-orange-600 mr-2"></i> Key Skills</h3>
+            <div class="flex flex-wrap gap-1 md:gap-2">
+              <span class="px-2 md:px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-xs md:text-sm">Writing</span>
+              <span class="px-2 md:px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-xs md:text-sm">Research</span>
+              <span class="px-2 md:px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-xs md:text-sm">Communication</span>
+              <span class="px-2 md:px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-xs md:text-sm">Ethics</span>
             </div>
           </div>
           
-          <div class="bg-gradient-to-br from-orange-600 to-orange-700 rounded-2xl p-6 text-white">
-            <i class="fas fa-rocket text-3xl mb-4"></i>
-            <h3 class="text-xl font-bold mb-2">Start Your Media Journey</h3>
-            <a href="quiz.html" class="block w-full bg-white text-orange-600 font-semibold py-3 px-4 rounded-xl text-center hover:bg-orange-50 transition-colors">
-              Take Quiz <i class="fas fa-arrow-right ml-2"></i>
-            </a>
+          <div class="bg-gradient-to-br from-orange-600 to-orange-700 rounded-xl md:rounded-2xl p-4 md:p-6 text-white">
+            <i class="fas fa-rocket text-2xl md:text-3xl mb-2 md:mb-4"></i>
+            <h3 class="text-lg md:text-xl font-bold mb-2">Track Your Media Journey</h3>
+            <p class="text-sm mb-3">Click each step number as you complete it, then download your personalized roadmap!</p>
+            <button onclick="resetProgress()" class="block w-full bg-white text-orange-600 font-semibold py-2 md:py-3 px-4 rounded-lg md:rounded-xl text-center hover:bg-orange-50 transition-colors text-sm md:text-base">
+              <i class="fas fa-redo-alt mr-2"></i>Reset Progress
+            </button>
           </div>
         </div>
       </div>
       
-      <div id="footer" class="mt-16"></div>
+      <!-- Footer -->
+      <div id="footer" class="mt-8 md:mt-16"></div>
     </div>
   </main>
   
-  <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-orange-600 to-orange-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
+  <button id="backToTop" class="fixed bottom-4 right-4 md:bottom-8 md:right-8 w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-orange-600 to-orange-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
     <i class="fas fa-arrow-up"></i>
   </button>
   
   <script>
+    // Array to track completed steps
+    let completedSteps = [];
+    
     document.addEventListener('DOMContentLoaded', () => {
-      fetch('components/header.html').then(r=>r.text()).then(d=>document.getElementById('header').innerHTML=d);
-      fetch('components/footer.html').then(r=>r.text()).then(d=>document.getElementById('footer').innerHTML=d);
+      // Load header from components - ONLY this, no new navbar created
+      fetch('components/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header').innerHTML = data;
+        })
+        .catch(error => {
+          console.log('Header not found, but not creating new one - just leaving empty');
+          // Don't create fallback navbar, just leave empty as requested
+        });
       
+      // Load footer
+      fetch('components/footer.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer').innerHTML = data;
+        })
+        .catch(error => {
+          document.getElementById('footer').innerHTML = '<div class="text-center text-slate-500 text-xs md:text-sm py-4 md:py-6 border-t border-slate-200">© 2025 StudentRoadmap. All rights reserved.</div>';
+        });
+      
+      // Load saved progress from localStorage
+      const saved = localStorage.getItem('journalistProgress');
+      if (saved) {
+        completedSteps = JSON.parse(saved);
+        completedSteps.forEach(step => {
+          const stepElement = document.getElementById(`step${step}`);
+          if (stepElement) {
+            stepElement.classList.add('completed');
+          }
+        });
+        updateProgress();
+        
+        // Show completion message if all steps done
+        if (completedSteps.length === 6) {
+          document.getElementById('completionMessage').classList.add('show');
+        }
+      }
+      
+      // Back to top button
       const backToTop = document.getElementById('backToTop');
       window.addEventListener('scroll', () => {
-        if (window.scrollY > 500) {
+        if (window.scrollY > 300) {
           backToTop.classList.remove('opacity-0', 'translate-y-4');
           backToTop.classList.add('opacity-100', 'translate-y-0');
         } else {
@@ -260,12 +466,139 @@
           backToTop.classList.add('opacity-0', 'translate-y-4');
         }
       });
+      
       backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     });
     
-    function downloadPDF() {
-      const element = document.querySelector('.roadmap-container').cloneNode(true);
-      html2pdf().set({ margin: 1, filename: 'journalist-roadmap.pdf' }).from(element).save();
+    function completeStep(stepNumber) {
+      const stepElement = document.getElementById(`step${stepNumber}`);
+      
+      if (!stepElement.classList.contains('completed')) {
+        // Mark as completed
+        stepElement.classList.add('completed');
+        completedSteps.push(stepNumber);
+        completedSteps.sort((a, b) => a - b);
+        
+        // Save to localStorage
+        localStorage.setItem('journalistProgress', JSON.stringify(completedSteps));
+        
+        // Update progress bar
+        updateProgress();
+        
+        // Show completion message if all steps done (6 steps total)
+        if (completedSteps.length === 6) {
+          document.getElementById('completionMessage').classList.add('show');
+        }
+        
+        // Show success toast
+        showToast(`Step ${stepNumber} completed! 📰`);
+      }
+    }
+    
+    function updateProgress() {
+      const progress = (completedSteps.length / 6) * 100;
+      document.getElementById('progressFill').style.width = `${progress}%`;
+      document.getElementById('progressText').textContent = `${completedSteps.length}/6 Steps`;
+    }
+    
+    function resetProgress() {
+      // Remove completed class from all steps
+      for (let i = 1; i <= 6; i++) {
+        const step = document.getElementById(`step${i}`);
+        if (step) {
+          step.classList.remove('completed');
+        }
+      }
+      
+      // Clear completed steps array
+      completedSteps = [];
+      
+      // Clear localStorage
+      localStorage.removeItem('journalistProgress');
+      
+      // Update progress bar
+      updateProgress();
+      
+      // Hide completion message
+      document.getElementById('completionMessage').classList.remove('show');
+      
+      showToast('Progress reset successfully');
+    }
+    
+    function showToast(message) {
+      // Create toast element
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-20 right-4 bg-orange-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-bounce';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      // Remove after 2 seconds
+      setTimeout(() => {
+        toast.remove();
+      }, 2000);
+    }
+    
+    function downloadPersonalizedPDF() {
+      if (completedSteps.length === 0) {
+        alert('Please complete at least one step before downloading!');
+        return;
+      }
+      
+      // Create personalized PDF content
+      const content = document.createElement('div');
+      content.innerHTML = `
+        <div style="padding: 30px; font-family: 'Poppins', sans-serif; max-width: 800px; margin: 0 auto;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #f97316; font-size: 28px; margin-bottom: 10px;">Journalist Roadmap</h1>
+            <h2 style="color: #4b5563; font-size: 18px;">Your Personalised Journalism Journey</h2>
+            <div style="height: 4px; background: linear-gradient(90deg, #f97316, #10b981); width: 100px; margin: 20px auto;"></div>
+          </div>
+          
+          <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-bottom: 25px;">
+            <p style="font-size: 16px; color: #1e293b; margin-bottom: 15px;">
+              <strong>Congratulations, Journalist!</strong> You have successfully completed ${completedSteps.length} out of 6 steps in your journalism journey.
+            </p>
+            <p style="font-size: 14px; color: #64748b;">Generated on: ${new Date().toLocaleDateString()}</p>
+          </div>
+          
+          <h3 style="color: #f97316; font-size: 20px; margin-bottom: 15px;">Completed Steps:</h3>
+          <div style="margin-bottom: 30px;">
+            ${completedSteps.map(step => {
+              const stepNames = {
+                1: 'Class 12 (Any Stream)',
+                2: 'Undergraduate Degree',
+                3: 'Develop Core Skills',
+                4: 'Internships & Experience',
+                5: 'Specializations',
+                6: 'Career Growth & Earnings'
+              };
+              return `
+                <div style="background: white; border-left: 4px solid #10b981; padding: 12px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  <strong style="color: #059669;">Step ${step}:</strong> ${stepNames[step]}
+                </div>
+              `;
+            }).join('')}
+          </div>
+          
+          <div style="background: linear-gradient(135deg, #f97316, #ea580c); color: white; padding: 20px; border-radius: 12px; text-align: center;">
+            <p style="font-size: 18px; margin-bottom: 10px;">📰 The pen is mightier than the sword!</p>
+            <p style="font-size: 14px; opacity: 0.9;">Your journalism career is on the right track. Keep seeking truth and telling stories.</p>
+          </div>
+          
+          <div style="margin-top: 30px; text-align: center; color: #94a3b8; font-size: 12px;">
+            © 2025 StudentRoadmap - Your Personalised Journalist Roadmap
+          </div>
+        </div>
+      `;
+      
+      // Generate PDF
+      html2pdf().set({
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: `journalist-roadmap-completed-${completedSteps.length}-steps.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, letterRendering: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      }).from(content).save();
     }
   </script>
 </body>
