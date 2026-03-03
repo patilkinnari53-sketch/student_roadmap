@@ -1,17 +1,17 @@
-<!-- COMPLETE WORKING HEADER - Copy this entire file -->
-<header style="background: white; border-bottom: 2px solid #0ea5e9; padding: 12px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; position: sticky; top: 0; z-index: 1000;">
+<!-- Simple Responsive Header -->
+<header style="background: white; border-bottom: 2px solid #0ea5e9; padding: 12px 0; font-family: 'Poppins', sans-serif; position: sticky; top: 0; z-index: 1000;">
   <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between;">
     
     <!-- Logo -->
     <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-      <div style="width: 40px; height: 40px; background: #0ea5e9; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
+      <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #0ea5e9, #8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
         🎓
       </div>
       <span style="font-size: 20px; font-weight: bold; color: #1e293b;">StudentRoadmap</span>
     </a>
     
-    <!-- Navigation -->
-    <nav style="display: flex; gap: 30px;">
+    <!-- Desktop Navigation -->
+    <nav style="display: flex; gap: 30px;" class="desktop-nav">
       <a href="index.html" style="text-decoration: none; color: #4b5563; font-weight: 500;">Home</a>
       <a href="roadmap.html" style="text-decoration: none; color: #4b5563; font-weight: 500;">Roadmaps</a>
       <a href="quiz.html" style="text-decoration: none; color: #4b5563; font-weight: 500;">Quiz</a>
@@ -19,15 +19,46 @@
       <a href="contact.html" style="text-decoration: none; color: #4b5563; font-weight: 500;">Contact</a>
     </nav>
     
-    <!-- Auth Buttons -->
-    <div style="display: flex; gap: 15px; align-items: center;">
+    <!-- Desktop Auth Buttons -->
+    <div style="display: flex; gap: 15px;" class="desktop-auth">
       <a href="login.html" style="text-decoration: none; color: #0ea5e9; font-weight: 600;">Sign In</a>
-      <a href="signup.html" style="background: #0ea5e9; color: white; text-decoration: none; font-weight: 600; padding: 10px 24px; border-radius: 30px;">Get Started Free</a>
+      <a href="signup.html" style="background: #0ea5e9; color: white; text-decoration: none; font-weight: 600; padding: 10px 24px; border-radius: 30px;">Get Started</a>
     </div>
     
-    <!-- Mobile menu button (hidden on desktop) -->
-    <button style="display: none; background: none; border: none; font-size: 24px; cursor: pointer;" id="mobileMenuBtn">
+    <!-- Mobile Menu Button -->
+    <button id="mobileMenuBtn" style="display: none; background: none; border: none; font-size: 24px; cursor: pointer; color: #0ea5e9;">
       ☰
     </button>
   </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" style="display: none; background: white; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <nav style="display: flex; flex-direction: column; gap: 15px;">
+      <a href="index.html" style="text-decoration: none; color: #1e293b; padding: 10px; border-bottom: 1px solid #e2e8f0;">Home</a>
+      <a href="roadmap.html" style="text-decoration: none; color: #1e293b; padding: 10px; border-bottom: 1px solid #e2e8f0;">Roadmaps</a>
+      <a href="quiz.html" style="text-decoration: none; color: #1e293b; padding: 10px; border-bottom: 1px solid #e2e8f0;">Quiz</a>
+      <a href="about.html" style="text-decoration: none; color: #1e293b; padding: 10px; border-bottom: 1px solid #e2e8f0;">About</a>
+      <a href="contact.html" style="text-decoration: none; color: #1e293b; padding: 10px; border-bottom: 1px solid #e2e8f0;">Contact</a>
+      <a href="login.html" style="text-decoration: none; color: #0ea5e9; padding: 10px;">Sign In</a>
+      <a href="signup.html" style="background: #0ea5e9; color: white; text-decoration: none; padding: 12px; text-align: center; border-radius: 8px;">Get Started</a>
+    </nav>
+  </div>
 </header>
+
+<style>
+  @media (max-width: 768px) {
+    .desktop-nav, .desktop-auth {
+      display: none !important;
+    }
+    #mobileMenuBtn {
+      display: block !important;
+    }
+  }
+</style>
+
+<script>
+  document.getElementById('mobileMenuBtn')?.addEventListener('click', function() {
+    const menu = document.getElementById('mobileMenu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  });
+</script>
