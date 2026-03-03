@@ -2,7 +2,7 @@
 <html class="light" lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
   <title>Pharmacist Roadmap - StudentRoadmap</title>
   
   <!-- Fonts & Icons -->
@@ -16,20 +16,63 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+      overflow-x: hidden;
     }
     
-    .roadmap-container { position: relative; padding-left: 2rem; }
+    /* Mobile dropdown menu styles - for header */
+    .mobile-nav {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      background: white;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .mobile-nav.open {
+      max-height: 400px;
+      transition: max-height 0.5s ease-in;
+    }
+    .nav-link {
+      display: block;
+      padding: 0.75rem 1rem;
+      color: #1e293b;
+      font-weight: 500;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .nav-link:last-child { border-bottom: none; }
+    .nav-link:hover { background: #f1f5f9; }
+    
+    /* Mobile first roadmap */
+    .roadmap-container { 
+      position: relative; 
+      padding-left: 1rem; 
+    }
+    @media (min-width: 640px) {
+      .roadmap-container { padding-left: 2rem; }
+    }
+    
     .roadmap-line {
-      position: absolute; left: 27px; top: 0.5rem; bottom: 0.5rem;
+      position: absolute; left: 20px; top: 0.5rem; bottom: 0.5rem;
       width: 3px; background: linear-gradient(to bottom, #10b981, #059669); border-radius: 999px;
     }
-    .roadmap-step {
-      position: relative; display: flex; gap: 1.5rem; margin-bottom: 2.5rem;
-      opacity: 0; animation: slideIn 0.5s ease-out forwards;
+    @media (min-width: 640px) {
+      .roadmap-line { left: 27px; }
     }
+    
+    .roadmap-step {
+      position: relative; display: flex; gap: 1rem; margin-bottom: 2rem;
+      opacity: 0; animation: slideIn 0.5s ease-out forwards;
+      flex-wrap: wrap;
+    }
+    @media (min-width: 640px) {
+      .roadmap-step { gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: nowrap; }
+    }
+    
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(-20px); }
       to { opacity: 1; transform: translateX(0); }
@@ -42,153 +85,274 @@
     .roadmap-step:nth-child(6) { animation-delay: 0.6s; }
     
     .step-number {
-      width: 3.5rem; height: 3.5rem; background: white; border: 3px solid #10b981;
+      width: 2.8rem; height: 2.8rem; background: white; border: 3px solid #10b981;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 1.25rem; color: #10b981; position: relative; z-index: 10;
+      font-weight: 800; font-size: 1.1rem; color: #10b981; position: relative; z-index: 10;
       box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); transition: all 0.3s ease;
+      flex-shrink: 0;
+      cursor: pointer;
     }
-    .roadmap-step:hover .step-number {
-      transform: scale(1.1); background: #10b981; color: white;
+    @media (min-width: 640px) {
+      .step-number { width: 3.5rem; height: 3.5rem; font-size: 1.25rem; }
     }
+    
+    /* Completed step styling */
+    .roadmap-step.completed .step-number {
+      background: #10b981;
+      border-color: #059669;
+      color: white;
+    }
+    
+    .roadmap-step.completed .step-card {
+      border-left: 4px solid #10b981;
+      background: #f0fdf4;
+    }
+    
+    .step-number:hover::after {
+      content: "💊 Click to complete";
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.5rem;
+      white-space: nowrap;
+      z-index: 20;
+      pointer-events: none;
+    }
+    
+    .roadmap-step.completed .step-number:hover::after {
+      content: "✓ Completed";
+    }
+    
+    @media (max-width: 640px) {
+      .step-number:hover::after {
+        font-size: 0.6rem;
+        padding: 0.2rem 0.4rem;
+      }
+    }
+    
     .step-card {
-      flex: 1; background: white; border-radius: 1rem; padding: 1.5rem;
+      flex: 1; background: white; border-radius: 1rem; padding: 1rem;
       box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid #f1f5f9;
       transition: all 0.3s ease;
+      min-width: 200px;
     }
+    @media (min-width: 640px) {
+      .step-card { padding: 1.5rem; }
+    }
+    
     .roadmap-step:hover .step-card {
       transform: translateX(5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
       border-color: #a7f3d0;
     }
+    
     .path-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;
+      display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 0.75rem;
     }
+    @media (min-width: 400px) {
+      .path-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 768px) {
+      .path-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    }
+    
     .path-card {
-      background: #f8fafc; border-left: 4px solid #10b981; padding: 1rem; border-radius: 0.75rem;
+      background: #f8fafc; border-left: 4px solid #10b981; padding: 0.75rem; border-radius: 0.75rem;
     }
+    
     .glass-card {
       background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);
       box-shadow: 0 8px 32px rgba(16,185,129,0.1); transition: all 0.3s ease;
     }
     .glass-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(16,185,129,0.15); }
+    
     .btn-gradient {
       background: linear-gradient(135deg, #10b981, #059669); color: white; transition: all 0.3s ease;
     }
     .btn-gradient:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(16,185,129,0.4); }
+    
+    /* Progress bar */
+    .progress-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #10b981);
+      transition: width 0.3s ease;
+    }
+    
+    /* Completion message */
+    .completion-message {
+      display: none;
+      background: #10b981;
+      color: white;
+      padding: 1rem;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .completion-message.show {
+      display: block;
+      animation: slideDown 0.5s ease;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Better mobile typography */
+    @media (max-width: 640px) {
+      h1 { font-size: 1.8rem !important; }
+      h2 { font-size: 1.5rem !important; }
+      h3 { font-size: 1.2rem !important; }
+      .step-title { font-size: 1.1rem; }
+      .path-title { font-size: 0.95rem; }
+      .path-desc { font-size: 0.85rem; }
+    }
   </style>
 </head>
-<body class="text-slate-800">
+<body class="text-slate-800 min-h-screen">
+  <!-- Header will be loaded here from components/header.html -->
   <div id="header"></div>
 
-  <main class="relative z-10 py-12">
-    <div class="container mx-auto px-4">
+  <main class="relative z-10 py-6 md:py-12">
+    <div class="container mx-auto px-3 sm:px-4">
       
-      <!-- Career Header -->
-      <div class="bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-3xl p-8 md:p-12 mb-12 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-20 -mt-20"></div>
-        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full -ml-20 -mb-20"></div>
+      <!-- Career Header - Mobile optimized -->
+      <div class="bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-2xl md:rounded-3xl p-5 md:p-8 lg:p-12 mb-6 md:mb-12 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+        <div class="absolute bottom-0 left-0 w-32 h-32 md:w-48 md:h-48 bg-white opacity-10 rounded-full -ml-16 -mb-16"></div>
         
-        <div class="relative flex flex-col md:flex-row items-center gap-8">
-          <div class="w-24 h-24 md:w-32 md:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl md:text-6xl shadow-xl border border-white/30">
+        <div class="relative flex flex-col items-center text-center">
+          <div class="w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl md:text-4xl lg:text-6xl shadow-xl border border-white/30 mb-3">
             💊
           </div>
-          <div class="flex-1 text-center md:text-left">
-            <h1 class="text-3xl md:text-4xl font-bold mb-2">Pharmacist Roadmap</h1>
-            <p class="text-lg text-white/90 max-w-2xl">Complete guide to becoming a licensed pharmacist in India</p>
+          <div class="w-full">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Pharmacist</h1>
+            <p class="text-sm md:text-lg text-white/90 max-w-2xl mx-auto">Click on each step number as you complete it. Download your personalized pharmacy roadmap PDF when done!</p>
           </div>
-          <button onclick="downloadPDF()" class="btn-gradient px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2">
-            <i class="fas fa-file-pdf"></i> Download PDF
-          </button>
         </div>
       </div>
 
-      <div class="flex flex-col lg:flex-row gap-8">
+      <!-- Progress Tracker -->
+      <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl mb-4 md:mb-6">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="font-semibold text-sm md:text-base">Your Pharmacy Journey Progress</h3>
+          <span id="progressText" class="text-emerald-600 font-bold">0/6 Steps</span>
+        </div>
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Completion Message -->
+      <div id="completionMessage" class="completion-message">
+        <i class="fas fa-check-circle text-2xl mb-2"></i>
+        <h3 class="text-lg font-bold">Congratulations Pharmacist! 🎉</h3>
+        <p class="mb-3">You've completed all 6 steps! Click below to download your personalized pharmacy roadmap document.</p>
+        <button onclick="downloadPersonalizedPDF()" class="bg-white text-green-600 font-semibold py-2 px-6 rounded-lg hover:bg-green-50 transition-colors">
+          <i class="fas fa-file-pdf mr-2"></i>Download My Pharmacist Roadmap PDF
+        </button>
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-4 md:gap-8">
         <!-- Left Column - Roadmap -->
         <div class="lg:w-2/3">
-          <div class="glass-card p-8 rounded-2xl mb-8">
-            <h2 class="text-2xl font-bold mb-6 flex items-center">
-              <i class="fas fa-road text-emerald-600 mr-3"></i> Complete Roadmap
+          <div class="glass-card p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl mb-4 md:mb-8">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+              <i class="fas fa-road text-emerald-600 mr-2 md:mr-3"></i> Complete Pharmacy Roadmap
+              <span class="ml-auto text-xs md:text-sm text-slate-500">Click numbers to complete steps</span>
             </h2>
             
             <div class="roadmap-container">
+              <div class="roadmap-line hidden sm:block"></div>
+              
               <!-- Step 1 -->
-              <div class="roadmap-step">
-                <div class="step-number">1</div>
+              <div class="roadmap-step" id="step1">
+                <div class="step-number" onclick="completeStep(1)">1</div>
                 <div class="step-card">
-                  <h3 class="step-title">Class 11-12 (PCB)</h3>
-                  <p class="step-desc">Take Physics, Chemistry, Biology with English. Minimum 50% marks required.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Class 11-12 (PCB)</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Take Physics, Chemistry, Biology with English. Minimum 50% marks required.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Core Subjects</div><div class="path-desc">Physics, Chemistry, Biology, English</div></div>
-                    <div class="path-card"><div class="path-title">Minimum Marks</div><div class="path-desc">50% in PCB (40% for reserved categories)</div></div>
+                    <div class="path-card"><div class="font-semibold">Core Subjects</div><div class="text-xs md:text-sm">Physics, Chemistry, Biology, English</div></div>
+                    <div class="path-card"><div class="font-semibold">Minimum Marks</div><div class="text-xs md:text-sm">50% in PCB (40% for reserved categories)</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 2 -->
-              <div class="roadmap-step">
-                <div class="step-number">2</div>
+              <div class="roadmap-step" id="step2">
+                <div class="step-number" onclick="completeStep(2)">2</div>
                 <div class="step-card">
-                  <h3 class="step-title">Choose Your Path</h3>
-                  <p class="step-desc">Select the right pharmacy program based on your career goals.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Choose Your Path</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Select the right pharmacy program based on your career goals.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Diploma (D.Pharm)</div><div class="path-desc">2 years, can start pharmacy business or work as pharmacist</div></div>
-                    <div class="path-card"><div class="path-title">Bachelor (B.Pharm)</div><div class="path-desc">4 years, better career opportunities and higher salary</div></div>
-                    <div class="path-card"><div class="path-title">Direct Entry</div><div class="path-desc">After B.Sc, 2 years B.Pharm (lateral entry)</div></div>
+                    <div class="path-card"><div class="font-semibold">Diploma (D.Pharm)</div><div class="text-xs md:text-sm">2 years, can start pharmacy business</div></div>
+                    <div class="path-card"><div class="font-semibold">Bachelor (B.Pharm)</div><div class="text-xs md:text-sm">4 years, better career opportunities</div></div>
+                    <div class="path-card"><div class="font-semibold">Direct Entry</div><div class="text-xs md:text-sm">After B.Sc, 2 years B.Pharm (lateral entry)</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 3 -->
-              <div class="roadmap-step">
-                <div class="step-number">3</div>
+              <div class="roadmap-step" id="step3">
+                <div class="step-number" onclick="completeStep(3)">3</div>
                 <div class="step-card">
-                  <h3 class="step-title">D.Pharm (2 Years)</h3>
-                  <p class="step-desc">Diploma in Pharmacy - basic qualification to practice as a pharmacist.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">D.Pharm (2 Years)</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Diploma in Pharmacy - basic qualification to practice.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Year 1</div><div class="path-desc">Pharmaceutics, Pharmacology, Pharmacognosy</div></div>
-                    <div class="path-card"><div class="path-title">Year 2</div><div class="path-desc">Hospital Pharmacy, Clinical Pharmacy, Drug Store Management</div></div>
-                    <div class="path-card"><div class="path-title">Internship</div><div class="path-desc">500 hours practical training in hospital/retail pharmacy</div></div>
+                    <div class="path-card"><div class="font-semibold">Year 1</div><div class="text-xs md:text-sm">Pharmaceutics, Pharmacology, Pharmacognosy</div></div>
+                    <div class="path-card"><div class="font-semibold">Year 2</div><div class="text-xs md:text-sm">Hospital Pharmacy, Clinical Pharmacy, Drug Store Management</div></div>
+                    <div class="path-card"><div class="font-semibold">Internship</div><div class="text-xs md:text-sm">500 hours practical training</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 4 -->
-              <div class="roadmap-step">
-                <div class="step-number">4</div>
+              <div class="roadmap-step" id="step4">
+                <div class="step-number" onclick="completeStep(4)">4</div>
                 <div class="step-card">
-                  <h3 class="step-title">B.Pharm (4 Years) - Optional</h3>
-                  <p class="step-desc">Bachelor of Pharmacy for advanced career opportunities.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">B.Pharm (4 Years) - Optional</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Bachelor of Pharmacy for advanced career opportunities.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Year 1-2</div><div class="path-desc">Pharmaceutical Chemistry, Pharmacology, Pharmaceutics</div></div>
-                    <div class="path-card"><div class="path-title">Year 3-4</div><div class="path-desc">Medicinal Chemistry, Pharmacy Practice, Biotechnology</div></div>
-                    <div class="path-card"><div class="path-title">Project Work</div><div class="path-desc">Research project in final year</div></div>
+                    <div class="path-card"><div class="font-semibold">Year 1-2</div><div class="text-xs md:text-sm">Pharmaceutical Chemistry, Pharmacology, Pharmaceutics</div></div>
+                    <div class="path-card"><div class="font-semibold">Year 3-4</div><div class="text-xs md:text-sm">Medicinal Chemistry, Pharmacy Practice, Biotechnology</div></div>
+                    <div class="path-card"><div class="font-semibold">Project Work</div><div class="text-xs md:text-sm">Research project in final year</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 5 -->
-              <div class="roadmap-step">
-                <div class="step-number">5</div>
+              <div class="roadmap-step" id="step5">
+                <div class="step-number" onclick="completeStep(5)">5</div>
                 <div class="step-card">
-                  <h3 class="step-title">Pharmacy Council Registration</h3>
-                  <p class="step-desc">Register with State Pharmacy Council to practice legally.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Pharmacy Council Registration</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Register with State Pharmacy Council to practice legally.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Documents</div><div class="path-desc">Degree certificate, internship proof, identity proof</div></div>
-                    <div class="path-card"><div class="path-title">License</div><div class="path-desc">Receive pharmacist license to practice</div></div>
+                    <div class="path-card"><div class="font-semibold">Documents</div><div class="text-xs md:text-sm">Degree certificate, internship proof, identity proof</div></div>
+                    <div class="path-card"><div class="font-semibold">License</div><div class="text-xs md:text-sm">Receive pharmacist license to practice</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 6 -->
-              <div class="roadmap-step">
-                <div class="step-number">6</div>
+              <div class="roadmap-step" id="step6">
+                <div class="step-number" onclick="completeStep(6)">6</div>
                 <div class="step-card">
-                  <h3 class="step-title">Career Paths & Earnings</h3>
-                  <p class="step-desc">Choose your career path based on your qualifications and interests.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Career Paths & Earnings</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Choose your career path based on your qualifications.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Retail Pharmacy</div><div class="path-desc">Own store or work at medical store (₹2-5 LPA)</div></div>
-                    <div class="path-card"><div class="path-title">Hospital Pharmacist</div><div class="path-desc">Work in government/private hospitals (₹3-6 LPA)</div></div>
-                    <div class="path-card"><div class="path-title">Pharmaceutical Industry</div><div class="path-desc">Production, QA/QC, R&D (₹4-8 LPA)</div></div>
-                    <div class="path-card"><div class="path-title">Higher Studies</div><div class="path-desc">M.Pharm, Pharm.D, PhD (₹5-12 LPA after PG)</div></div>
+                    <div class="path-card"><div class="font-semibold">Retail Pharmacy</div><div class="text-xs md:text-sm">Own store or work at medical store (₹2-5 LPA)</div></div>
+                    <div class="path-card"><div class="font-semibold">Hospital Pharmacist</div><div class="text-xs md:text-sm">Work in govt/private hospitals (₹3-6 LPA)</div></div>
+                    <div class="path-card"><div class="font-semibold">Pharmaceutical Industry</div><div class="text-xs md:text-sm">Production, QA/QC, R&D (₹4-8 LPA)</div></div>
+                    <div class="path-card"><div class="font-semibold">Higher Studies</div><div class="text-xs md:text-sm">M.Pharm, Pharm.D, PhD (₹5-12 LPA after PG)</div></div>
                   </div>
                 </div>
               </div>
@@ -197,66 +361,106 @@
         </div>
         
         <!-- Right Column - Sidebar -->
-        <div class="lg:w-1/3 space-y-6">
-          <div class="glass-card p-6 rounded-2xl">
-            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-info-circle text-emerald-600 mr-2"></i> Quick Info</h3>
-            <ul class="space-y-3">
-              <li class="flex items-start"><i class="fas fa-clock text-emerald-500 mt-1 mr-3"></i><div><span class="font-semibold">Duration:</span> <span class="text-slate-600">2 years (D.Pharm) or 4 years (B.Pharm)</span></div></li>
-              <li class="flex items-start"><i class="fas fa-graduation-cap text-emerald-500 mt-1 mr-3"></i><div><span class="font-semibold">Entry Exams:</span> <span class="text-slate-600">GPAT, State CETs, Merit-based</span></div></li>
-              <li class="flex items-start"><i class="fas fa-rupee-sign text-emerald-500 mt-1 mr-3"></i><div><span class="font-semibold">Course Fees:</span> <span class="text-slate-600">₹20,000-1 Lakh (D.Pharm), ₹40,000-3 Lakhs (B.Pharm)</span></div></li>
-              <li class="flex items-start"><i class="fas fa-trophy text-emerald-500 mt-1 mr-3"></i><div><span class="font-semibold">Starting Salary:</span> <span class="text-slate-600">₹2-5 LPA</span></div></li>
+        <div class="lg:w-1/3 space-y-4 md:space-y-6">
+          <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl">
+            <h3 class="font-bold text-base md:text-lg mb-3 flex items-center"><i class="fas fa-info-circle text-emerald-600 mr-2"></i> Quick Info</h3>
+            <ul class="space-y-2 md:space-y-3 text-sm md:text-base">
+              <li class="flex items-start"><i class="fas fa-clock text-emerald-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Duration:</span> <span class="text-slate-600">2 years (D.Pharm) or 4 years (B.Pharm)</span></div></li>
+              <li class="flex items-start"><i class="fas fa-graduation-cap text-emerald-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Entry Exams:</span> <span class="text-slate-600">GPAT, State CETs, Merit-based</span></div></li>
+              <li class="flex items-start"><i class="fas fa-rupee-sign text-emerald-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Course Fees:</span> <span class="text-slate-600">₹20k-1 Lakh (D.Pharm), ₹40k-3 Lakhs (B.Pharm)</span></div></li>
+              <li class="flex items-start"><i class="fas fa-trophy text-emerald-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Starting Salary:</span> <span class="text-slate-600">₹2-5 LPA</span></div></li>
             </ul>
           </div>
           
-          <div class="glass-card p-6 rounded-2xl">
-            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-university text-emerald-600 mr-2"></i> Top Colleges</h3>
-            <ul class="space-y-3">
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Jamia Hamdard, Delhi</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>BITS Pilani - Pharmacy</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Manipal College of Pharmacy</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>NIPER, Mohali</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Poona College of Pharmacy, Pune</li>
+          <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl">
+            <h3 class="font-bold text-base md:text-lg mb-3 flex items-center"><i class="fas fa-university text-emerald-600 mr-2"></i> Top Colleges</h3>
+            <ul class="space-y-2 text-sm md:text-base">
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Jamia Hamdard, Delhi</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>BITS Pilani - Pharmacy</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Manipal College of Pharmacy</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>NIPER, Mohali</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Poona College of Pharmacy, Pune</li>
             </ul>
           </div>
           
-          <div class="glass-card p-6 rounded-2xl">
-            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-brain text-emerald-600 mr-2"></i> Key Skills</h3>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-sm">Drug Knowledge</span>
-              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-sm">Patient Counseling</span>
-              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-sm">Inventory Management</span>
-              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-sm">Attention to Detail</span>
-              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-sm">Communication</span>
+          <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl">
+            <h3 class="font-bold text-base md:text-lg mb-3 flex items-center"><i class="fas fa-brain text-emerald-600 mr-2"></i> Key Skills</h3>
+            <div class="flex flex-wrap gap-1 md:gap-2">
+              <span class="px-2 md:px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs md:text-sm">Drug Knowledge</span>
+              <span class="px-2 md:px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs md:text-sm">Patient Counseling</span>
+              <span class="px-2 md:px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs md:text-sm">Inventory Management</span>
+              <span class="px-2 md:px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs md:text-sm">Attention to Detail</span>
             </div>
           </div>
           
-          <div class="bg-gradient-to-br from-emerald-600 to-green-600 rounded-2xl p-6 text-white">
-            <i class="fas fa-rocket text-3xl mb-4"></i>
-            <h3 class="text-xl font-bold mb-2">Start Your Pharmacy Journey</h3>
-            <p class="text-emerald-100 mb-4">Take our quiz to find the perfect medical path for you.</p>
-            <a href="quiz.html" class="block w-full bg-white text-emerald-600 font-semibold py-3 px-4 rounded-xl text-center hover:bg-emerald-50 transition-colors">
-              Take Quiz <i class="fas fa-arrow-right ml-2"></i>
-            </a>
+          <div class="bg-gradient-to-br from-emerald-600 to-green-600 rounded-xl md:rounded-2xl p-4 md:p-6 text-white">
+            <i class="fas fa-rocket text-2xl md:text-3xl mb-2 md:mb-4"></i>
+            <h3 class="text-lg md:text-xl font-bold mb-2">Track Your Pharmacy Journey</h3>
+            <p class="text-sm mb-3">Click each step number as you complete it, then download your personalized roadmap!</p>
+            <button onclick="resetProgress()" class="block w-full bg-white text-emerald-600 font-semibold py-2 md:py-3 px-4 rounded-lg md:rounded-xl text-center hover:bg-emerald-50 transition-colors text-sm md:text-base">
+              <i class="fas fa-redo-alt mr-2"></i>Reset Progress
+            </button>
           </div>
         </div>
       </div>
       
-      <div id="footer" class="mt-16"></div>
+      <!-- Footer -->
+      <div id="footer" class="mt-8 md:mt-16"></div>
     </div>
   </main>
   
-  <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-emerald-600 to-green-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
+  <button id="backToTop" class="fixed bottom-4 right-4 md:bottom-8 md:right-8 w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-emerald-600 to-green-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
     <i class="fas fa-arrow-up"></i>
   </button>
   
   <script>
+    // Array to track completed steps
+    let completedSteps = [];
+    
     document.addEventListener('DOMContentLoaded', () => {
-      fetch('components/header.html').then(r=>r.text()).then(d=>document.getElementById('header').innerHTML=d);
-      fetch('components/footer.html').then(r=>r.text()).then(d=>document.getElementById('footer').innerHTML=d);
+      // Load header from components - ONLY this, no new navbar created
+      fetch('components/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header').innerHTML = data;
+        })
+        .catch(error => {
+          console.log('Header not found, but not creating new one - just leaving empty');
+          // Don't create fallback navbar, just leave empty as requested
+        });
       
+      // Load footer
+      fetch('components/footer.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer').innerHTML = data;
+        })
+        .catch(error => {
+          document.getElementById('footer').innerHTML = '<div class="text-center text-slate-500 text-xs md:text-sm py-4 md:py-6 border-t border-slate-200">© 2025 StudentRoadmap. All rights reserved.</div>';
+        });
+      
+      // Load saved progress from localStorage
+      const saved = localStorage.getItem('pharmacistProgress');
+      if (saved) {
+        completedSteps = JSON.parse(saved);
+        completedSteps.forEach(step => {
+          const stepElement = document.getElementById(`step${step}`);
+          if (stepElement) {
+            stepElement.classList.add('completed');
+          }
+        });
+        updateProgress();
+        
+        // Show completion message if all steps done
+        if (completedSteps.length === 6) {
+          document.getElementById('completionMessage').classList.add('show');
+        }
+      }
+      
+      // Back to top button
       const backToTop = document.getElementById('backToTop');
       window.addEventListener('scroll', () => {
-        if (window.scrollY > 500) {
+        if (window.scrollY > 300) {
           backToTop.classList.remove('opacity-0', 'translate-y-4');
           backToTop.classList.add('opacity-100', 'translate-y-0');
         } else {
@@ -264,12 +468,139 @@
           backToTop.classList.add('opacity-0', 'translate-y-4');
         }
       });
+      
       backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     });
     
-    function downloadPDF() {
-      const element = document.querySelector('.roadmap-container').cloneNode(true);
-      html2pdf().set({ margin: 1, filename: 'pharmacist-roadmap.pdf' }).from(element).save();
+    function completeStep(stepNumber) {
+      const stepElement = document.getElementById(`step${stepNumber}`);
+      
+      if (!stepElement.classList.contains('completed')) {
+        // Mark as completed
+        stepElement.classList.add('completed');
+        completedSteps.push(stepNumber);
+        completedSteps.sort((a, b) => a - b);
+        
+        // Save to localStorage
+        localStorage.setItem('pharmacistProgress', JSON.stringify(completedSteps));
+        
+        // Update progress bar
+        updateProgress();
+        
+        // Show completion message if all steps done (6 steps total)
+        if (completedSteps.length === 6) {
+          document.getElementById('completionMessage').classList.add('show');
+        }
+        
+        // Show success toast
+        showToast(`Step ${stepNumber} completed! 💊`);
+      }
+    }
+    
+    function updateProgress() {
+      const progress = (completedSteps.length / 6) * 100;
+      document.getElementById('progressFill').style.width = `${progress}%`;
+      document.getElementById('progressText').textContent = `${completedSteps.length}/6 Steps`;
+    }
+    
+    function resetProgress() {
+      // Remove completed class from all steps
+      for (let i = 1; i <= 6; i++) {
+        const step = document.getElementById(`step${i}`);
+        if (step) {
+          step.classList.remove('completed');
+        }
+      }
+      
+      // Clear completed steps array
+      completedSteps = [];
+      
+      // Clear localStorage
+      localStorage.removeItem('pharmacistProgress');
+      
+      // Update progress bar
+      updateProgress();
+      
+      // Hide completion message
+      document.getElementById('completionMessage').classList.remove('show');
+      
+      showToast('Progress reset successfully');
+    }
+    
+    function showToast(message) {
+      // Create toast element
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-20 right-4 bg-emerald-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-bounce';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      // Remove after 2 seconds
+      setTimeout(() => {
+        toast.remove();
+      }, 2000);
+    }
+    
+    function downloadPersonalizedPDF() {
+      if (completedSteps.length === 0) {
+        alert('Please complete at least one step before downloading!');
+        return;
+      }
+      
+      // Create personalized PDF content
+      const content = document.createElement('div');
+      content.innerHTML = `
+        <div style="padding: 30px; font-family: 'Poppins', sans-serif; max-width: 800px; margin: 0 auto;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #10b981; font-size: 28px; margin-bottom: 10px;">Pharmacist Roadmap</h1>
+            <h2 style="color: #4b5563; font-size: 18px;">Your Personalised Pharmacy Journey</h2>
+            <div style="height: 4px; background: linear-gradient(90deg, #10b981, #10b981); width: 100px; margin: 20px auto;"></div>
+          </div>
+          
+          <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-bottom: 25px;">
+            <p style="font-size: 16px; color: #1e293b; margin-bottom: 15px;">
+              <strong>Congratulations, Pharmacist!</strong> You have successfully completed ${completedSteps.length} out of 6 steps in your pharmacy journey.
+            </p>
+            <p style="font-size: 14px; color: #64748b;">Generated on: ${new Date().toLocaleDateString()}</p>
+          </div>
+          
+          <h3 style="color: #10b981; font-size: 20px; margin-bottom: 15px;">Completed Steps:</h3>
+          <div style="margin-bottom: 30px;">
+            ${completedSteps.map(step => {
+              const stepNames = {
+                1: 'Class 11-12 (PCB)',
+                2: 'Choose Your Path',
+                3: 'D.Pharm (2 Years)',
+                4: 'B.Pharm (4 Years) - Optional',
+                5: 'Pharmacy Council Registration',
+                6: 'Career Paths & Earnings'
+              };
+              return `
+                <div style="background: white; border-left: 4px solid #10b981; padding: 12px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  <strong style="color: #059669;">Step ${step}:</strong> ${stepNames[step]}
+                </div>
+              `;
+            }).join('')}
+          </div>
+          
+          <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 20px; border-radius: 12px; text-align: center;">
+            <p style="font-size: 18px; margin-bottom: 10px;">💊 Your health, our commitment!</p>
+            <p style="font-size: 14px; opacity: 0.9;">Your pharmacy career is on the right track. Keep learning and serving.</p>
+          </div>
+          
+          <div style="margin-top: 30px; text-align: center; color: #94a3b8; font-size: 12px;">
+            © 2025 StudentRoadmap - Your Personalised Pharmacist Roadmap
+          </div>
+        </div>
+      `;
+      
+      // Generate PDF
+      html2pdf().set({
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: `pharmacist-roadmap-completed-${completedSteps.length}-steps.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, letterRendering: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      }).from(content).save();
     }
   </script>
 </body>
