@@ -149,126 +149,6 @@
       box-shadow: 0 15px 40px rgba(14, 165, 233, 0.15);
     }
 
-    /* Header Styles */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(14, 165, 233, 0.1);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    }
-
-    .header-glass {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(14, 165, 233, 0.1);
-      padding: 1rem 2rem;
-    }
-
-    /* Navigation Menu */
-    .nav-menu {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-    }
-
-    .nav-link {
-      color: #1e293b;
-      font-weight: 500;
-      text-decoration: none;
-      transition: color 0.3s ease;
-      position: relative;
-    }
-
-    .nav-link:hover {
-      color: #0ea5e9;
-    }
-
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
-      transition: width 0.3s ease;
-    }
-
-    .nav-link:hover::after {
-      width: 100%;
-    }
-
-    /* Mobile menu button */
-    .mobile-menu-btn {
-      display: none;
-      flex-direction: column;
-      gap: 6px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 10px;
-      z-index: 1001;
-    }
-
-    .mobile-menu-btn span {
-      width: 25px;
-      height: 2px;
-      background: #1e293b;
-      transition: all 0.3s ease;
-    }
-
-    /* Mobile Navigation Styles */
-    @media (max-width: 1024px) {
-      .nav-menu.desktop {
-        display: none;
-      }
-      
-      .mobile-menu-btn {
-        display: flex;
-      }
-      
-      #mobileNav {
-        position: fixed;
-        top: 80px;
-        left: 0;
-        right: 0;
-        background: white;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        border-bottom: 1px solid rgba(14, 165, 233, 0.1);
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-in-out;
-        z-index: 999;
-      }
-      
-      #mobileNav.active {
-        max-height: 500px;
-      }
-      
-      .nav-menu.mobile {
-        display: flex;
-        flex-direction: column;
-        padding: 1.5rem;
-        gap: 1rem;
-      }
-      
-      .mobile-menu-btn.active span:nth-child(1) {
-        transform: rotate(45deg) translate(8px, 8px);
-      }
-
-      .mobile-menu-btn.active span:nth-child(2) {
-        opacity: 0;
-      }
-
-      .mobile-menu-btn.active span:nth-child(3) {
-        transform: rotate(-45deg) translate(8px, -8px);
-      }
-    }
-
     /* Category tabs */
     .category-tab {
       transition: all 0.3s ease;
@@ -300,46 +180,6 @@
     .btn-gradient:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 25px rgba(14, 165, 233, 0.3);
-    }
-
-    /* Footer Styles */
-    footer {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid rgba(14, 165, 233, 0.1);
-      padding: 3rem 0 1.5rem;
-      margin-top: 4rem;
-    }
-
-    .footer-link {
-      color: #64748b;
-      text-decoration: none;
-      transition: color 0.3s ease;
-      display: inline-block;
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-link:hover {
-      color: #0ea5e9;
-      transform: translateX(5px);
-    }
-
-    .social-link {
-      width: 40px;
-      height: 40px;
-      background: rgba(14, 165, 233, 0.1);
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #0ea5e9;
-      transition: all 0.3s ease;
-    }
-
-    .social-link:hover {
-      background: #0ea5e9;
-      color: white;
-      transform: translateY(-3px);
     }
   </style>
 </head>
@@ -743,72 +583,26 @@
   </button>
 
   <script>
-    // Mobile Menu Toggle
-    document.addEventListener('DOMContentLoaded', () => {
-      // Load Header and Footer
-      function loadComponent(elementId, filePath) {
-        fetch(filePath)
-          .then(response => response.text())
-          .then(data => {
-            document.getElementById(elementId).innerHTML = data;
-            
-            // Re-initialize mobile menu after header is loaded
-            if (elementId === 'header') {
-              initMobileMenu();
-            }
-          })
-          .catch(error => console.error('Error loading component:', error));
-      }
-
-      loadComponent('header', 'components/header.html');
-      loadComponent('footer', 'components/footer.html');
-
-      function initMobileMenu() {
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileNav = document.getElementById('mobileNav');
-
-        if (mobileMenuBtn && mobileNav) {
-          mobileMenuBtn.addEventListener('click', function() {
-            this.classList.toggle('active');
-            mobileNav.classList.toggle('active');
-            
-            // Prevent body scrolling when menu is open
-            if (mobileNav.classList.contains('active')) {
-              document.body.style.overflow = 'hidden';
-            } else {
-              document.body.style.overflow = '';
-            }
-          });
-
-          // Close menu when clicking on a link
-          const mobileLinks = mobileNav.querySelectorAll('a');
-          mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-              mobileNav.classList.remove('active');
-              mobileMenuBtn.classList.remove('active');
-              document.body.style.overflow = '';
-            });
-          });
-
-          // Close menu on escape key
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
-              mobileNav.classList.remove('active');
-              mobileMenuBtn.classList.remove('active');
-              document.body.style.overflow = '';
-            }
-          });
-
-          // Close menu when clicking outside
-          document.addEventListener('click', (e) => {
-            if (!mobileNav.contains(e.target) && !mobileMenuBtn.contains(e.target) && mobileNav.classList.contains('active')) {
-              mobileNav.classList.remove('active');
-              mobileMenuBtn.classList.remove('active');
-              document.body.style.overflow = '';
-            }
-          });
-        }
-      }
+    // Load Header and Footer
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load header
+      fetch('components/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header').innerHTML = data;
+          
+          // Set up mobile menu AFTER header is loaded
+          setTimeout(setupMobileMenu, 200);
+        })
+        .catch(error => console.error('Error loading header:', error));
+      
+      // Load footer
+      fetch('components/footer.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading footer:', error));
 
       // Category Filter Functionality
       const categoryTabs = document.querySelectorAll('.category-tab');
@@ -862,6 +656,50 @@
         Auth.initHeader();
       }
     });
+
+    // Function to setup mobile menu
+    function setupMobileMenu() {
+      // Try both possible IDs (mobileMenuBtn and mobileMenu)
+      const menuBtn = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      
+      if (menuBtn && mobileMenu) {
+        console.log('Mobile menu found! Setting up...');
+        
+        menuBtn.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
+            mobileMenu.style.display = 'block';
+            console.log('Menu opened');
+          } else {
+            mobileMenu.style.display = 'none';
+            console.log('Menu closed');
+          }
+        };
+        
+        // Close menu when clicking on links
+        const links = mobileMenu.querySelectorAll('a');
+        links.forEach(link => {
+          link.onclick = function() {
+            mobileMenu.style.display = 'none';
+          };
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (mobileMenu.style.display === 'block' && 
+              !menuBtn.contains(e.target) && 
+              !mobileMenu.contains(e.target)) {
+            mobileMenu.style.display = 'none';
+          }
+        });
+      } else {
+        console.log('Mobile menu elements not found - retrying in 200ms');
+        setTimeout(setupMobileMenu, 200);
+      }
+    }
   </script>
 </body>
 </html>
