@@ -26,47 +26,39 @@
     </div>
     
     <!-- Mobile Menu Button -->
-    <button id="mobileMenuBtn" style="display: none; background: none; border: none; font-size: 24px; cursor: pointer; color: #0ea5e9; padding: 10px;">
+    <button id="mobileMenuBtn" style="display: none; background: none; border: none; font-size: 28px; cursor: pointer; color: #0ea5e9; padding: 10px;">
       ☰
     </button>
   </div>
-
-  <!-- Mobile Menu - HIDDEN BY DEFAULT -->
-  <div id="mobileMenu" style="display: none; background: white; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; position: absolute; left: 0; top: 100%;">
-    <nav style="display: flex; flex-direction: column; gap: 15px;">
-      <a href="index.html" style="text-decoration: none; color: #1e293b; padding: 12px; border-bottom: 1px solid #e2e8f0; display: block;">Home</a>
-      <a href="roadmap.html" style="text-decoration: none; color: #1e293b; padding: 12px; border-bottom: 1px solid #e2e8f0; display: block;">Roadmaps</a>
-      <a href="quiz.html" style="text-decoration: none; color: #1e293b; padding: 12px; border-bottom: 1px solid #e2e8f0; display: block;">Quiz</a>
-      <a href="about.html" style="text-decoration: none; color: #1e293b; padding: 12px; border-bottom: 1px solid #e2e8f0; display: block;">About</a>
-      <a href="contact.html" style="text-decoration: none; color: #1e293b; padding: 12px; border-bottom: 1px solid #e2e8f0; display: block;">Contact</a>
-      <a href="login.html" style="text-decoration: none; color: #0ea5e9; padding: 12px; display: block;">Sign In</a>
-      <a href="signup.html" style="background: #0ea5e9; color: white; text-decoration: none; padding: 14px; text-align: center; border-radius: 8px; display: block; margin-top: 5px;">Get Started</a>
-    </nav>
-  </div>
 </header>
+
+<!-- Mobile Menu - Separate div outside header for better visibility -->
+<div id="mobileMenu" style="display: none; background: white; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); position: fixed; top: 70px; left: 0; width: 100%; z-index: 999; border-top: 1px solid #e2e8f0; max-height: calc(100vh - 70px); overflow-y: auto;">
+  <nav style="display: flex; flex-direction: column; gap: 5px;">
+    <a href="index.html" style="text-decoration: none; color: #1e293b; padding: 15px; border-bottom: 1px solid #f1f5f9; display: block; font-size: 16px; font-weight: 500;">🏠 Home</a>
+    <a href="roadmap.html" style="text-decoration: none; color: #1e293b; padding: 15px; border-bottom: 1px solid #f1f5f9; display: block; font-size: 16px; font-weight: 500;">🗺️ Roadmaps</a>
+    <a href="quiz.html" style="text-decoration: none; color: #1e293b; padding: 15px; border-bottom: 1px solid #f1f5f9; display: block; font-size: 16px; font-weight: 500;">❓ Quiz</a>
+    <a href="about.html" style="text-decoration: none; color: #1e293b; padding: 15px; border-bottom: 1px solid #f1f5f9; display: block; font-size: 16px; font-weight: 500;">👥 About</a>
+    <a href="contact.html" style="text-decoration: none; color: #1e293b; padding: 15px; border-bottom: 1px solid #f1f5f9; display: block; font-size: 16px; font-weight: 500;">📧 Contact</a>
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 2px solid #e2e8f0;">
+      <a href="login.html" style="text-decoration: none; color: #0ea5e9; padding: 15px; text-align: center; border: 2px solid #0ea5e9; border-radius: 10px; font-weight: 600;">Sign In</a>
+      <a href="signup.html" style="background: #0ea5e9; color: white; text-decoration: none; padding: 15px; text-align: center; border-radius: 10px; font-weight: 600;">Get Started Free</a>
+    </div>
+  </nav>
+</div>
 
 <!-- CSS for Mobile Responsiveness -->
 <style>
-  /* Mobile styles */
   @media (max-width: 768px) {
-    /* Hide desktop elements on mobile */
     .desktop-nav,
     .desktop-auth {
       display: none !important;
     }
-    
-    /* Show mobile menu button */
     #mobileMenuBtn {
-      display: block !important;
-    }
-    
-    /* Ensure mobile menu is visible when active */
-    #mobileMenu.active {
       display: block !important;
     }
   }
   
-  /* Desktop styles */
   @media (min-width: 769px) {
     .desktop-nav,
     .desktop-auth {
@@ -81,43 +73,38 @@
   }
 </style>
 
-<!-- Mobile Menu Toggle Script -->
+<!-- Simple Mobile Menu Toggle Script -->
 <script>
+  // Simple direct toggle
   document.addEventListener('DOMContentLoaded', function() {
-    const mobileBtn = document.getElementById('mobileMenuBtn');
+    const menuBtn = document.getElementById('mobileMenuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     
-    if (mobileBtn && mobileMenu) {
-      mobileBtn.addEventListener('click', function(e) {
+    if (menuBtn && mobileMenu) {
+      console.log('Mobile menu ready');
+      
+      menuBtn.onclick = function(e) {
         e.preventDefault();
-        e.stopPropagation();
+        console.log('Button clicked');
         
-        // Toggle active class
-        if (mobileMenu.classList.contains('active')) {
-          mobileMenu.classList.remove('active');
-          mobileMenu.style.display = 'none';
-        } else {
-          mobileMenu.classList.add('active');
+        if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
           mobileMenu.style.display = 'block';
-        }
-      });
-
-      // Close menu when clicking outside
-      document.addEventListener('click', function(e) {
-        if (!mobileBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
-          mobileMenu.classList.remove('active');
+          console.log('Menu opened');
+        } else {
           mobileMenu.style.display = 'none';
+          console.log('Menu closed');
         }
-      });
-
-      // Close menu when clicking on any link
-      const mobileLinks = mobileMenu.querySelectorAll('a');
-      mobileLinks.forEach(link => {
-        link.addEventListener('click', function() {
-          mobileMenu.classList.remove('active');
+      };
+      
+      // Close when clicking on any link
+      const links = mobileMenu.querySelectorAll('a');
+      for(let i = 0; i < links.length; i++) {
+        links[i].onclick = function() {
           mobileMenu.style.display = 'none';
-        });
-      });
+        };
+      }
+    } else {
+      console.error('Menu elements not found');
     }
   });
 </script>
