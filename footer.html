@@ -50,10 +50,11 @@
     <div>
       <h4 class="font-bold text-lg mb-6">Resources</h4>
       <ul class="space-y-3">
-        <li><a href="faq.html" class="text-slate-400 hover:text-white transition-colors">FAQ</a></li>
-        <li><a href="guides.html" class="text-slate-400 hover:text-white transition-colors">Study Guides</a></li>
-        <li><a href="scholarships.html" class="text-slate-400 hover:text-white transition-colors">Scholarships</a></li>
-        <li><a href="exams.html" class="text-slate-400 hover:text-white transition-colors">Exam Calendar</a></li>
+        <li><a href="#" class="text-slate-400 hover:text-white transition-colors">FAQ</a></li>
+        <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Study Guides</a></li>
+        <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Scholarships</a></li>
+        <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Exam Calendar</a></li>
+        <li><a href="#" class="text-slate-400 hover:text-white transition-colors">Career Tools</a></li>
       </ul>
     </div>
 
@@ -95,47 +96,10 @@
     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
       <p class="text-slate-400 text-sm">© 2024 StudentRoadmap. All rights reserved.</p>
       <div class="flex items-center space-x-6 text-sm text-slate-400">
-        <a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
-        <a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a>
-        <a href="cookies.html" class="hover:text-white transition-colors">Cookie Policy</a>
+        <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+        <a href="#" class="hover:text-white transition-colors">Cookie Policy</a>
       </div>
     </div>
   </div>
 </footer>
-
-<!-- Newsletter Form Script -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Newsletter Form Submission
-    const newsletterForm = document.querySelector('footer form');
-    if (newsletterForm) {
-      newsletterForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const email = e.target.querySelector('input[type="email"]').value;
-
-        // Show loading state
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        submitBtn.disabled = true;
-
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        // Show success message
-        submitBtn.innerHTML = '<i class="fas fa-check"></i> Subscribed!';
-        submitBtn.classList.add('bg-green-500', 'hover:bg-green-600');
-
-        // Reset form
-        e.target.reset();
-
-        // Reset button after 3 seconds
-        setTimeout(() => {
-          submitBtn.innerHTML = originalText;
-          submitBtn.classList.remove('bg-green-500', 'hover:bg-green-600');
-          submitBtn.disabled = false;
-        }, 3000);
-      });
-    }
-  });
-</script>
