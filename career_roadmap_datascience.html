@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Scientist Roadmap - StudentRoadmap</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+    }
+    
+    .roadmap-container { position: relative; padding-left: 2rem; }
+    .roadmap-line {
+      position: absolute; left: 27px; top: 0.5rem; bottom: 0.5rem;
+      width: 3px; background: linear-gradient(to bottom, #10b981, #8b5cf6); border-radius: 999px;
+    }
+    .roadmap-step {
+      position: relative; display: flex; gap: 1.5rem; margin-bottom: 2.5rem;
+      opacity: 0; animation: slideIn 0.5s ease-out forwards;
+    }
+    .roadmap-step:nth-child(1) { animation-delay: 0.1s; }
+    .roadmap-step:nth-child(2) { animation-delay: 0.2s; }
+    .roadmap-step:nth-child(3) { animation-delay: 0.3s; }
+    .roadmap-step:nth-child(4) { animation-delay: 0.4s; }
+    .roadmap-step:nth-child(5) { animation-delay: 0.5s; }
+    .roadmap-step:nth-child(6) { animation-delay: 0.6s; }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .step-number {
+      width: 3.5rem; height: 3.5rem; background: white; border: 3px solid #10b981;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.25rem; color: #10b981; position: relative; z-index: 10;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); transition: all 0.3s ease;
+    }
+    .roadmap-step:hover .step-number {
+      transform: scale(1.1); background: #10b981; color: white;
+    }
+    .step-card {
+      flex: 1; background: white; border-radius: 1rem; padding: 1.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid #f1f5f9;
+      transition: all 0.3s ease;
+    }
+    .roadmap-step:hover .step-card {
+      transform: translateX(5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      border-color: #a7f3d0;
+    }
+    .path-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;
+    }
+    .path-card {
+      background: #f8fafc; border-left: 4px solid #10b981; padding: 1rem; border-radius: 0.75rem;
+    }
+    .glass-card {
+      background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 8px 32px rgba(16,185,129,0.1); transition: all 0.3s ease;
+    }
+    .glass-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(16,185,129,0.15); }
+    .btn-gradient {
+      background: linear-gradient(135deg, #10b981, #8b5cf6); color: white; transition: all 0.3s ease;
+    }
+    .btn-gradient:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(16,185,129,0.4); }
+  </style>
+</head>
+<body class="text-slate-800">
+  <div id="header"></div>
+
+  <main class="relative z-10 py-12">
+    <div class="container mx-auto px-4">
+      
+      <!-- Career Header -->
+      <div class="bg-gradient-to-r from-emerald-600 to-purple-600 text-white rounded-3xl p-8 md:p-12 mb-12 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-20 -mt-20"></div>
+        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full -ml-20 -mb-20"></div>
+        
+        <div class="relative flex flex-col md:flex-row items-center gap-8">
+          <div class="w-24 h-24 md:w-32 md:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl md:text-6xl shadow-xl border border-white/30">
+            📊
+          </div>
+          <div class="flex-1 text-center md:text-left">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">Data Scientist Roadmap</h1>
+            <p class="text-lg text-white/90 max-w-2xl">Complete guide to becoming a professional data scientist</p>
+          </div>
+          <button onclick="downloadPDF()" class="btn-gradient px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2">
+            <i class="fas fa-file-pdf"></i> Download PDF
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Left Column - Roadmap -->
+        <div class="lg:w-2/3">
+          <div class="glass-card p-8 rounded-2xl mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+              <i class="fas fa-road text-emerald-600 mr-3"></i> Complete Roadmap
+            </h2>
+            
+            <div class="roadmap-container">
+              <!-- Step 1 -->
+              <div class="roadmap-step">
+                <div class="step-number">1</div>
+                <div class="step-card">
+                  <h3 class="step-title">Educational Foundation (10+2)</h3>
+                  <p class="step-desc">Take PCM with Mathematics. Computer Science optional but recommended.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">Core Subjects</div>
+                      <div class="path-desc">Mathematics, Physics, Computer Science</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Target Score</div>
+                      <div class="path-desc">60%+ in PCM for top colleges</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 2 -->
+              <div class="roadmap-step">
+                <div class="step-number">2</div>
+                <div class="step-card">
+                  <h3 class="step-title">Undergraduate Degree</h3>
+                  <p class="step-desc">Choose the right program for your data science career.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">B.Tech/BE</div>
+                      <div class="path-desc">CS/AI/Data Science (4 years)</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">B.Sc/B.Stat</div>
+                      <div class="path-desc">Statistics/Mathematics (3 years)</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">BCA + MCA</div>
+                      <div class="path-desc">3+2 years path</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 3 -->
+              <div class="roadmap-step">
+                <div class="step-number">3</div>
+                <div class="step-card">
+                  <h3 class="step-title">Core Skills - Year 1-2</h3>
+                  <p class="step-desc">Build strong foundation in mathematics and programming.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">Mathematics</div>
+                      <div class="path-desc">Linear Algebra, Calculus, Probability, Statistics</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Programming</div>
+                      <div class="path-desc">Python (NumPy, Pandas), R, SQL</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 4 -->
+              <div class="roadmap-step">
+                <div class="step-number">4</div>
+                <div class="step-card">
+                  <h3 class="step-title">Specialization - Year 3</h3>
+                  <p class="step-desc">Deep dive into data science and machine learning.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">ML Algorithms</div>
+                      <div class="path-desc">Regression, Classification, Clustering, Neural Networks</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Data Visualization</div>
+                      <div class="path-desc">Tableau, Power BI, Matplotlib, Seaborn</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Big Data</div>
+                      <div class="path-desc">Hadoop, Spark, Cloud Platforms</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 5 -->
+              <div class="roadmap-step">
+                <div class="step-number">5</div>
+                <div class="step-card">
+                  <h3 class="step-title">Projects & Internships</h3>
+                  <p class="step-desc">Build portfolio and gain real-world experience.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">Kaggle</div>
+                      <div class="path-desc">Participate in competitions</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Internships</div>
+                      <div class="path-desc">3-6 months at tech companies</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Portfolio</div>
+                      <div class="path-desc">5+ projects on GitHub</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 6 -->
+              <div class="roadmap-step">
+                <div class="step-number">6</div>
+                <div class="step-card">
+                  <h3 class="step-title">Career & Growth</h3>
+                  <p class="step-desc">Start your career and plan for advancement.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">Entry Level</div>
+                      <div class="path-desc">Data Analyst, Junior Data Scientist (5-10 LPA)</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Mid Level</div>
+                      <div class="path-desc">Data Scientist, ML Engineer (12-25 LPA)</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Senior Level</div>
+                      <div class="path-desc">Lead Data Scientist, AI Architect (25-50 LPA)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Column - Sidebar -->
+        <div class="lg:w-1/3 space-y-6">
+          <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-lg font-bold mb-4 flex items-center">
+              <i class="fas fa-info-circle text-emerald-600 mr-2"></i> Quick Info
+            </h3>
+            <ul class="space-y-3">
+              <li class="flex items-start"><i class="fas fa-clock text-emerald-500 mt-1 mr-3"></i><div><span class="font-semibold">Duration:</span> <span class="text-slate-600">4 years (B.Tech)</span></div></li>
+              <li class="flex items-start"><i class="fas fa-graduation-cap text-emerald-500 mt-1 mr-3"></i><div><span class="font-semibold">Entry Exams:</span> <span class="text-slate-600">JEE, BITSAT, State CETs</span></div></li>
+              <li class="flex items-start"><i class="fas fa-rupee-sign text-emerald-500 mt-1 mr-3"></i><div><span class="font-semibold">Course Fees:</span> <span class="text-slate-600">₹2-12 Lakhs</span></div></li>
+              <li class="flex items-start"><i class="fas fa-trophy text-emerald-500 mt-1 mr-3"></i><div><span class="font-semibold">Starting Salary:</span> <span class="text-slate-600">₹6-12 LPA</span></div></li>
+            </ul>
+          </div>
+          
+          <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-lg font-bold mb-4 flex items-center">
+              <i class="fas fa-university text-emerald-600 mr-2"></i> Top Colleges
+            </h3>
+            <ul class="space-y-3">
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>IIT Bombay - CSE/AI</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>IIT Delhi - CSE/AI</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>IIIT Hyderabad - CSE/DS</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>BITS Pilani - CS/DS</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>ISI Kolkata - Statistics</li>
+            </ul>
+          </div>
+          
+          <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-lg font-bold mb-4 flex items-center">
+              <i class="fas fa-brain text-emerald-600 mr-2"></i> Key Skills
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-sm">Python</span>
+              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-sm">R</span>
+              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-sm">SQL</span>
+              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-sm">Statistics</span>
+              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-sm">Machine Learning</span>
+              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-sm">Tableau</span>
+              <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-sm">Big Data</span>
+            </div>
+          </div>
+          
+          <div class="bg-gradient-to-br from-emerald-600 to-purple-600 rounded-2xl p-6 text-white">
+            <i class="fas fa-rocket text-3xl mb-4"></i>
+            <h3 class="text-xl font-bold mb-2">Start Your Data Journey</h3>
+            <p class="text-emerald-100 mb-4">Take our quiz to find the perfect data career path.</p>
+            <a href="quiz.html" class="block w-full bg-white text-emerald-600 font-semibold py-3 px-4 rounded-xl text-center hover:bg-emerald-50 transition-colors">
+              Take Quiz <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div id="footer" class="mt-16"></div>
+    </div>
+  </main>
+  
+  <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-emerald-600 to-purple-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('components/header.html').then(r=>r.text()).then(d=>document.getElementById('header').innerHTML=d);
+      fetch('components/footer.html').then(r=>r.text()).then(d=>document.getElementById('footer').innerHTML=d);
+      
+      const backToTop = document.getElementById('backToTop');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+          backToTop.classList.remove('opacity-0', 'translate-y-4');
+          backToTop.classList.add('opacity-100', 'translate-y-0');
+        } else {
+          backToTop.classList.remove('opacity-100', 'translate-y-0');
+          backToTop.classList.add('opacity-0', 'translate-y-4');
+        }
+      });
+      backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    });
+    
+    function downloadPDF() {
+      const element = document.querySelector('.roadmap-container').cloneNode(true);
+      html2pdf().set({ margin: 1, filename: 'data-scientist-roadmap.pdf' }).from(element).save();
+    }
+  </script>
+</body>
+</html>
