@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Defense Services (NDA/CDS) Roadmap - StudentRoadmap</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+    }
+    
+    .roadmap-container { position: relative; padding-left: 2rem; }
+    .roadmap-line {
+      position: absolute; left: 27px; top: 0.5rem; bottom: 0.5rem;
+      width: 3px; background: linear-gradient(to bottom, #dc2626, #b91c1c); border-radius: 999px;
+    }
+    .roadmap-step {
+      position: relative; display: flex; gap: 1.5rem; margin-bottom: 2.5rem;
+      opacity: 0; animation: slideIn 0.5s ease-out forwards;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .roadmap-step:nth-child(1) { animation-delay: 0.1s; }
+    .roadmap-step:nth-child(2) { animation-delay: 0.2s; }
+    .roadmap-step:nth-child(3) { animation-delay: 0.3s; }
+    .roadmap-step:nth-child(4) { animation-delay: 0.4s; }
+    .roadmap-step:nth-child(5) { animation-delay: 0.5s; }
+    .roadmap-step:nth-child(6) { animation-delay: 0.6s; }
+    .roadmap-step:nth-child(7) { animation-delay: 0.7s; }
+    
+    .step-number {
+      width: 3.5rem; height: 3.5rem; background: white; border: 3px solid #dc2626;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1.25rem; color: #dc2626; position: relative; z-index: 10;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); transition: all 0.3s ease;
+    }
+    .roadmap-step:hover .step-number {
+      transform: scale(1.1); background: #dc2626; color: white;
+    }
+    .step-card {
+      flex: 1; background: white; border-radius: 1rem; padding: 1.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid #f1f5f9;
+      transition: all 0.3s ease;
+    }
+    .roadmap-step:hover .step-card {
+      transform: translateX(5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      border-color: #fecaca;
+    }
+    .path-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;
+    }
+    .path-card {
+      background: #f8fafc; border-left: 4px solid #dc2626; padding: 1rem; border-radius: 0.75rem;
+    }
+    .glass-card {
+      background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);
+      box-shadow: 0 8px 32px rgba(220,38,38,0.1); transition: all 0.3s ease;
+    }
+    .glass-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(220,38,38,0.15); }
+    .btn-gradient {
+      background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; transition: all 0.3s ease;
+    }
+    .btn-gradient:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(220,38,38,0.4); }
+  </style>
+</head>
+<body class="text-slate-800">
+  <div id="header"></div>
+
+  <main class="relative z-10 py-12">
+    <div class="container mx-auto px-4">
+      
+      <!-- Career Header -->
+      <div class="bg-gradient-to-r from-red-600 to-red-700 text-white rounded-3xl p-8 md:p-12 mb-12 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-20 -mt-20"></div>
+        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full -ml-20 -mb-20"></div>
+        
+        <div class="relative flex flex-col md:flex-row items-center gap-8">
+          <div class="w-24 h-24 md:w-32 md:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl md:text-6xl shadow-xl border border-white/30">
+            ⚔️
+          </div>
+          <div class="flex-1 text-center md:text-left">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">Defense Services (NDA/CDS) Roadmap</h1>
+            <p class="text-lg text-white/90 max-w-2xl">Complete guide to joining Indian Army, Navy, or Air Force</p>
+          </div>
+          <button onclick="downloadPDF()" class="btn-gradient px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2">
+            <i class="fas fa-file-pdf"></i> Download PDF
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Left Column - Roadmap -->
+        <div class="lg:w-2/3">
+          <div class="glass-card p-8 rounded-2xl mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+              <i class="fas fa-road text-red-600 mr-3"></i> Complete Roadmap
+            </h2>
+            
+            <div class="roadmap-container">
+              <!-- Step 1 -->
+              <div class="roadmap-step">
+                <div class="step-number">1</div>
+                <div class="step-card">
+                  <h3 class="step-title">Class 11-12 Preparation</h3>
+                  <p class="step-desc">Build foundation for defense exams.</p>
+                  <div class="path-grid">
+                    <div class="path-card"><div class="path-title">For NDA</div><div class="path-desc">PCM for Army/Navy/Air Force, PCB for Army (Non-tech)</div></div>
+                    <div class="path-card"><div class="path-title">Physical Fitness</div><div class="path-desc">Regular exercise, running, sports, height/weight standards</div></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 2 -->
+              <div class="roadmap-step">
+                <div class="step-number">2</div>
+                <div class="step-card">
+                  <h3 class="step-title">NDA Entry (After 12th)</h3>
+                  <p class="step-desc">Join National Defense Academy - for 10+2 candidates.</p>
+                  <div class="path-grid">
+                    <div class="path-card"><div class="path-title">Eligibility</div><div class="path-desc">12th pass (PCM for Air Force/Navy, any stream for Army)</div></div>
+                    <div class="path-card"><div class="path-title">Age</div><div class="path-desc">16.5 to 19.5 years</div></div>
+                    <div class="path-card"><div class="path-title">Exam Pattern</div><div class="path-desc">Maths (300 marks), General Ability (600 marks)</div></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 3 -->
+              <div class="roadmap-step">
+                <div class="step-number">3</div>
+                <div class="step-card">
+                  <h3 class="step-title">CDS Entry (After Graduation)</h3>
+                  <p class="step-desc">Combined Defense Services - for graduates.</p>
+                  <div class="path-grid">
+                    <div class="path-card"><div class="path-title">Eligibility</div><div class="path-desc">Graduate (Any stream for Army, B.Sc Physics/Maths for Air Force/Navy)</div></div>
+                    <div class="path-card"><div class="path-title">Age</div><div class="path-desc">19-24 years (varies by academy)</div></div>
+                    <div class="path-card"><div class="path-title">Exam Pattern</div><div class="path-desc">English, GK, Maths (Army), also Physics/Maths for Air Force/Navy</div></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 4 -->
+              <div class="roadmap-step">
+                <div class="step-number">4</div>
+                <div class="step-card">
+                  <h3 class="step-title">SSB Interview (5 Days)</h3>
+                  <p class="step-desc">Service Selection Board - the most crucial stage.</p>
+                  <div class="path-grid">
+                    <div class="path-card"><div class="path-title">Stage 1</div><div class="path-desc">Officer Intelligence Rating (OIR), Picture Perception Test</div></div>
+                    <div class="path-card"><div class="path-title">Stage 2</div><div class="path-desc">Psychology Test (Thematic Apperception, Word Association, Situation Tests)</div></div>
+                    <div class="path-card"><div class="path-title">Stage 3</div><div class="path-desc">Group Testing (GTO) - Planning, Command, Discussion, Obstacles</div></div>
+                    <div class="path-card"><div class="path-title">Stage 4</div><div class="path-desc">Personal Interview</div></div>
+                    <div class="path-card"><div class="path-title">Conference</div><div class="path-desc">Final assessment and result</div></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 5 -->
+              <div class="roadmap-step">
+                <div class="step-number">5</div>
+                <div class="step-card">
+                  <h3 class="step-title">Medical Examination</h3>
+                  <p class="step-desc">Rigorous medical tests to ensure fitness.</p>
+                  <div class="path-grid">
+                    <div class="path-card"><div class="path-title">Physical Standards</div><div class="path-desc">Height, weight, chest expansion, BMI</div></div>
+                    <div class="path-card"><div class="path-title">Medical Tests</div><div class="path-desc">Vision, hearing, dental, ENT, cardiovascular, X-ray</div></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 6 -->
+              <div class="roadmap-step">
+                <div class="step-number">6</div>
+                <div class="step-card">
+                  <h3 class="step-title">Training Academies</h3>
+                  <p class="step-desc">Prestigious defense training institutions.</p>
+                  <div class="path-grid">
+                    <div class="path-card"><div class="path-title">NDA</div><div class="path-desc">Khadakwasla, Pune - 3 years training</div></div>
+                    <div class="path-card"><div class="path-title">IMA</div><div class="path-desc">Indian Military Academy, Dehradun - 1.5 years</div></div>
+                    <div class="path-card"><div class="path-title">OTA</div><div class="path-desc">Officers Training Academy, Chennai - 1 year (Short Service)</div></div>
+                    <div class="path-card"><div class="path-title">Air Force Academy</div><div class="path-desc">Dundigal, Hyderabad</div></div>
+                    <div class="path-card"><div class="path-title">Naval Academy</div><div class="path-desc">Ezhimala, Kerala</div></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 7 -->
+              <div class="roadmap-step">
+                <div class="step-number">7</div>
+                <div class="step-card">
+                  <h3 class="step-title">Career & Benefits</h3>
+                  <p class="step-desc">Life in defense services - honor, adventure, and benefits.</p>
+                  <div class="path-grid">
+                    <div class="path-card"><div class="path-title">Rank Structure</div><div class="path-desc">Lieutenant → Captain → Major → Lt Col → Col → Brig → Maj Gen</div></div>
+                    <div class="path-card"><div class="path-title">Salary</div><div class="path-desc">Starting ₹56,000-70,000/month + allowances</div></div>
+                    <div class="path-card"><div class="path-title">Benefits</div><div class="path-desc">Free medical, accommodation, canteen, pension, travel concessions</div></div>
+                    <div class="path-card"><div class="path-title">Retirement</div><div class="path-desc">Pension after 15-20 years, second career opportunities</div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Column - Sidebar -->
+        <div class="lg:w-1/3 space-y-6">
+          <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-info-circle text-red-600 mr-2"></i> Quick Info</h3>
+            <ul class="space-y-3">
+              <li class="flex items-start"><i class="fas fa-clock text-red-500 mt-1 mr-3"></i><div><span class="font-semibold">Entry Points:</span> <span class="text-slate-600">NDA (after 12th), CDS (after graduation)</span></div></li>
+              <li class="flex items-start"><i class="fas fa-graduation-cap text-red-500 mt-1 mr-3"></i><div><span class="font-semibold">Age Limits:</span> <span class="text-slate-600">NDA: 16.5-19.5, CDS: 19-24 years</span></div></li>
+              <li class="flex items-start"><i class="fas fa-venus-mars text-red-500 mt-1 mr-3"></i><div><span class="font-semibold">Gender:</span> <span class="text-slate-600">Male (NDA), Male/Female (CDS for certain entries)</span></div></li>
+              <li class="flex items-start"><i class="fas fa-trophy text-red-500 mt-1 mr-3"></i><div><span class="font-semibold">Starting Salary:</span> <span class="text-slate-600">₹56,000-70,000/month + allowances</span></div></li>
+            </ul>
+          </div>
+          
+          <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-building text-red-600 mr-2"></i> Services & Academies</h3>
+            <ul class="space-y-3">
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Indian Army</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Indian Navy</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Indian Air Force</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Coast Guard</li>
+            </ul>
+          </div>
+          
+          <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-dumbbell text-red-600 mr-2"></i> Physical Standards</h3>
+            <ul class="space-y-3">
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Height: 157 cm (Army), 165 cm (IAF)</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Chest: 77 cm (min) with 5 cm expansion</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Weight: Proportionate to height</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Vision: 6/6 (better), 6/9 (worse) correctable</li>
+            </ul>
+          </div>
+          
+          <div class="bg-gradient-to-br from-red-600 to-red-700 rounded-2xl p-6 text-white">
+            <i class="fas fa-rocket text-3xl mb-4"></i>
+            <h3 class="text-xl font-bold mb-2">Start Your Defense Journey</h3>
+            <a href="quiz.html" class="block w-full bg-white text-red-600 font-semibold py-3 px-4 rounded-xl text-center hover:bg-red-50 transition-colors">
+              Take Quiz <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div id="footer" class="mt-16"></div>
+    </div>
+  </main>
+  
+  <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-red-600 to-red-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('components/header.html').then(r=>r.text()).then(d=>document.getElementById('header').innerHTML=d);
+      fetch('components/footer.html').then(r=>r.text()).then(d=>document.getElementById('footer').innerHTML=d);
+      
+      const backToTop = document.getElementById('backToTop');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+          backToTop.classList.remove('opacity-0', 'translate-y-4');
+          backToTop.classList.add('opacity-100', 'translate-y-0');
+        } else {
+          backToTop.classList.remove('opacity-100', 'translate-y-0');
+          backToTop.classList.add('opacity-0', 'translate-y-4');
+        }
+      });
+      backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    });
+    
+    function downloadPDF() {
+      const element = document.querySelector('.roadmap-container').cloneNode(true);
+      html2pdf().set({ margin: 1, filename: 'defense-roadmap.pdf' }).from(element).save();
+    }
+  </script>
+</body>
+</html>
