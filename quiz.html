@@ -448,13 +448,16 @@
     </button>
 
     <script>
-        // Load Header and Footer
-        document.addEventListener('DOMContentLoaded', () => {
+        // Load Header and Footer with Mobile Menu Support
+        document.addEventListener('DOMContentLoaded', function() {
             // Load header
             fetch('components/header.html')
                 .then(response => response.text())
                 .then(data => {
                     document.getElementById('header').innerHTML = data;
+                    
+                    // Set up mobile menu AFTER header is loaded
+                    setTimeout(setupMobileMenu, 200);
                 })
                 .catch(error => console.error('Error loading header:', error));
             
@@ -467,7 +470,50 @@
                 .catch(error => console.error('Error loading footer:', error));
         });
 
-        // --- Data ---
+        // Function to setup mobile menu
+        function setupMobileMenu() {
+            const menuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            if (menuBtn && mobileMenu) {
+                console.log('Mobile menu found! Setting up...');
+                
+                menuBtn.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
+                        mobileMenu.style.display = 'block';
+                        console.log('Menu opened');
+                    } else {
+                        mobileMenu.style.display = 'none';
+                        console.log('Menu closed');
+                    }
+                };
+                
+                // Close menu when clicking on links
+                const links = mobileMenu.querySelectorAll('a');
+                links.forEach(link => {
+                    link.onclick = function() {
+                        mobileMenu.style.display = 'none';
+                    };
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (mobileMenu.style.display === 'block' && 
+                        !menuBtn.contains(e.target) && 
+                        !mobileMenu.contains(e.target)) {
+                        mobileMenu.style.display = 'none';
+                    }
+                });
+            } else {
+                console.log('Mobile menu elements not found - retrying in 200ms');
+                setTimeout(setupMobileMenu, 200);
+            }
+        }
+
+        // --- Quiz Data and Functions (keep all your existing quiz code below) ---
         const questions = [
             {
                 text: "Which activity do you enjoy the most?",
