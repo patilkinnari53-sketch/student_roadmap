@@ -1208,36 +1208,8 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(data => {
       document.getElementById('header').innerHTML = data;
       
-      // Initialize mobile menu AFTER header is loaded
-      setTimeout(function() {
-        const menuBtn = document.querySelector('.mobile-menu-btn');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        
-        if (menuBtn && mobileMenu) {
-          console.log('Mobile menu found - working');
-          
-          menuBtn.onclick = function(e) {
-            e.preventDefault();
-            if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
-              mobileMenu.style.display = 'block';
-              console.log('Menu opened');
-            } else {
-              mobileMenu.style.display = 'none';
-              console.log('Menu closed');
-            }
-          };
-          
-          // Close menu when clicking on links
-          const links = mobileMenu.querySelectorAll('a');
-          for (let i = 0; i < links.length; i++) {
-            links[i].onclick = function() {
-              mobileMenu.style.display = 'none';
-            };
-          }
-        } else {
-          console.log('Mobile menu not found');
-        }
-      }, 200);
+      // Set up mobile menu AFTER header is loaded
+      setupMobileMenu();
     })
     .catch(error => console.error('Error loading header:', error));
   
@@ -1249,7 +1221,61 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .catch(error => console.error('Error loading footer:', error));
 });
+
+// Function to setup mobile menu
+function setupMobileMenu() {
+  // Try multiple times to find the elements (in case of delay)
+  let attempts = 0;
+  const maxAttempts = 10;
   
+  function trySetup() {
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (menuBtn && mobileMenu) {
+      console.log('Mobile menu found! Setting up...');
+      
+      // Remove any existing event listeners by cloning
+      const newBtn = menuBtn.cloneNode(true);
+      menuBtn.parentNode.replaceChild(newBtn, menuBtn);
+      
+      // Add click event
+      newBtn.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
+          mobileMenu.style.display = 'block';
+          console.log('Menu opened');
+        } else {
+          mobileMenu.style.display = 'none';
+          console.log('Menu closed');
+        }
+      };
+      
+      // Close menu when clicking links
+      const links = mobileMenu.querySelectorAll('a');
+      links.forEach(link => {
+        link.onclick = function() {
+          mobileMenu.style.display = 'none';
+        };
+      });
+      
+      return true;
+    }
+    
+    attempts++;
+    if (attempts < maxAttempts) {
+      console.log('Waiting for mobile menu elements... attempt', attempts);
+      setTimeout(trySetup, 100);
+    } else {
+      console.error('Could not find mobile menu elements after', maxAttempts, 'attempts');
+    }
+    return false;
+  }
+  
+  trySetup();
+}
   <!-- Roadmap Popup -->
   <div id="roadmapPopup" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
     <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" id="popupBackdrop"></div>
@@ -1301,4 +1327,5 @@ document.addEventListener('DOMContentLoaded', function() {
   <script src="assets/js/auth.js"></script>
 </body>
 </html>
+
 
