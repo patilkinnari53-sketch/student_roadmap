@@ -11,67 +11,54 @@
     </a>
     
     <!-- Desktop Navigation -->
-    <nav class="desktop-nav">
-      <a href="index.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Home</a>
-      <a href="roadmap.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Roadmaps</a>
-      <a href="quiz.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Quiz</a>
-      <a href="about.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">About</a>
-      <a href="contact.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Contact</a>
-    </nav>
-    
-    <!-- Desktop Auth -->
-    <div class="desktop-auth">
-      <a href="login.html" style="margin-right: 15px; color: #0ea5e9; text-decoration: none; font-weight: 600;">Sign In</a>
-      <a href="signup.html" style="background: #0ea5e9; color: white; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 600;">Get Started</a>
+    <div class="desktop-menu">
+      <a href="index.html" style="margin: 0 15px; color: #4b5563; text-decoration: none;">Home</a>
+      <a href="roadmap.html" style="margin: 0 15px; color: #4b5563; text-decoration: none;">Roadmaps</a>
+      <a href="quiz.html" style="margin: 0 15px; color: #4b5563; text-decoration: none;">Quiz</a>
+      <a href="about.html" style="margin: 0 15px; color: #4b5563; text-decoration: none;">About</a>
+      <a href="contact.html" style="margin: 0 15px; color: #4b5563; text-decoration: none;">Contact</a>
+      <a href="login.html" style="margin: 0 15px; color: #0ea5e9; text-decoration: none;">Login</a>
+      <a href="signup.html" style="background: #0ea5e9; color: white; padding: 8px 20px; border-radius: 20px; text-decoration: none; margin-left: 10px;">Sign Up</a>
     </div>
-    
+
     <!-- Mobile Menu Button -->
-    <button class="mobile-menu-btn" style="display: none; background: none; border: none; font-size: 28px; cursor: pointer; color: #0ea5e9;">
+    <button id="mobileMenuBtn" style="display: none; background: none; border: none; font-size: 28px; cursor: pointer; color: #0ea5e9; padding: 10px;">
       ☰
     </button>
   </div>
 
   <!-- Mobile Menu -->
-  <div class="mobile-menu" style="display: none; background: white; padding: 20px; border-top: 1px solid #e2e8f0;">
-    <nav style="display: flex; flex-direction: column;">
+  <div id="mobileMenu" style="display: none; background: white; padding: 20px; border-top: 1px solid #e2e8f0;">
+    <div style="display: flex; flex-direction: column; gap: 5px;">
       <a href="index.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Home</a>
       <a href="roadmap.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Roadmaps</a>
       <a href="quiz.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Quiz</a>
       <a href="about.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9;">About</a>
       <a href="contact.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Contact</a>
-      <a href="login.html" style="padding: 15px; color: #0ea5e9; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Sign In</a>
-      <a href="signup.html" style="background: #0ea5e9; color: white; padding: 15px; text-align: center; border-radius: 8px; text-decoration: none; margin-top: 10px;">Get Started</a>
-    </nav>
+      <a href="login.html" style="padding: 15px; color: #0ea5e9; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Login</a>
+      <a href="signup.html" style="background: #0ea5e9; color: white; padding: 15px; text-align: center; border-radius: 8px; text-decoration: none; margin-top: 10px;">Sign Up</a>
+    </div>
   </div>
 </header>
 
 <style>
   @media (max-width: 768px) {
-    .desktop-nav,
-    .desktop-auth {
+    .desktop-menu {
       display: none !important;
     }
-    .mobile-menu-btn {
+    #mobileMenuBtn {
       display: block !important;
-    }
-    .mobile-menu {
-      width: 100%;
-      position: absolute;
-      left: 0;
-      top: 70px;
-      z-index: 999;
     }
   }
   
   @media (min-width: 769px) {
-    .desktop-nav,
-    .desktop-auth {
+    .desktop-menu {
       display: block !important;
     }
-    .mobile-menu-btn {
+    #mobileMenuBtn {
       display: none !important;
     }
-    .mobile-menu {
+    #mobileMenu {
       display: none !important;
     }
   }
