@@ -829,7 +829,7 @@
     <i class="fas fa-arrow-up text-xl"></i>
   </button>
 
-  <script>
+ <script>
     // Load Header and Footer
     document.addEventListener('DOMContentLoaded', function() {
       // Load header
@@ -837,6 +837,9 @@
         .then(response => response.text())
         .then(data => {
           document.getElementById('header').innerHTML = data;
+          
+          // Wait a bit for header to be fully loaded then setup mobile menu
+          setTimeout(setupMobileMenu, 300);
         })
         .catch(error => console.error('Error loading header:', error));
       
@@ -847,34 +850,6 @@
           document.getElementById('footer').innerHTML = data;
         })
         .catch(error => console.error('Error loading footer:', error));
-
-      // Mobile Menu Functionality
-      const menuBtn = document.querySelector('.mobile-menu-btn');
-      const closeMenu = document.getElementById('closeMenu');
-      const mobileMenu = document.getElementById('mobileMenu');
-      
-      if (menuBtn && mobileMenu) {
-        menuBtn.addEventListener('click', function() {
-          mobileMenu.classList.add('active');
-          document.body.style.overflow = 'hidden';
-        });
-      }
-      
-      if (closeMenu && mobileMenu) {
-        closeMenu.addEventListener('click', function() {
-          mobileMenu.classList.remove('active');
-          document.body.style.overflow = '';
-        });
-        
-        // Close menu when clicking on links
-        const links = mobileMenu.querySelectorAll('a');
-        links.forEach(link => {
-          link.addEventListener('click', function() {
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
 
       // Back to Top Button
       const backToTop = document.getElementById('backToTop');
@@ -900,6 +875,86 @@
         });
       });
     });
+
+    // Separate function to setup mobile menu
+    function setupMobileMenu() {
+      console.log('Setting up mobile menu...');
+      
+      // Try different possible selectors for the menu button
+      const possibleButtonSelectors = [
+        '#mobileMenuBtn',
+        '.mobile-menu-btn',
+        'button:has(.fa-bars)',
+        'button:contains("☰")',
+        'button[class*="menu"]',
+        '.hamburger'
+      ];
+      
+      let menuBtn = null;
+      
+      // Find the menu button
+      for (let selector of possibleButtonSelectors) {
+        const element = document.querySelector(selector);
+        if (element) {
+          menuBtn = element;
+          console.log('Found menu button with selector:', selector);
+          break;
+        }
+      }
+      
+      // If still not found, look for any button with menu-like text or icon
+      if (!menuBtn) {
+        const allButtons = document.querySelectorAll('button');
+        for (let btn of allButtons) {
+          if (btn.innerHTML.includes('☰') || btn.innerHTML.includes('fa-bars')) {
+            menuBtn = btn;
+            console.log('Found menu button by content');
+            break;
+          }
+        }
+      }
+      
+      const closeMenu = document.getElementById('closeMenu');
+      const mobileMenu = document.getElementById('mobileMenu');
+      
+      if (menuBtn && mobileMenu) {
+        console.log('Mobile menu setup successful!');
+        
+        // Remove any existing event listeners by cloning
+        const newBtn = menuBtn.cloneNode(true);
+        menuBtn.parentNode.replaceChild(newBtn, menuBtn);
+        
+        newBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          mobileMenu.classList.add('active');
+          document.body.style.overflow = 'hidden';
+          console.log('Menu opened');
+        });
+      } else {
+        console.log('Mobile menu elements not found. Button:', !!menuBtn, 'Menu:', !!mobileMenu);
+        // Try again after a delay
+        setTimeout(setupMobileMenu, 500);
+      }
+      
+      if (closeMenu && mobileMenu) {
+        closeMenu.addEventListener('click', function() {
+          mobileMenu.classList.remove('active');
+          document.body.style.overflow = '';
+          console.log('Menu closed');
+        });
+        
+        // Close menu when clicking on links
+        const links = mobileMenu.querySelectorAll('a');
+        links.forEach(link => {
+          link.addEventListener('click', function() {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+          });
+        });
+      }
+    }
   </script>
 </body>
 </html>
+
