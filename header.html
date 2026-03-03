@@ -1,80 +1,10 @@
-<!-- Mobile Navigation Menu -->
-<div id="mobileMenu"
-  class="mobile-menu fixed top-0 left-0 w-full h-screen bg-white/95 backdrop-blur-xl z-50 transform -translate-x-full transition-transform duration-300">
-  <div class="p-6 h-full flex flex-col">
-    <div class="flex justify-between items-center mb-8">
-      <div class="flex items-center space-x-3">
-        <div
-          class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
-          <i class="fas fa-graduation-cap text-white text-lg"></i>
-        </div>
-        <span class="text-xl font-bold text-slate-800">StudentRoadmap</span>
-      </div>
-      <button id="closeMenu" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
-        <i class="fas fa-times text-slate-600"></i>
-      </button>
-    </div>
-
-    <nav class="flex-1">
-      <div class="space-y-2">
-        <a href="index.html"
-          class="flex items-center space-x-3 p-4 rounded-xl hover:bg-primary-50 font-medium transition-colors">
-          <i class="fas fa-home text-primary-600"></i>
-          <span>Home</span>
-        </a>
-        <a href="about.html"
-          class="flex items-center space-x-3 p-4 rounded-xl hover:bg-primary-50 font-medium transition-colors">
-          <i class="fas fa-users text-primary-600"></i>
-          <span>About us</span>
-        </a>
-        <a href="roadmap.html"
-          class="flex items-center space-x-3 p-4 rounded-xl hover:bg-slate-50 font-medium transition-colors">
-          <i class="fas fa-map text-primary-600"></i>
-          <span>Roadmaps</span>
-        </a>
-        <a href="quiz.html" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-slate-50 font-medium transition-colors">
-          <i class="fas fa-question-circle text-primary-600"></i>
-          <span>Career Quiz</span>
-        </a>
-        <a href="resources.html" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-slate-50 font-medium transition-colors">
-          <i class="fas fa-book-open text-primary-600"></i>
-          <span>Resources</span>
-        </a>
-        <a href="contact.html" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-slate-50 font-medium transition-colors">
-          <i class="fas fa-envelope text-primary-600"></i>
-          <span>Contact</span>
-        </a>
-      </div>
-    </nav>
-
-    <div id="mobileAuthContainer" class="pt-6 border-t border-slate-200">
-      <div class="flex items-center space-x-4 mb-4">
-        <a href="login.html" class="flex-1">
-          <button
-            class="w-full py-3 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors">
-            Login
-          </button>
-        </a>
-        <a href="signup.html" class="flex-1">
-          <button
-            class="w-full py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-xl hover:bg-primary-50 transition-colors">
-            Sign Up
-          </button>
-        </a>
-      </div>
-      <p class="text-sm text-slate-500 text-center">Get personalized career guidance</p>
-    </div>
-  </div>
-</div>
-
-<!-- Header -->
-<header class="sticky top-0 z-40 header-glass shadow-sm">
-  <div class="container mx-auto px-4 py-4">
-    <div class="flex items-center justify-between">
+<!-- Header Section -->
+<header class="header-glass">
+  <div class="container mx-auto px-4">
+    <div class="flex items-center justify-between py-4">
       <!-- Logo -->
       <a href="index.html" class="flex items-center space-x-3 group">
-        <div
-          class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+        <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
           <i class="fas fa-graduation-cap text-white text-lg"></i>
         </div>
         <div>
@@ -84,105 +14,49 @@
       </a>
 
       <!-- Desktop Navigation -->
-      <nav class="hidden lg:flex items-center space-x-8">
-        <a href="index.html"
-          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
-          <i class="fas fa-home text-primary-500"></i>
-          <span>Home</span>
-        </a>
-        <a href="roadmap.html"
-          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
-          <i class="fas fa-map text-primary-500"></i>
-          <span>Roadmaps</span>
-        </a>
-        <a href="quiz.html"
-          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
-          <i class="fas fa-question-circle text-primary-500"></i>
-          <span>Career Quiz</span>
-        </a>
-        <a href="resources.html"
-          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
-          <i class="fas fa-book-open text-primary-500"></i>
-          <span>Resources</span>
-        </a>
-        <a href="about.html"
-          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
-          <i class="fas fa-users text-primary-500"></i>
-          <span>About us</span>
-        </a>
-        <a href="contact.html"
-          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
-          <i class="fas fa-envelope text-primary-500"></i>
-          <span>Contact</span>
-        </a>
+      <nav class="hidden lg:block">
+        <div class="nav-menu desktop">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="roadmap.html" class="nav-link">Roadmaps</a>
+          <a href="quiz.html" class="nav-link">Career Quiz</a>
+          <a href="resources.html" class="nav-link">Resources</a>
+          <a href="about.html" class="nav-link">About us</a>
+          <a href="contact.html" class="nav-link">Contact</a>
+        </div>
       </nav>
 
       <!-- Desktop Auth Buttons -->
-      <div class="hidden lg:flex items-center space-x-4">
+      <div id="desktopAuthContainer" class="hidden lg:flex items-center space-x-4">
         <a href="login.html" class="px-6 py-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors">
           Sign In
         </a>
-        <a href="signup.html"
-          class="px-6 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300">
+        <a href="signup.html" class="px-6 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300">
           Get Started Free
         </a>
       </div>
 
       <!-- Mobile Menu Button -->
-      <div class="flex lg:hidden items-center space-x-3">
-        <div id="mobileProfileIcon"></div>
-        <button id="menuButton" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
-          <i class="fas fa-bars text-slate-600"></i>
-        </button>
-      </div>
+      <button class="mobile-menu-btn lg:hidden" id="mobileMenuBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
+
+    <!-- Mobile Navigation -->
+    <nav id="mobileNav">
+      <div class="nav-menu mobile">
+        <a href="index.html" class="nav-link text-lg block py-3 px-4 hover:bg-primary-50 rounded-xl transition-colors">Home</a>
+        <a href="roadmap.html" class="nav-link text-lg block py-3 px-4 hover:bg-primary-50 rounded-xl transition-colors">Roadmaps</a>
+        <a href="quiz.html" class="nav-link text-lg block py-3 px-4 hover:bg-primary-50 rounded-xl transition-colors">Career Quiz</a>
+        <a href="resources.html" class="nav-link text-lg block py-3 px-4 hover:bg-primary-50 rounded-xl transition-colors">Resources</a>
+        <a href="about.html" class="nav-link text-lg block py-3 px-4 hover:bg-primary-50 rounded-xl transition-colors">About us</a>
+        <a href="contact.html" class="nav-link text-lg block py-3 px-4 hover:bg-primary-50 rounded-xl transition-colors">Contact</a>
+        <div id="mobileAuthContainer" class="flex flex-col space-y-3 w-full pt-4 mt-4 border-t border-slate-200">
+          <a href="login.html" class="text-center px-5 py-3 text-primary-600 font-semibold hover:bg-primary-50 rounded-xl transition-colors">Sign In</a>
+          <a href="signup.html" class="btn-gradient text-center px-6 py-3 rounded-xl text-white font-semibold">Get Started Free</a>
+        </div>
+      </div>
+    </nav>
   </div>
 </header>
-
-<!-- JavaScript for Mobile Menu -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const menuButton = document.getElementById('menuButton');
-    const closeMenu = document.getElementById('closeMenu');
-    const mobileMenu = document.getElementById('mobileMenu');
-
-    if (menuButton && closeMenu && mobileMenu) {
-      // Open menu
-      menuButton.addEventListener('click', function() {
-        mobileMenu.classList.remove('-translate-x-full');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
-      });
-
-      // Close menu
-      closeMenu.addEventListener('click', function() {
-        mobileMenu.classList.add('-translate-x-full');
-        document.body.style.overflow = ''; // Restore scrolling
-      });
-
-      // Close menu when clicking outside (optional)
-      mobileMenu.addEventListener('click', function(e) {
-        if (e.target === mobileMenu) {
-          mobileMenu.classList.add('-translate-x-full');
-          document.body.style.overflow = '';
-        }
-      });
-
-      // Close menu on escape key
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && !mobileMenu.classList.contains('-translate-x-full')) {
-          mobileMenu.classList.add('-translate-x-full');
-          document.body.style.overflow = '';
-        }
-      });
-
-      // Close menu when clicking on any link inside mobile menu
-      const mobileLinks = mobileMenu.querySelectorAll('a');
-      mobileLinks.forEach(link => {
-        link.addEventListener('click', function() {
-          mobileMenu.classList.add('-translate-x-full');
-          document.body.style.overflow = '';
-        });
-      });
-    }
-  });
-</script>
