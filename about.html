@@ -566,51 +566,49 @@
 
       // Mobile Menu Toggle (will work after header loads)
       setTimeout(() => {
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileNav = document.getElementById('mobileNav');
-
-        if (mobileMenuBtn && mobileNav) {
-          mobileMenuBtn.addEventListener('click', function() {
-            this.classList.toggle('active');
-            mobileNav.classList.toggle('active');
+        // Try both possible IDs (mobileMenuBtn and mobileMenu)
+        const menuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        if (menuBtn && mobileMenu) {
+          console.log('Mobile menu found! Setting up...');
+          
+          menuBtn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             
-            // Prevent body scrolling when menu is open
-            if (mobileNav.classList.contains('active')) {
-              document.body.style.overflow = 'hidden';
+            if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
+              mobileMenu.style.display = 'block';
+              console.log('Menu opened');
             } else {
-              document.body.style.overflow = '';
+              mobileMenu.style.display = 'none';
+              console.log('Menu closed');
             }
+          };
+          
+          // Close menu when clicking on links
+          const links = mobileMenu.querySelectorAll('a');
+          links.forEach(link => {
+            link.onclick = function() {
+              mobileMenu.style.display = 'none';
+            };
           });
-
-          // Close menu when clicking on a link
-          const mobileLinks = mobileNav.querySelectorAll('a');
-          mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-              mobileNav.classList.remove('active');
-              mobileMenuBtn.classList.remove('active');
-              document.body.style.overflow = '';
-            });
-          });
-
-          // Close menu on escape key
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
-              mobileNav.classList.remove('active');
-              mobileMenuBtn.classList.remove('active');
-              document.body.style.overflow = '';
-            }
-          });
-
+          
           // Close menu when clicking outside
-          document.addEventListener('click', (e) => {
-            if (!mobileNav.contains(e.target) && !mobileMenuBtn.contains(e.target) && mobileNav.classList.contains('active')) {
-              mobileNav.classList.remove('active');
-              mobileMenuBtn.classList.remove('active');
-              document.body.style.overflow = '';
+          document.addEventListener('click', function(e) {
+            if (mobileMenu.style.display === 'block' && 
+                !menuBtn.contains(e.target) && 
+                !mobileMenu.contains(e.target)) {
+              mobileMenu.style.display = 'none';
             }
+          });
+        } else {
+          console.log('Mobile menu elements not found - using IDs:', {
+            menuBtn: !!menuBtn,
+            mobileMenu: !!mobileMenu
           });
         }
-      }, 100); // Small delay to ensure header is loaded
+      }, 200);
 
       // Animation on scroll
       const observerOptions = {
