@@ -2,7 +2,7 @@
 <html class="light" lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
   <title>Psychologist Roadmap - StudentRoadmap</title>
   
   <!-- Fonts & Icons -->
@@ -16,20 +16,63 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+      overflow-x: hidden;
     }
     
-    .roadmap-container { position: relative; padding-left: 2rem; }
+    /* Mobile dropdown menu styles - for header */
+    .mobile-nav {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      background: white;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+    .mobile-nav.open {
+      max-height: 400px;
+      transition: max-height 0.5s ease-in;
+    }
+    .nav-link {
+      display: block;
+      padding: 0.75rem 1rem;
+      color: #1e293b;
+      font-weight: 500;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .nav-link:last-child { border-bottom: none; }
+    .nav-link:hover { background: #f1f5f9; }
+    
+    /* Mobile first roadmap */
+    .roadmap-container { 
+      position: relative; 
+      padding-left: 1rem; 
+    }
+    @media (min-width: 640px) {
+      .roadmap-container { padding-left: 2rem; }
+    }
+    
     .roadmap-line {
-      position: absolute; left: 27px; top: 0.5rem; bottom: 0.5rem;
+      position: absolute; left: 20px; top: 0.5rem; bottom: 0.5rem;
       width: 3px; background: linear-gradient(to bottom, #a855f7, #9333ea); border-radius: 999px;
     }
-    .roadmap-step {
-      position: relative; display: flex; gap: 1.5rem; margin-bottom: 2.5rem;
-      opacity: 0; animation: slideIn 0.5s ease-out forwards;
+    @media (min-width: 640px) {
+      .roadmap-line { left: 27px; }
     }
+    
+    .roadmap-step {
+      position: relative; display: flex; gap: 1rem; margin-bottom: 2rem;
+      opacity: 0; animation: slideIn 0.5s ease-out forwards;
+      flex-wrap: wrap;
+    }
+    @media (min-width: 640px) {
+      .roadmap-step { gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: nowrap; }
+    }
+    
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(-20px); }
       to { opacity: 1; transform: translateX(0); }
@@ -43,159 +86,280 @@
     .roadmap-step:nth-child(7) { animation-delay: 0.7s; }
     
     .step-number {
-      width: 3.5rem; height: 3.5rem; background: white; border: 3px solid #a855f7;
+      width: 2.8rem; height: 2.8rem; background: white; border: 3px solid #a855f7;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 1.25rem; color: #a855f7; position: relative; z-index: 10;
+      font-weight: 800; font-size: 1.1rem; color: #a855f7; position: relative; z-index: 10;
       box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); transition: all 0.3s ease;
+      flex-shrink: 0;
+      cursor: pointer;
     }
-    .roadmap-step:hover .step-number {
-      transform: scale(1.1); background: #a855f7; color: white;
+    @media (min-width: 640px) {
+      .step-number { width: 3.5rem; height: 3.5rem; font-size: 1.25rem; }
     }
+    
+    /* Completed step styling */
+    .roadmap-step.completed .step-number {
+      background: #10b981;
+      border-color: #059669;
+      color: white;
+    }
+    
+    .roadmap-step.completed .step-card {
+      border-left: 4px solid #10b981;
+      background: #f0fdf4;
+    }
+    
+    .step-number:hover::after {
+      content: "🧠 Click to complete";
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: white;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.5rem;
+      white-space: nowrap;
+      z-index: 20;
+      pointer-events: none;
+    }
+    
+    .roadmap-step.completed .step-number:hover::after {
+      content: "✓ Completed";
+    }
+    
+    @media (max-width: 640px) {
+      .step-number:hover::after {
+        font-size: 0.6rem;
+        padding: 0.2rem 0.4rem;
+      }
+    }
+    
     .step-card {
-      flex: 1; background: white; border-radius: 1rem; padding: 1.5rem;
+      flex: 1; background: white; border-radius: 1rem; padding: 1rem;
       box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid #f1f5f9;
       transition: all 0.3s ease;
+      min-width: 200px;
     }
+    @media (min-width: 640px) {
+      .step-card { padding: 1.5rem; }
+    }
+    
     .roadmap-step:hover .step-card {
       transform: translateX(5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
       border-color: #e9d5ff;
     }
+    
     .path-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;
+      display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 0.75rem;
     }
+    @media (min-width: 400px) {
+      .path-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 768px) {
+      .path-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    }
+    
     .path-card {
-      background: #f8fafc; border-left: 4px solid #a855f7; padding: 1rem; border-radius: 0.75rem;
+      background: #f8fafc; border-left: 4px solid #a855f7; padding: 0.75rem; border-radius: 0.75rem;
     }
+    
     .glass-card {
       background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);
       box-shadow: 0 8px 32px rgba(168,85,247,0.1); transition: all 0.3s ease;
     }
     .glass-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(168,85,247,0.15); }
+    
     .btn-gradient {
       background: linear-gradient(135deg, #a855f7, #9333ea); color: white; transition: all 0.3s ease;
     }
     .btn-gradient:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(168,85,247,0.4); }
+    
+    /* Progress bar */
+    .progress-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #a855f7, #10b981);
+      transition: width 0.3s ease;
+    }
+    
+    /* Completion message */
+    .completion-message {
+      display: none;
+      background: #10b981;
+      color: white;
+      padding: 1rem;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .completion-message.show {
+      display: block;
+      animation: slideDown 0.5s ease;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Better mobile typography */
+    @media (max-width: 640px) {
+      h1 { font-size: 1.8rem !important; }
+      h2 { font-size: 1.5rem !important; }
+      h3 { font-size: 1.2rem !important; }
+      .step-title { font-size: 1.1rem; }
+      .path-title { font-size: 0.95rem; }
+      .path-desc { font-size: 0.85rem; }
+    }
   </style>
 </head>
-<body class="text-slate-800">
+<body class="text-slate-800 min-h-screen">
+  <!-- Header will be loaded here from components/header.html -->
   <div id="header"></div>
 
-  <main class="relative z-10 py-12">
-    <div class="container mx-auto px-4">
+  <main class="relative z-10 py-6 md:py-12">
+    <div class="container mx-auto px-3 sm:px-4">
       
-      <!-- Career Header -->
-      <div class="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-3xl p-8 md:p-12 mb-12 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-20 -mt-20"></div>
-        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full -ml-20 -mb-20"></div>
+      <!-- Career Header - Mobile optimized -->
+      <div class="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-2xl md:rounded-3xl p-5 md:p-8 lg:p-12 mb-6 md:mb-12 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-48 h-48 md:w-64 md:h-64 bg-white opacity-10 rounded-full -mr-16 -mt-16"></div>
+        <div class="absolute bottom-0 left-0 w-32 h-32 md:w-48 md:h-48 bg-white opacity-10 rounded-full -ml-16 -mb-16"></div>
         
-        <div class="relative flex flex-col md:flex-row items-center gap-8">
-          <div class="w-24 h-24 md:w-32 md:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl md:text-6xl shadow-xl border border-white/30">
+        <div class="relative flex flex-col items-center text-center">
+          <div class="w-16 h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-3xl md:text-4xl lg:text-6xl shadow-xl border border-white/30 mb-3">
             🧠
           </div>
-          <div class="flex-1 text-center md:text-left">
-            <h1 class="text-3xl md:text-4xl font-bold mb-2">Psychologist Roadmap</h1>
-            <p class="text-lg text-white/90 max-w-2xl">Complete guide to becoming a psychologist in India</p>
+          <div class="w-full">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Psychologist</h1>
+            <p class="text-sm md:text-lg text-white/90 max-w-2xl mx-auto">Click on each step number as you complete it. Download your personalized psychology roadmap PDF when done!</p>
           </div>
-          <button onclick="downloadPDF()" class="btn-gradient px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2">
-            <i class="fas fa-file-pdf"></i> Download PDF
-          </button>
         </div>
       </div>
 
-      <div class="flex flex-col lg:flex-row gap-8">
+      <!-- Progress Tracker -->
+      <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl mb-4 md:mb-6">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="font-semibold text-sm md:text-base">Your Psychology Journey Progress</h3>
+          <span id="progressText" class="text-purple-600 font-bold">0/7 Steps</span>
+        </div>
+        <div class="progress-bar">
+          <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Completion Message -->
+      <div id="completionMessage" class="completion-message">
+        <i class="fas fa-check-circle text-2xl mb-2"></i>
+        <h3 class="text-lg font-bold">Congratulations Psychologist! 🎉</h3>
+        <p class="mb-3">You've completed all 7 steps! Click below to download your personalized psychology roadmap document.</p>
+        <button onclick="downloadPersonalizedPDF()" class="bg-white text-green-600 font-semibold py-2 px-6 rounded-lg hover:bg-green-50 transition-colors">
+          <i class="fas fa-file-pdf mr-2"></i>Download My Psychologist Roadmap PDF
+        </button>
+      </div>
+
+      <div class="flex flex-col lg:flex-row gap-4 md:gap-8">
         <!-- Left Column - Roadmap -->
         <div class="lg:w-2/3">
-          <div class="glass-card p-8 rounded-2xl mb-8">
-            <h2 class="text-2xl font-bold mb-6 flex items-center">
-              <i class="fas fa-road text-purple-600 mr-3"></i> Complete Roadmap
+          <div class="glass-card p-4 md:p-6 lg:p-8 rounded-xl md:rounded-2xl mb-4 md:mb-8">
+            <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center">
+              <i class="fas fa-road text-purple-600 mr-2 md:mr-3"></i> Complete Psychology Roadmap
+              <span class="ml-auto text-xs md:text-sm text-slate-500">Click numbers to complete steps</span>
             </h2>
             
             <div class="roadmap-container">
+              <div class="roadmap-line hidden sm:block"></div>
+              
               <!-- Step 1 -->
-              <div class="roadmap-step">
-                <div class="step-number">1</div>
+              <div class="roadmap-step" id="step1">
+                <div class="step-number" onclick="completeStep(1)">1</div>
                 <div class="step-card">
-                  <h3 class="step-title">Class 11-12 (Any Stream)</h3>
-                  <p class="step-desc">Complete 12th grade. Psychology as a subject is beneficial but not mandatory.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Class 11-12 (Any Stream)</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Complete 12th grade. Psychology as a subject is beneficial but not mandatory.</p>
                 </div>
               </div>
               
               <!-- Step 2 -->
-              <div class="roadmap-step">
-                <div class="step-number">2</div>
+              <div class="roadmap-step" id="step2">
+                <div class="step-number" onclick="completeStep(2)">2</div>
                 <div class="step-card">
-                  <h3 class="step-title">Bachelor's Degree (3 Years)</h3>
-                  <p class="step-desc">Choose the right undergraduate program.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Bachelor's Degree (3 Years)</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Choose the right undergraduate program.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">BA Psychology</div><div class="path-desc">3 years - Arts stream, focus on theoretical psychology</div></div>
-                    <div class="path-card"><div class="path-title">B.Sc Psychology</div><div class="path-desc">3 years - Science stream, includes research methods</div></div>
-                    <div class="path-card"><div class="path-title">BA Applied Psychology</div><div class="path-desc">3 years - Focus on practical applications</div></div>
+                    <div class="path-card"><div class="font-semibold">BA Psychology</div><div class="text-xs md:text-sm">3 years - Arts stream, focus on theoretical psychology</div></div>
+                    <div class="path-card"><div class="font-semibold">B.Sc Psychology</div><div class="text-xs md:text-sm">3 years - Science stream, includes research methods</div></div>
+                    <div class="path-card"><div class="font-semibold">BA Applied Psychology</div><div class="text-xs md:text-sm">3 years - Focus on practical applications</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 3 -->
-              <div class="roadmap-step">
-                <div class="step-number">3</div>
+              <div class="roadmap-step" id="step3">
+                <div class="step-number" onclick="completeStep(3)">3</div>
                 <div class="step-card">
-                  <h3 class="step-title">Master's Degree (2 Years)</h3>
-                  <p class="step-desc">MA/M.Sc in Psychology - essential for professional practice.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Master's Degree (2 Years)</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">MA/M.Sc in Psychology - essential for professional practice.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Clinical Psychology</div><div class="path-desc">Mental health assessment and therapy</div></div>
-                    <div class="path-card"><div class="path-title">Counseling Psychology</div><div class="path-desc">Guidance and counseling in educational/org settings</div></div>
-                    <div class="path-card"><div class="path-title">Industrial Psychology</div><div class="path-desc">HR, organizational behavior, workplace psychology</div></div>
-                    <div class="path-card"><div class="path-title">Child Psychology</div><div class="path-desc">Child development, pediatric mental health</div></div>
+                    <div class="path-card"><div class="font-semibold">Clinical Psychology</div><div class="text-xs md:text-sm">Mental health assessment and therapy</div></div>
+                    <div class="path-card"><div class="font-semibold">Counseling Psychology</div><div class="text-xs md:text-sm">Guidance and counseling in educational/org settings</div></div>
+                    <div class="path-card"><div class="font-semibold">Industrial Psychology</div><div class="text-xs md:text-sm">HR, organizational behavior, workplace psychology</div></div>
+                    <div class="path-card"><div class="font-semibold">Child Psychology</div><div class="text-xs md:text-sm">Child development, pediatric mental health</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 4 -->
-              <div class="roadmap-step">
-                <div class="step-number">4</div>
+              <div class="roadmap-step" id="step4">
+                <div class="step-number" onclick="completeStep(4)">4</div>
                 <div class="step-card">
-                  <h3 class="step-title">M.Phil/PhD (2-3 Years)</h3>
-                  <p class="step-desc">Advanced specialization required for clinical practice.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">M.Phil/PhD (2-3 Years)</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Advanced specialization required for clinical practice.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">M.Phil Clinical</div><div class="path-desc">2 years - Required for RCI registration as Clinical Psychologist</div></div>
-                    <div class="path-card"><div class="path-title">PhD</div><div class="path-desc">3-5 years - For research and academic careers</div></div>
+                    <div class="path-card"><div class="font-semibold">M.Phil Clinical</div><div class="text-xs md:text-sm">2 years - Required for RCI registration as Clinical Psychologist</div></div>
+                    <div class="path-card"><div class="font-semibold">PhD</div><div class="text-xs md:text-sm">3-5 years - For research and academic careers</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 5 -->
-              <div class="roadmap-step">
-                <div class="step-number">5</div>
+              <div class="roadmap-step" id="step5">
+                <div class="step-number" onclick="completeStep(5)">5</div>
                 <div class="step-card">
-                  <h3 class="step-title">Internship & Training</h3>
-                  <p class="step-desc">Practical training under supervision.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Internship & Training</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Practical training under supervision.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Clinical Internship</div><div class="path-desc">1 year at hospitals, mental health clinics</div></div>
-                    <div class="path-card"><div class="path-title">Supervised Practice</div><div class="path-desc">Work under licensed psychologists</div></div>
+                    <div class="path-card"><div class="font-semibold">Clinical Internship</div><div class="text-xs md:text-sm">1 year at hospitals, mental health clinics</div></div>
+                    <div class="path-card"><div class="font-semibold">Supervised Practice</div><div class="text-xs md:text-sm">Work under licensed psychologists</div></div>
                   </div>
                 </div>
               </div>
               
               <!-- Step 6 -->
-              <div class="roadmap-step">
-                <div class="step-number">6</div>
+              <div class="roadmap-step" id="step6">
+                <div class="step-number" onclick="completeStep(6)">6</div>
                 <div class="step-card">
-                  <h3 class="step-title">Registration with RCI</h3>
-                  <p class="step-desc">Register with Rehabilitation Council of India to practice as a clinical psychologist.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Registration with RCI</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Register with Rehabilitation Council of India to practice as a clinical psychologist.</p>
                 </div>
               </div>
               
               <!-- Step 7 -->
-              <div class="roadmap-step">
-                <div class="step-number">7</div>
+              <div class="roadmap-step" id="step7">
+                <div class="step-number" onclick="completeStep(7)">7</div>
                 <div class="step-card">
-                  <h3 class="step-title">Career Paths & Earnings</h3>
-                  <p class="step-desc">Psychology offers diverse career opportunities.</p>
+                  <h3 class="font-bold text-lg md:text-xl mb-2">Career Paths & Earnings</h3>
+                  <p class="text-sm md:text-base text-slate-600 mb-3">Psychology offers diverse career opportunities.</p>
                   <div class="path-grid">
-                    <div class="path-card"><div class="path-title">Clinical Psychologist</div><div class="path-desc">Hospitals, clinics, private practice (₹4-8 LPA starting)</div></div>
-                    <div class="path-card"><div class="path-title">Counselor</div><div class="path-desc">Schools, colleges, NGOs (₹3-6 LPA)</div></div>
-                    <div class="path-card"><div class="path-title">Industrial Psychologist</div><div class="path-desc">Corporate HR, training (₹5-10 LPA)</div></div>
-                    <div class="path-card"><div class="path-title">Academic/Researcher</div><div class="path-desc">Universities, research institutes (₹4-8 LPA)</div></div>
-                    <div class="path-card"><div class="path-title">Private Practice</div><div class="path-desc">Self-employed (₹500-2000 per session)</div></div>
+                    <div class="path-card"><div class="font-semibold">Clinical Psychologist</div><div class="text-xs md:text-sm">Hospitals, clinics, private practice (₹4-8 LPA starting)</div></div>
+                    <div class="path-card"><div class="font-semibold">Counselor</div><div class="text-xs md:text-sm">Schools, colleges, NGOs (₹3-6 LPA)</div></div>
+                    <div class="path-card"><div class="font-semibold">Industrial Psychologist</div><div class="text-xs md:text-sm">Corporate HR, training (₹5-10 LPA)</div></div>
+                    <div class="path-card"><div class="font-semibold">Academic/Researcher</div><div class="text-xs md:text-sm">Universities, research institutes (₹4-8 LPA)</div></div>
+                    <div class="path-card"><div class="font-semibold">Private Practice</div><div class="text-xs md:text-sm">Self-employed (₹500-2000 per session)</div></div>
                   </div>
                 </div>
               </div>
@@ -204,65 +368,106 @@
         </div>
         
         <!-- Right Column - Sidebar -->
-        <div class="lg:w-1/3 space-y-6">
-          <div class="glass-card p-6 rounded-2xl">
-            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-info-circle text-purple-600 mr-2"></i> Quick Info</h3>
-            <ul class="space-y-3">
-              <li class="flex items-start"><i class="fas fa-clock text-purple-500 mt-1 mr-3"></i><div><span class="font-semibold">Duration:</span> <span class="text-slate-600">5-7 years (BA + MA + M.Phil)</span></div></li>
-              <li class="flex items-start"><i class="fas fa-graduation-cap text-purple-500 mt-1 mr-3"></i><div><span class="font-semibold">Entrance Exams:</span> <span class="text-slate-600">CUET-PG, JMI, BHU, DU Entrance</span></div></li>
-              <li class="flex items-start"><i class="fas fa-rupee-sign text-purple-500 mt-1 mr-3"></i><div><span class="font-semibold">Course Fees:</span> <span class="text-slate-600">₹30,000-3 Lakhs (Govt), ₹2-8 Lakhs (Private)</span></div></li>
-              <li class="flex items-start"><i class="fas fa-trophy text-purple-500 mt-1 mr-3"></i><div><span class="font-semibold">Starting Salary:</span> <span class="text-slate-600">₹3-6 LPA</span></div></li>
+        <div class="lg:w-1/3 space-y-4 md:space-y-6">
+          <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl">
+            <h3 class="font-bold text-base md:text-lg mb-3 flex items-center"><i class="fas fa-info-circle text-purple-600 mr-2"></i> Quick Info</h3>
+            <ul class="space-y-2 md:space-y-3 text-sm md:text-base">
+              <li class="flex items-start"><i class="fas fa-clock text-purple-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Duration:</span> <span class="text-slate-600">5-7 years (BA + MA + M.Phil)</span></div></li>
+              <li class="flex items-start"><i class="fas fa-graduation-cap text-purple-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Entrance Exams:</span> <span class="text-slate-600">CUET-PG, JMI, BHU, DU Entrance</span></div></li>
+              <li class="flex items-start"><i class="fas fa-rupee-sign text-purple-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Course Fees:</span> <span class="text-slate-600">₹30k-3 Lakhs (Govt), ₹2-8 Lakhs (Private)</span></div></li>
+              <li class="flex items-start"><i class="fas fa-trophy text-purple-500 mt-1 mr-2 md:mr-3"></i><div><span class="font-semibold">Starting Salary:</span> <span class="text-slate-600">₹3-6 LPA</span></div></li>
             </ul>
           </div>
           
-          <div class="glass-card p-6 rounded-2xl">
-            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-university text-purple-600 mr-2"></i> Top Institutes</h3>
-            <ul class="space-y-3">
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Delhi University (DU)</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Jamia Millia Islamia, Delhi</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>BHU, Varanasi</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>TISS, Mumbai</li>
-              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-3"></i>Christ University, Bangalore</li>
+          <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl">
+            <h3 class="font-bold text-base md:text-lg mb-3 flex items-center"><i class="fas fa-university text-purple-600 mr-2"></i> Top Institutes</h3>
+            <ul class="space-y-2 text-sm md:text-base">
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Delhi University (DU)</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Jamia Millia Islamia, Delhi</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>BHU, Varanasi</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>TISS, Mumbai</li>
+              <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2 md:mr-3 w-4"></i>Christ University, Bangalore</li>
             </ul>
           </div>
           
-          <div class="glass-card p-6 rounded-2xl">
-            <h3 class="text-lg font-bold mb-4 flex items-center"><i class="fas fa-brain text-purple-600 mr-2"></i> Key Skills</h3>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-sm">Empathy</span>
-              <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-sm">Active Listening</span>
-              <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-sm">Patience</span>
-              <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-sm">Ethical Judgment</span>
-              <span class="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-sm">Research</span>
+          <div class="glass-card p-4 md:p-6 rounded-xl md:rounded-2xl">
+            <h3 class="font-bold text-base md:text-lg mb-3 flex items-center"><i class="fas fa-brain text-purple-600 mr-2"></i> Key Skills</h3>
+            <div class="flex flex-wrap gap-1 md:gap-2">
+              <span class="px-2 md:px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs md:text-sm">Empathy</span>
+              <span class="px-2 md:px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs md:text-sm">Active Listening</span>
+              <span class="px-2 md:px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs md:text-sm">Patience</span>
+              <span class="px-2 md:px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs md:text-sm">Ethical Judgment</span>
             </div>
           </div>
           
-          <div class="bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-6 text-white">
-            <i class="fas fa-rocket text-3xl mb-4"></i>
-            <h3 class="text-xl font-bold mb-2">Start Your Psychology Journey</h3>
-            <a href="quiz.html" class="block w-full bg-white text-purple-600 font-semibold py-3 px-4 rounded-xl text-center hover:bg-purple-50 transition-colors">
-              Take Quiz <i class="fas fa-arrow-right ml-2"></i>
-            </a>
+          <div class="bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl md:rounded-2xl p-4 md:p-6 text-white">
+            <i class="fas fa-rocket text-2xl md:text-3xl mb-2 md:mb-4"></i>
+            <h3 class="text-lg md:text-xl font-bold mb-2">Track Your Psychology Journey</h3>
+            <p class="text-sm mb-3">Click each step number as you complete it, then download your personalized roadmap!</p>
+            <button onclick="resetProgress()" class="block w-full bg-white text-purple-600 font-semibold py-2 md:py-3 px-4 rounded-lg md:rounded-xl text-center hover:bg-purple-50 transition-colors text-sm md:text-base">
+              <i class="fas fa-redo-alt mr-2"></i>Reset Progress
+            </button>
           </div>
         </div>
       </div>
       
-      <div id="footer" class="mt-16"></div>
+      <!-- Footer -->
+      <div id="footer" class="mt-8 md:mt-16"></div>
     </div>
   </main>
   
-  <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
+  <button id="backToTop" class="fixed bottom-4 right-4 md:bottom-8 md:right-8 w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
     <i class="fas fa-arrow-up"></i>
   </button>
   
   <script>
+    // Array to track completed steps
+    let completedSteps = [];
+    
     document.addEventListener('DOMContentLoaded', () => {
-      fetch('components/header.html').then(r=>r.text()).then(d=>document.getElementById('header').innerHTML=d);
-      fetch('components/footer.html').then(r=>r.text()).then(d=>document.getElementById('footer').innerHTML=d);
+      // Load header from components - ONLY this, no new navbar created
+      fetch('components/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header').innerHTML = data;
+        })
+        .catch(error => {
+          console.log('Header not found, but not creating new one - just leaving empty');
+          // Don't create fallback navbar, just leave empty as requested
+        });
       
+      // Load footer
+      fetch('components/footer.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer').innerHTML = data;
+        })
+        .catch(error => {
+          document.getElementById('footer').innerHTML = '<div class="text-center text-slate-500 text-xs md:text-sm py-4 md:py-6 border-t border-slate-200">© 2025 StudentRoadmap. All rights reserved.</div>';
+        });
+      
+      // Load saved progress from localStorage
+      const saved = localStorage.getItem('psychologistProgress');
+      if (saved) {
+        completedSteps = JSON.parse(saved);
+        completedSteps.forEach(step => {
+          const stepElement = document.getElementById(`step${step}`);
+          if (stepElement) {
+            stepElement.classList.add('completed');
+          }
+        });
+        updateProgress();
+        
+        // Show completion message if all steps done
+        if (completedSteps.length === 7) {
+          document.getElementById('completionMessage').classList.add('show');
+        }
+      }
+      
+      // Back to top button
       const backToTop = document.getElementById('backToTop');
       window.addEventListener('scroll', () => {
-        if (window.scrollY > 500) {
+        if (window.scrollY > 300) {
           backToTop.classList.remove('opacity-0', 'translate-y-4');
           backToTop.classList.add('opacity-100', 'translate-y-0');
         } else {
@@ -270,12 +475,140 @@
           backToTop.classList.add('opacity-0', 'translate-y-4');
         }
       });
+      
       backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     });
     
-    function downloadPDF() {
-      const element = document.querySelector('.roadmap-container').cloneNode(true);
-      html2pdf().set({ margin: 1, filename: 'psychologist-roadmap.pdf' }).from(element).save();
+    function completeStep(stepNumber) {
+      const stepElement = document.getElementById(`step${stepNumber}`);
+      
+      if (!stepElement.classList.contains('completed')) {
+        // Mark as completed
+        stepElement.classList.add('completed');
+        completedSteps.push(stepNumber);
+        completedSteps.sort((a, b) => a - b);
+        
+        // Save to localStorage
+        localStorage.setItem('psychologistProgress', JSON.stringify(completedSteps));
+        
+        // Update progress bar
+        updateProgress();
+        
+        // Show completion message if all steps done (7 steps total)
+        if (completedSteps.length === 7) {
+          document.getElementById('completionMessage').classList.add('show');
+        }
+        
+        // Show success toast
+        showToast(`Step ${stepNumber} completed! 🧠`);
+      }
+    }
+    
+    function updateProgress() {
+      const progress = (completedSteps.length / 7) * 100;
+      document.getElementById('progressFill').style.width = `${progress}%`;
+      document.getElementById('progressText').textContent = `${completedSteps.length}/7 Steps`;
+    }
+    
+    function resetProgress() {
+      // Remove completed class from all steps
+      for (let i = 1; i <= 7; i++) {
+        const step = document.getElementById(`step${i}`);
+        if (step) {
+          step.classList.remove('completed');
+        }
+      }
+      
+      // Clear completed steps array
+      completedSteps = [];
+      
+      // Clear localStorage
+      localStorage.removeItem('psychologistProgress');
+      
+      // Update progress bar
+      updateProgress();
+      
+      // Hide completion message
+      document.getElementById('completionMessage').classList.remove('show');
+      
+      showToast('Progress reset successfully');
+    }
+    
+    function showToast(message) {
+      // Create toast element
+      const toast = document.createElement('div');
+      toast.className = 'fixed top-20 right-4 bg-purple-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-bounce';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      // Remove after 2 seconds
+      setTimeout(() => {
+        toast.remove();
+      }, 2000);
+    }
+    
+    function downloadPersonalizedPDF() {
+      if (completedSteps.length === 0) {
+        alert('Please complete at least one step before downloading!');
+        return;
+      }
+      
+      // Create personalized PDF content
+      const content = document.createElement('div');
+      content.innerHTML = `
+        <div style="padding: 30px; font-family: 'Poppins', sans-serif; max-width: 800px; margin: 0 auto;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #a855f7; font-size: 28px; margin-bottom: 10px;">Psychologist Roadmap</h1>
+            <h2 style="color: #4b5563; font-size: 18px;">Your Personalised Psychology Journey</h2>
+            <div style="height: 4px; background: linear-gradient(90deg, #a855f7, #10b981); width: 100px; margin: 20px auto;"></div>
+          </div>
+          
+          <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-bottom: 25px;">
+            <p style="font-size: 16px; color: #1e293b; margin-bottom: 15px;">
+              <strong>Congratulations, Psychologist!</strong> You have successfully completed ${completedSteps.length} out of 7 steps in your psychology journey.
+            </p>
+            <p style="font-size: 14px; color: #64748b;">Generated on: ${new Date().toLocaleDateString()}</p>
+          </div>
+          
+          <h3 style="color: #a855f7; font-size: 20px; margin-bottom: 15px;">Completed Steps:</h3>
+          <div style="margin-bottom: 30px;">
+            ${completedSteps.map(step => {
+              const stepNames = {
+                1: 'Class 11-12 (Any Stream)',
+                2: 'Bachelor\'s Degree',
+                3: 'Master\'s Degree',
+                4: 'M.Phil/PhD',
+                5: 'Internship & Training',
+                6: 'RCI Registration',
+                7: 'Career Paths & Earnings'
+              };
+              return `
+                <div style="background: white; border-left: 4px solid #10b981; padding: 12px; margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  <strong style="color: #059669;">Step ${step}:</strong> ${stepNames[step]}
+                </div>
+              `;
+            }).join('')}
+          </div>
+          
+          <div style="background: linear-gradient(135deg, #a855f7, #9333ea); color: white; padding: 20px; border-radius: 12px; text-align: center;">
+            <p style="font-size: 18px; margin-bottom: 10px;">🧠 Understanding minds, healing hearts!</p>
+            <p style="font-size: 14px; opacity: 0.9;">Your psychology career is on the right track. Keep listening and helping others.</p>
+          </div>
+          
+          <div style="margin-top: 30px; text-align: center; color: #94a3b8; font-size: 12px;">
+            © 2025 StudentRoadmap - Your Personalised Psychologist Roadmap
+          </div>
+        </div>
+      `;
+      
+      // Generate PDF
+      html2pdf().set({
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: `psychologist-roadmap-completed-${completedSteps.length}-steps.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, letterRendering: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      }).from(content).save();
     }
   </script>
 </body>
