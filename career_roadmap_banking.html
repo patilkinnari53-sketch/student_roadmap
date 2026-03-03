@@ -182,42 +182,8 @@
   </style>
 </head>
 <body class="text-slate-800 min-h-screen">
-  <!-- Navigation Header with Dropdown -->
-  <nav class="bg-white shadow-md sticky top-0 z-50">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center py-3">
-        <!-- Logo -->
-        <a href="#" class="text-xl md:text-2xl font-bold text-blue-700 flex items-center">
-          <i class="fas fa-graduation-cap mr-2 text-blue-600"></i> StudentRoadmap
-        </a>
-        
-        <!-- Desktop Menu (hidden on mobile) -->
-        <div class="hidden md:flex space-x-6 items-center">
-          <a href="#" class="text-slate-700 hover:text-blue-600 font-medium transition">Home</a>
-          <a href="#" class="text-slate-700 hover:text-blue-600 font-medium transition">Roadmaps</a>
-          <a href="#" class="text-slate-700 hover:text-blue-600 font-medium transition">Courses</a>
-          <a href="#" class="text-slate-700 hover:text-blue-600 font-medium transition">Quiz</a>
-          <a href="#" class="text-slate-700 hover:text-blue-600 font-medium transition">Contact</a>
-          <button class="btn-gradient px-4 py-2 rounded-lg text-sm">Sign In</button>
-        </div>
-        
-        <!-- Mobile menu button -->
-        <button id="menuToggle" class="md:hidden text-2xl text-blue-600 focus:outline-none">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-      
-      <!-- Mobile Dropdown Menu -->
-      <div id="mobileMenu" class="mobile-nav md:hidden">
-        <a href="#" class="nav-link"><i class="fas fa-home w-6 mr-2 text-blue-500"></i>Home</a>
-        <a href="#" class="nav-link"><i class="fas fa-map-signs w-6 mr-2 text-blue-500"></i>Roadmaps</a>
-        <a href="#" class="nav-link"><i class="fas fa-book-open w-6 mr-2 text-blue-500"></i>Courses</a>
-        <a href="#" class="nav-link"><i class="fas fa-question-circle w-6 mr-2 text-blue-500"></i>Quiz</a>
-        <a href="#" class="nav-link"><i class="fas fa-envelope w-6 mr-2 text-blue-500"></i>Contact</a>
-        <a href="#" class="nav-link"><i class="fas fa-sign-in-alt w-6 mr-2 text-blue-500"></i>Sign In</a>
-      </div>
-    </div>
-  </nav>
+  <!-- Header will be loaded here from components/header.html -->
+  <div id="header"></div>
 
   <main class="relative z-10 py-6 md:py-12">
     <div class="container mx-auto px-3 sm:px-4">
@@ -418,7 +384,7 @@
         </div>
       </div>
       
-      <!-- Footer -->
+      <!-- Footer will be loaded here from components/footer.html -->
       <div id="footer" class="mt-8 md:mt-16"></div>
     </div>
   </main>
@@ -432,6 +398,28 @@
     let completedSteps = [];
     
     document.addEventListener('DOMContentLoaded', () => {
+      // Load existing header and footer from components
+      fetch('components/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header').innerHTML = data;
+          // After header loads, initialize mobile menu if needed (header might have its own menu)
+        })
+        .catch(error => {
+          console.log('Header not found, using fallback');
+          document.getElementById('header').innerHTML = '<nav class="bg-white shadow-md p-4"><div class="container mx-auto"><h1 class="text-xl font-bold text-blue-700">StudentRoadmap</h1></div></nav>';
+        });
+      
+      fetch('components/footer.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer').innerHTML = data;
+        })
+        .catch(error => {
+          console.log('Footer not found, using fallback');
+          document.getElementById('footer').innerHTML = '<div class="text-center text-slate-500 text-xs md:text-sm py-4 md:py-6 border-t border-slate-200">© 2025 StudentRoadmap. All rights reserved.</div>';
+        });
+      
       // Load saved progress from localStorage
       const saved = localStorage.getItem('bankingRoadmapProgress');
       if (saved) {
@@ -444,32 +432,6 @@
         });
         updateProgress();
       }
-      
-      // Mobile menu toggle
-      const menuToggle = document.getElementById('menuToggle');
-      const mobileMenu = document.getElementById('mobileMenu');
-      
-      menuToggle.addEventListener('click', () => {
-        mobileMenu.classList.toggle('open');
-        const icon = menuToggle.querySelector('i');
-        if (mobileMenu.classList.contains('open')) {
-          icon.classList.remove('fa-bars');
-          icon.classList.add('fa-times');
-        } else {
-          icon.classList.remove('fa-times');
-          icon.classList.add('fa-bars');
-        }
-      });
-      
-      // Close mobile menu when clicking a link
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-          mobileMenu.classList.remove('open');
-          const icon = menuToggle.querySelector('i');
-          icon.classList.remove('fa-times');
-          icon.classList.add('fa-bars');
-        });
-      });
       
       // Back to top button
       const backToTop = document.getElementById('backToTop');
@@ -484,16 +446,6 @@
       });
       
       backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-      
-      // Footer
-      const footer = document.getElementById('footer');
-      if (footer) {
-        footer.innerHTML = `
-          <div class="text-center text-slate-500 text-xs md:text-sm py-4 md:py-6 border-t border-slate-200">
-            © 2025 StudentRoadmap. All rights reserved.
-          </div>
-        `;
-      }
     });
     
     function completeStep(stepNumber) {
