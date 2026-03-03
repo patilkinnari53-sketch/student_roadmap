@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Software Developer Roadmap - StudentRoadmap</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+    }
+    
+    /* Timeline Styles */
+    .roadmap-container {
+      position: relative;
+      padding-left: 2rem;
+    }
+    
+    .roadmap-line {
+      position: absolute;
+      left: 27px;
+      top: 0.5rem;
+      bottom: 0.5rem;
+      width: 3px;
+      background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
+      border-radius: 999px;
+    }
+    
+    .roadmap-step {
+      position: relative;
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: slideIn 0.5s ease-out forwards;
+    }
+    
+    .roadmap-step:nth-child(1) { animation-delay: 0.1s; }
+    .roadmap-step:nth-child(2) { animation-delay: 0.2s; }
+    .roadmap-step:nth-child(3) { animation-delay: 0.3s; }
+    .roadmap-step:nth-child(4) { animation-delay: 0.4s; }
+    .roadmap-step:nth-child(5) { animation-delay: 0.5s; }
+    .roadmap-step:nth-child(6) { animation-delay: 0.6s; }
+    .roadmap-step:nth-child(7) { animation-delay: 0.7s; }
+    
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .step-number {
+      width: 3.5rem;
+      height: 3.5rem;
+      background: white;
+      border: 3px solid #3b82f6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: #3b82f6;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .roadmap-step:hover .step-number {
+      transform: scale(1.1);
+      background: #3b82f6;
+      color: white;
+    }
+    
+    .step-card {
+      flex: 1;
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      border: 1px solid #f1f5f9;
+      transition: all 0.3s ease;
+    }
+    
+    .roadmap-step:hover .step-card {
+      transform: translateX(5px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      border-color: #bfdbfe;
+    }
+    
+    .step-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+    
+    .step-desc {
+      color: #64748b;
+      margin-bottom: 1rem;
+    }
+    
+    .path-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .path-card {
+      background: #f8fafc;
+      border-left: 4px solid #3b82f6;
+      padding: 1rem;
+      border-radius: 0.75rem;
+    }
+    
+    .path-title {
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 0.25rem;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+    }
+    
+    .path-desc {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(14, 165, 233, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .glass-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(14, 165, 233, 0.15);
+    }
+    
+    .btn-gradient {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-gradient:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+    }
+    
+    /* Header Styles */
+    .header-glass {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+    }
+    
+    .nav-link {
+      color: #1e293b;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-link:hover {
+      color: #3b82f6;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
+    }
+    
+    /* Mobile menu */
+    .mobile-menu-btn {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+    }
+    
+    .mobile-menu-btn span {
+      width: 25px;
+      height: 2px;
+      background: #1e293b;
+      transition: all 0.3s ease;
+    }
+    
+    @media (max-width: 1024px) {
+      .nav-menu.desktop {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body class="text-slate-800">
+  <!-- Header Include -->
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="relative z-10 py-12">
+    <div class="container mx-auto px-4">
+      
+      <!-- Career Header -->
+      <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-3xl p-8 md:p-12 mb-12 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white opacity-10 rounded-full -mr-20 -mt-20"></div>
+        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-10 rounded-full -ml-20 -mb-20"></div>
+        
+        <div class="relative flex flex-col md:flex-row items-center gap-8">
+          <div class="w-24 h-24 md:w-32 md:h-32 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center text-5xl md:text-6xl shadow-xl border border-white/30">
+            💻
+          </div>
+          <div class="flex-1 text-center md:text-left">
+            <h1 class="text-3xl md:text-4xl font-bold mb-2">Software Developer Roadmap</h1>
+            <p class="text-lg text-white/90 max-w-2xl">Complete step-by-step guide to becoming a professional software developer in India</p>
+          </div>
+          <button onclick="downloadPDF()" class="btn-gradient px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2">
+            <i class="fas fa-file-pdf"></i>
+            Download PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Left Column - Roadmap -->
+        <div class="lg:w-2/3">
+          <div class="glass-card p-8 rounded-2xl mb-8">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+              <i class="fas fa-road text-blue-600 mr-3"></i>
+              Complete Roadmap
+            </h2>
+            
+            <div class="roadmap-container">
+              <!-- Step 1 -->
+              <div class="roadmap-step">
+                <div class="step-number">1</div>
+                <div class="step-card">
+                  <h3 class="step-title">Class 11-12 (PCM)</h3>
+                  <p class="step-desc">Take Physics, Chemistry, Mathematics with Computer Science if available. Aim for at least 60% in PCM.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">Core Subjects</div>
+                      <div class="path-desc">Physics, Chemistry, Mathematics, Computer Science (optional)</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Important Exams</div>
+                      <div class="path-desc">JEE Main, JEE Advanced, BITSAT, State CETs</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 2 -->
+              <div class="roadmap-step">
+                <div class="step-number">2</div>
+                <div class="step-card">
+                  <h3 class="step-title">Choose Your Path</h3>
+                  <p class="step-desc">Select the right undergraduate program based on your interests and career goals.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">Option A: B.Tech/BE</div>
+                      <div class="path-desc">4 years in CS/IT from top colleges like IITs, NITs, BITS</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Option B: BCA</div>
+                      <div class="path-desc">3 years Bachelor of Computer Applications</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Option C: Diploma</div>
+                      <div class="path-desc">3 years diploma in Computer Engineering</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 3 -->
+              <div class="roadmap-step">
+                <div class="step-number">3</div>
+                <div class="step-card">
+                  <h3 class="step-title">First Year: Foundation</h3>
+                  <p class="step-desc">Build strong foundation in programming and mathematics.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">Programming Basics</div>
+                      <div class="path-desc">C, C++, Python fundamentals, Data Structures</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Mathematics</div>
+                      <div class="path-desc">Discrete Mathematics, Linear Algebra, Calculus</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Additional Skills</div>
+                      <div class="path-desc">HTML, CSS, Git basics</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 4 -->
+              <div class="roadmap-step">
+                <div class="step-number">4</div>
+                <div class="step-card">
+                  <h3 class="step-title">Second Year: Core Concepts</h3>
+                  <p class="step-desc">Deep dive into computer science fundamentals and choose your specialization.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">Core Subjects</div>
+                      <div class="path-desc">DBMS, Operating Systems, Computer Networks, OOP</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Frontend Path</div>
+                      <div class="path-desc">HTML5, CSS3, JavaScript, React/Vue/Angular</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Backend Path</div>
+                      <div class="path-desc">Node.js/Python/Java, APIs, Databases</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 5 -->
+              <div class="roadmap-step">
+                <div class="step-number">5</div>
+                <div class="step-card">
+                  <h3 class="step-title">Third Year: Specialization & Projects</h3>
+                  <p class="step-desc">Focus on your chosen domain and build real-world projects.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">Web Development</div>
+                      <div class="path-desc">MERN/MEAN stack, Progressive Web Apps</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Mobile Development</div>
+                      <div class="path-desc">Android (Kotlin/Java) or iOS (Swift) or Flutter/React Native</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Data Science/AI</div>
+                      <div class="path-desc">Python, ML libraries, Data Visualization</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 6 -->
+              <div class="roadmap-step">
+                <div class="step-number">6</div>
+                <div class="step-card">
+                  <h3 class="step-title">Internships & Placements</h3>
+                  <p class="step-desc">Gain industry experience and prepare for campus placements.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">Internships</div>
+                      <div class="path-desc">Apply for 2-3 month internships at startups or tech companies</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Placement Prep</div>
+                      <div class="path-desc">Aptitude, DSA, System Design, Mock Interviews</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Certifications</div>
+                      <div class="path-desc">AWS, Google Cloud, Microsoft certifications</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Step 7 -->
+              <div class="roadmap-step">
+                <div class="step-number">7</div>
+                <div class="step-card">
+                  <h3 class="step-title">Career Launch & Growth</h3>
+                  <p class="step-desc">Start your professional journey and plan for continuous growth.</p>
+                  <div class="path-grid">
+                    <div class="path-card">
+                      <div class="path-title">Entry Level</div>
+                      <div class="path-desc">Software Engineer, Junior Developer (4-8 LPA)</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Mid Level (2-5 years)</div>
+                      <div class="path-desc">Senior Developer, Tech Lead (12-25 LPA)</div>
+                    </div>
+                    <div class="path-card">
+                      <div class="path-title">Senior Level (5+ years)</div>
+                      <div class="path-desc">Architect, Engineering Manager (25-50+ LPA)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Right Column - Sidebar -->
+        <div class="lg:w-1/3 space-y-6">
+          <!-- Quick Info -->
+          <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-lg font-bold mb-4 flex items-center">
+              <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+              Quick Info
+            </h3>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <i class="fas fa-clock text-blue-500 mt-1 mr-3"></i>
+                <div>
+                  <span class="font-semibold">Duration:</span>
+                  <span class="text-slate-600">4 years (B.Tech) or 3 years (BCA)</span>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-graduation-cap text-blue-500 mt-1 mr-3"></i>
+                <div>
+                  <span class="font-semibold">Entry Exams:</span>
+                  <span class="text-slate-600">JEE Main, JEE Advanced, BITSAT, State CETs</span>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-rupee-sign text-blue-500 mt-1 mr-3"></i>
+                <div>
+                  <span class="font-semibold">Course Fees:</span>
+                  <span class="text-slate-600">₹2-10 Lakhs (Govt), ₹5-15 Lakhs (Private)</span>
+                </div>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-trophy text-blue-500 mt-1 mr-3"></i>
+                <div>
+                  <span class="font-semibold">Starting Salary:</span>
+                  <span class="text-slate-600">₹4-8 LPA (Fresher), ₹12-25 LPA (Experienced)</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+          
+          <!-- Top Colleges -->
+          <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-lg font-bold mb-4 flex items-center">
+              <i class="fas fa-university text-blue-600 mr-2"></i>
+              Top Colleges
+            </h3>
+            <ul class="space-y-3">
+              <li class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span>IIT Bombay - CSE</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span>IIT Delhi - CSE</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span>IIT Madras - CSE</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span>BITS Pilani - CS</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span>NIT Trichy - CSE</span>
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                <span>IIIT Hyderabad - CSE</span>
+              </li>
+            </ul>
+          </div>
+          
+          <!-- Skills Required -->
+          <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-lg font-bold mb-4 flex items-center">
+              <i class="fas fa-brain text-blue-600 mr-2"></i>
+              Key Skills
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">Problem Solving</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">Data Structures</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">Algorithms</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">JavaScript</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">Python/Java</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">Database</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">Git</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">Cloud Computing</span>
+              <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">Communication</span>
+            </div>
+          </div>
+          
+          <!-- Learning Resources -->
+          <div class="glass-card p-6 rounded-2xl">
+            <h3 class="text-lg font-bold mb-4 flex items-center">
+              <i class="fas fa-book-open text-blue-600 mr-2"></i>
+              Recommended Resources
+            </h3>
+            <ul class="space-y-3">
+              <li class="flex items-start">
+                <i class="fas fa-external-link-alt text-blue-500 mt-1 mr-3 text-sm"></i>
+                <a href="#" class="text-slate-600 hover:text-blue-600">LeetCode - DSA Practice</a>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-external-link-alt text-blue-500 mt-1 mr-3 text-sm"></i>
+                <a href="#" class="text-slate-600 hover:text-blue-600">GeeksforGeeks - Tutorials</a>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-external-link-alt text-blue-500 mt-1 mr-3 text-sm"></i>
+                <a href="#" class="text-slate-600 hover:text-blue-600">Coursera/udemy - Online Courses</a>
+              </li>
+              <li class="flex items-start">
+                <i class="fas fa-external-link-alt text-blue-500 mt-1 mr-3 text-sm"></i>
+                <a href="#" class="text-slate-600 hover:text-blue-600">GitHub - Open Source</a>
+              </li>
+            </ul>
+          </div>
+          
+          <!-- CTA -->
+          <div class="bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl p-6 text-white">
+            <i class="fas fa-rocket text-3xl mb-4"></i>
+            <h3 class="text-xl font-bold mb-2">Ready to Start Coding?</h3>
+            <p class="text-blue-100 mb-4">Take our career assessment quiz to find the perfect tech path for you.</p>
+            <a href="quiz.html" class="block w-full bg-white text-blue-600 font-semibold py-3 px-4 rounded-xl text-center hover:bg-blue-50 transition-colors">
+              Take Quiz <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Career Paths Overview -->
+      <div class="mt-12">
+        <h2 class="text-2xl font-bold mb-6">Different Career Paths in Software Development</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="glass-card p-6 rounded-2xl">
+            <div class="text-3xl mb-3">🌐</div>
+            <h3 class="text-xl font-bold mb-2">Frontend Developer</h3>
+            <p class="text-slate-600 mb-3">Create beautiful and interactive user interfaces using HTML, CSS, JavaScript, and frameworks like React, Vue, or Angular.</p>
+            <p class="text-sm font-semibold text-blue-600">Avg Salary: ₹6-15 LPA</p>
+          </div>
+          <div class="glass-card p-6 rounded-2xl">
+            <div class="text-3xl mb-3">⚙️</div>
+            <h3 class="text-xl font-bold mb-2">Backend Developer</h3>
+            <p class="text-slate-600 mb-3">Build server-side logic, APIs, and databases using languages like Python, Java, Node.js, and frameworks like Django, Spring Boot.</p>
+            <p class="text-sm font-semibold text-blue-600">Avg Salary: ₹7-18 LPA</p>
+          </div>
+          <div class="glass-card p-6 rounded-2xl">
+            <div class="text-3xl mb-3">📱</div>
+            <h3 class="text-xl font-bold mb-2">Mobile Developer</h3>
+            <p class="text-slate-600 mb-3">Develop mobile apps for Android (Kotlin/Java) or iOS (Swift) or cross-platform using Flutter/React Native.</p>
+            <p class="text-sm font-semibold text-blue-600">Avg Salary: ₹6-16 LPA</p>
+          </div>
+          <div class="glass-card p-6 rounded-2xl">
+            <div class="text-3xl mb-3">🤖</div>
+            <h3 class="text-xl font-bold mb-2">AI/ML Engineer</h3>
+            <p class="text-slate-600 mb-3">Build intelligent systems using machine learning, deep learning, and AI algorithms. Requires strong math and programming skills.</p>
+            <p class="text-sm font-semibold text-blue-600">Avg Salary: ₹8-25 LPA</p>
+          </div>
+          <div class="glass-card p-6 rounded-2xl">
+            <div class="text-3xl mb-3">📊</div>
+            <h3 class="text-xl font-bold mb-2">Data Scientist</h3>
+            <p class="text-slate-600 mb-3">Analyze large datasets to extract insights and build predictive models using Python, SQL, and statistical tools.</p>
+            <p class="text-sm font-semibold text-blue-600">Avg Salary: ₹8-22 LPA</p>
+          </div>
+          <div class="glass-card p-6 rounded-2xl">
+            <div class="text-3xl mb-3">☁️</div>
+            <h3 class="text-xl font-bold mb-2">DevOps Engineer</h3>
+            <p class="text-slate-600 mb-3">Manage infrastructure, CI/CD pipelines, cloud services (AWS/Azure/GCP), and ensure smooth deployment and operations.</p>
+            <p class="text-sm font-semibold text-blue-600">Avg Salary: ₹8-20 LPA</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer Include -->
+      <div id="footer" class="mt-16"></div>
+    </div>
+  </main>
+  
+  <!-- Back to Top Button -->
+  <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+  
+  <script>
+    // Load Header and Footer
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('components/header.html')
+        .then(response => response.text())
+        .then(data => document.getElementById('header').innerHTML = data);
+      
+      fetch('components/footer.html')
+        .then(response => response.text())
+        .then(data => document.getElementById('footer').innerHTML = data);
+      
+      // Back to Top
+      const backToTop = document.getElementById('backToTop');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+          backToTop.classList.remove('opacity-0', 'translate-y-4');
+          backToTop.classList.add('opacity-100', 'translate-y-0');
+        } else {
+          backToTop.classList.remove('opacity-100', 'translate-y-0');
+          backToTop.classList.add('opacity-0', 'translate-y-4');
+        }
+      });
+      
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+    
+    // PDF Download
+    function downloadPDF() {
+      const element = document.querySelector('.roadmap-container').cloneNode(true);
+      const opt = {
+        margin: 1,
+        filename: 'software-developer-roadmap.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    }
+  </script>
+</body>
+</html>
