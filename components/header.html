@@ -1,5 +1,5 @@
 <!-- Simple Header -->
-<header style="background: white; border-bottom: 2px solid #0ea5e9; padding: 12px 0; font-family: 'Poppins', sans-serif; position: sticky; top: 0; z-index: 1000;">
+<header style="background: white; border-bottom: 2px solid #0ea5e9; padding: 12px 0; font-family: 'Poppins', sans-serif; position: sticky; top: 0; z-index: 1000; width: 100%;">
   <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between;">
     
     <!-- Logo -->
@@ -12,15 +12,19 @@
     
     <!-- Desktop Navigation -->
     <div class="desktop-menu">
-      <a href="index.html" style="margin: 0 15px; color: #4b5563; text-decoration: none;">Home</a>
-      <a href="roadmap.html" style="margin: 0 15px; color: #4b5563; text-decoration: none;">Roadmaps</a>
-      <a href="quiz.html" style="margin: 0 15px; color: #4b5563; text-decoration: none;">Quiz</a>
-      <a href="about.html" style="margin: 0 15px; color: #4b5563; text-decoration: none;">About</a>
-      <a href="contact.html" style="margin: 0 15px; color: #4b5563; text-decoration: none;">Contact</a>
-      <a href="login.html" style="margin: 0 15px; color: #0ea5e9; text-decoration: none;">Login</a>
-      <a href="signup.html" style="background: #0ea5e9; color: white; padding: 8px 20px; border-radius: 20px; text-decoration: none; margin-left: 10px;">Sign Up</a>
+      <a href="index.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Home</a>
+      <a href="roadmap.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Roadmaps</a>
+      <a href="quiz.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Quiz</a>
+      <a href="about.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">About</a>
+      <a href="contact.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Contact</a>
     </div>
-
+    
+    <!-- Desktop Auth -->
+    <div class="desktop-auth">
+      <a href="login.html" style="margin-right: 15px; color: #0ea5e9; text-decoration: none; font-weight: 600;">Sign In</a>
+      <a href="signup.html" style="background: #0ea5e9; color: white; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 600;">Get Started</a>
+    </div>
+    
     <!-- Mobile Menu Button -->
     <button id="mobileMenuBtn" style="display: none; background: none; border: none; font-size: 28px; cursor: pointer; color: #0ea5e9; padding: 10px;">
       ☰
@@ -28,22 +32,24 @@
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobileMenu" style="display: none; background: white; padding: 20px; border-top: 1px solid #e2e8f0;">
+  <div id="mobileMenu" style="display: none; background: white; padding: 20px; border-top: 1px solid #e2e8f0; width: 100%;">
     <div style="display: flex; flex-direction: column; gap: 5px;">
-      <a href="index.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Home</a>
-      <a href="roadmap.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Roadmaps</a>
-      <a href="quiz.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Quiz</a>
-      <a href="about.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9;">About</a>
-      <a href="contact.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Contact</a>
-      <a href="login.html" style="padding: 15px; color: #0ea5e9; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Login</a>
-      <a href="signup.html" style="background: #0ea5e9; color: white; padding: 15px; text-align: center; border-radius: 8px; text-decoration: none; margin-top: 10px;">Sign Up</a>
+      <a href="index.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">Home</a>
+      <a href="roadmap.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">Roadmaps</a>
+      <a href="quiz.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">Quiz</a>
+      <a href="about.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">About</a>
+      <a href="contact.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">Contact</a>
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 2px solid #e2e8f0;">
+        <a href="login.html" style="padding: 15px; color: #0ea5e9; text-decoration: none; border: 2px solid #0ea5e9; border-radius: 10px; text-align: center; font-weight: 600; display: block;">Sign In</a>
+        <a href="signup.html" style="background: #0ea5e9; color: white; padding: 15px; text-align: center; border-radius: 10px; text-decoration: none; font-weight: 600; display: block;">Get Started Free</a>
+      </div>
     </div>
   </div>
 </header>
 
 <style>
   @media (max-width: 768px) {
-    .desktop-menu {
+    .desktop-menu, .desktop-auth {
       display: none !important;
     }
     #mobileMenuBtn {
@@ -52,8 +58,8 @@
   }
   
   @media (min-width: 769px) {
-    .desktop-menu {
-      display: block !important;
+    .desktop-menu, .desktop-auth {
+      display: flex !important;
     }
     #mobileMenuBtn {
       display: none !important;
