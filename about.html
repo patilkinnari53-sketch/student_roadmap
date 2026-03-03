@@ -336,38 +336,6 @@
       border-radius: 1.5rem;
     }
 
-    /* Footer Styles */
-    .footer-link {
-      color: #64748b;
-      text-decoration: none;
-      transition: color 0.3s ease;
-      display: inline-block;
-      margin-bottom: 0.5rem;
-    }
-
-    .footer-link:hover {
-      color: #0ea5e9;
-      transform: translateX(5px);
-    }
-
-    .social-link {
-      width: 40px;
-      height: 40px;
-      background: rgba(14, 165, 233, 0.1);
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #0ea5e9;
-      transition: all 0.3s ease;
-    }
-
-    .social-link:hover {
-      background: #0ea5e9;
-      color: white;
-      transform: translateY(-3px);
-    }
-
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 10px;
@@ -460,7 +428,7 @@
   </div>
 
   <!-- Header Include -->
-  <div id="header-placeholder"></div>
+  <div id="header"></div>
 
   <!-- Main Content -->
   <main class="relative z-10">
@@ -572,7 +540,7 @@
   </main>
 
   <!-- Footer Include -->
-  <div id="footer-placeholder"></div>
+  <div id="footer"></div>
 
   <!-- Back to Top Button -->
   <button id="backToTop" class="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50 opacity-0 translate-y-4">
@@ -593,67 +561,56 @@
 
     // Load header and footer
     document.addEventListener('DOMContentLoaded', async () => {
-      await loadInclude('header-placeholder', 'header.html');
-      await loadInclude('footer-placeholder', 'footer.html');
+      await loadInclude('header', 'components/header.html');
+      await loadInclude('footer', 'components/footer.html');
 
       // Mobile Menu Toggle (will work after header loads)
-      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-      const mobileNav = document.getElementById('mobileNav');
+      setTimeout(() => {
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
 
-async function loadInclude(elementId, filePath) {
-  try {
-    const response = await fetch(filePath);
-    const html = await response.text();
-    document.getElementById(elementId).innerHTML = html;
-  } catch (error) {
-    console.error('Error loading include:', error);
-  }
-}
-      await loadInclude('header-placeholder', 'header.html');
-await loadInclude('footer-placeholder', 'footer.html');
-      
-
-      if (mobileMenuBtn && mobileNav) {
-        mobileMenuBtn.addEventListener('click', function() {
-          this.classList.toggle('active');
-          mobileNav.classList.toggle('active');
-          
-          // Prevent body scrolling when menu is open
-          if (mobileNav.classList.contains('active')) {
-            document.body.style.overflow = 'hidden';
-          } else {
-            document.body.style.overflow = '';
-          }
-        });
-
-        // Close menu when clicking on a link
-        const mobileLinks = mobileNav.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            mobileNav.classList.remove('active');
-            mobileMenuBtn.classList.remove('active');
-            document.body.style.overflow = '';
+        if (mobileMenuBtn && mobileNav) {
+          mobileMenuBtn.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+            
+            // Prevent body scrolling when menu is open
+            if (mobileNav.classList.contains('active')) {
+              document.body.style.overflow = 'hidden';
+            } else {
+              document.body.style.overflow = '';
+            }
           });
-        });
 
-        // Close menu on escape key
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
-            mobileNav.classList.remove('active');
-            mobileMenuBtn.classList.remove('active');
-            document.body.style.overflow = '';
-          }
-        });
+          // Close menu when clicking on a link
+          const mobileLinks = mobileNav.querySelectorAll('a');
+          mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+              mobileNav.classList.remove('active');
+              mobileMenuBtn.classList.remove('active');
+              document.body.style.overflow = '';
+            });
+          });
 
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-          if (!mobileNav.contains(e.target) && !mobileMenuBtn.contains(e.target) && mobileNav.classList.contains('active')) {
-            mobileNav.classList.remove('active');
-            mobileMenuBtn.classList.remove('active');
-            document.body.style.overflow = '';
-          }
-        });
-      }
+          // Close menu on escape key
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+              mobileNav.classList.remove('active');
+              mobileMenuBtn.classList.remove('active');
+              document.body.style.overflow = '';
+            }
+          });
+
+          // Close menu when clicking outside
+          document.addEventListener('click', (e) => {
+            if (!mobileNav.contains(e.target) && !mobileMenuBtn.contains(e.target) && mobileNav.classList.contains('active')) {
+              mobileNav.classList.remove('active');
+              mobileMenuBtn.classList.remove('active');
+              document.body.style.overflow = '';
+            }
+          });
+        }
+      }, 100); // Small delay to ensure header is loaded
 
       // Animation on scroll
       const observerOptions = {
