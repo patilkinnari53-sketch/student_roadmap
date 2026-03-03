@@ -19,10 +19,9 @@
       <a href="contact.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Contact</a>
     </div>
     
-    <!-- Desktop Auth -->
-    <div class="desktop-auth">
-      <a href="login.html" style="margin-right: 15px; color: #0ea5e9; text-decoration: none; font-weight: 600;">Sign In</a>
-      <a href="signup.html" style="background: #0ea5e9; color: white; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 600;">Get Started</a>
+    <!-- Desktop Auth - Dynamic based on login state -->
+    <div class="desktop-auth" id="desktopAuthContainer">
+      <!-- This will be populated by JavaScript -->
     </div>
     
     <!-- Mobile Menu Button -->
@@ -39,9 +38,8 @@
       <a href="quiz.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">Quiz</a>
       <a href="about.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">About</a>
       <a href="contact.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">Contact</a>
-      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 2px solid #e2e8f0;">
-        <a href="login.html" style="padding: 15px; color: #0ea5e9; text-decoration: none; border: 2px solid #0ea5e9; border-radius: 10px; text-align: center; font-weight: 600; display: block;">Sign In</a>
-        <a href="signup.html" style="background: #0ea5e9; color: white; padding: 15px; text-align: center; border-radius: 10px; text-decoration: none; font-weight: 600; display: block;">Get Started Free</a>
+      <div id="mobileAuthContainer" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 2px solid #e2e8f0;">
+        <!-- This will be populated by JavaScript -->
       </div>
     </div>
   </div>
@@ -68,4 +66,134 @@
       display: none !important;
     }
   }
+
+  /* User profile styles */
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    background: #f8fafc;
+    border-radius: 40px;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  .user-name {
+    font-weight: 500;
+    color: #1e293b;
+  }
+  
+  .logout-btn {
+    color: #ef4444;
+    text-decoration: none;
+    font-size: 14px;
+    margin-left: 5px;
+  }
+  
+  .logout-btn:hover {
+    color: #dc2626;
+  }
 </style>
+
+<script>
+  // Check login state and update UI
+  document.addEventListener('DOMContentLoaded', function() {
+    updateAuthUI();
+  });
+
+  function updateAuthUI() {
+    // Check if user is logged in (you can modify this based on your auth system)
+    const user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || 'null');
+    
+    const desktopAuth = document.getElementById('desktopAuthContainer');
+    const mobileAuth = document.getElementById('mobileAuthContainer');
+    
+    if (user) {
+      // User is logged in - show profile
+      const userInitial = user.name ? user.name.charAt(0).toUpperCase() : 'U';
+      
+      // Desktop view
+      desktopAuth.innerHTML = `
+        <div class="user-profile">
+          <div class="user-avatar">${userInitial}</div>
+          <span class="user-name">${user.name || 'User'}</span>
+          <a href="#" onclick="logout(); return false;" class="logout-btn" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+          </a>
+        </div>
+      `;
+      
+      // Mobile view
+      mobileAuth.innerHTML = `
+        <div style="background: #f8fafc; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #0ea5e9, #8b5cf6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">${userInitial}</div>
+            <div>
+              <div style="font-weight: 600; color: #1e293b;">${user.name || 'User'}</div>
+              <div style="font-size: 12px; color: #64748b;">${user.email || ''}</div>
+            </div>
+          </div>
+        </div>
+        <a href="#" onclick="logout(); return false;" style="background: #ef4444; color: white; padding: 15px; text-align: center; border-radius: 10px; text-decoration: none; font-weight: 600;">Logout</a>
+      `;
+    } else {
+      // User is not logged in - show sign in/sign up buttons
+      desktopAuth.innerHTML = `
+        <a href="login.html" style="margin-right: 15px; color: #0ea5e9; text-decoration: none; font-weight: 600;">Sign In</a>
+        <a href="signup.html" style="background: #0ea5e9; color: white; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 600;">Get Started</a>
+      `;
+      
+      mobileAuth.innerHTML = `
+        <a href="login.html" style="padding: 15px; color: #0ea5e9; text-decoration: none; border: 2px solid #0ea5e9; border-radius: 10px; text-align: center; font-weight: 600; display: block;">Sign In</a>
+        <a href="signup.html" style="background: #0ea5e9; color: white; padding: 15px; text-align: center; border-radius: 10px; text-decoration: none; font-weight: 600; display: block; margin-top: 10px;">Get Started Free</a>
+      `;
+    }
+  }
+
+  // Logout function
+  function logout() {
+    localStorage.removeItem('user');
+    sessionStorage.removeItem('user');
+    updateAuthUI();
+    window.location.href = 'index.html';
+    return false;
+  }
+
+  // Mobile menu toggle
+  document.addEventListener('DOMContentLoaded', function() {
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
+          mobileMenu.style.display = 'block';
+        } else {
+          mobileMenu.style.display = 'none';
+        }
+      });
+      
+      // Close menu when clicking on links
+      const links = mobileMenu.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('click', function() {
+          mobileMenu.style.display = 'none';
+        });
+      });
+    }
+  });
+</script>
