@@ -1,4 +1,3 @@
-<?php include 'includes/db.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -213,11 +212,11 @@
       animation: blob 25s infinite reverse;
     }
 
-    /* Enhanced Header */
-    .header-glass {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(14, 165, 233, 0.1);
+    @keyframes blob {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0px, 0px) scale(1); }
     }
 
     /* Enhanced Cards */
@@ -325,6 +324,11 @@
       animation: float 6s ease-in-out infinite;
     }
 
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
     /* UNIFIED SOCIAL MEDIA CARD STYLES */
     .social-card {
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -338,6 +342,8 @@
       box-shadow: 0 8px 32px rgba(14, 165, 233, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
       padding: 1.5rem;
+      display: block;
+      text-decoration: none;
     }
 
     .social-card:hover {
@@ -358,22 +364,6 @@
       flex-shrink: 0;
     }
 
-    .social-icon::after {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      background: inherit;
-      filter: blur(5px);
-      opacity: 0.3;
-      z-index: -1;
-    }
-
-    .social-icon img {
-      width: 24px;
-      height: 24px;
-      object-fit: contain;
-    }
-
     /* Platform-specific gradients */
     .instagram-gradient {
       background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
@@ -385,14 +375,6 @@
 
     .linkedin-gradient {
       background: #0077B5;
-    }
-
-    .email-gradient {
-      background: linear-gradient(45deg, #EA4335, #FBBC05, #34A853, #4285F4);
-    }
-
-    .facebook-gradient {
-      background: #1877F2;
     }
 
     .youtube-gradient {
@@ -458,6 +440,11 @@
     .mobile-menu {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
+      transform: translateX(-100%);
+    }
+
+    .mobile-menu.active {
+      transform: translateX(0);
     }
 
     /* Responsive Utilities */
@@ -474,11 +461,6 @@
       .social-icon {
         width: 50px;
         height: 50px;
-      }
-
-      .social-icon img {
-        width: 20px;
-        height: 20px;
       }
 
       .social-card-title {
@@ -509,24 +491,6 @@
       }
     }
 
-    /* Accessibility */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    /* Page Load Animation */
-    .page-load {
-      animation: fadeIn 0.5s ease-out;
-    }
-
     /* Back to Top Button */
     .back-to-top {
       opacity: 0;
@@ -539,20 +503,17 @@
       transform: translateY(0);
     }
 
-    /* Fix for image loading */
     img {
       max-width: 100%;
       height: auto;
     }
 
-    /* Touch-friendly button sizes */
     button,
     a[role="button"] {
       min-height: 44px;
       min-width: 44px;
     }
 
-    /* Container for consistent layout */
     .container-responsive {
       width: 100%;
       padding-right: 1rem;
@@ -562,27 +523,16 @@
     }
 
     @media (min-width: 640px) {
-      .container-responsive {
-        max-width: 640px;
-      }
+      .container-responsive { max-width: 640px; }
     }
-
     @media (min-width: 768px) {
-      .container-responsive {
-        max-width: 768px;
-      }
+      .container-responsive { max-width: 768px; }
     }
-
     @media (min-width: 1024px) {
-      .container-responsive {
-        max-width: 1024px;
-      }
+      .container-responsive { max-width: 1024px; }
     }
-
     @media (min-width: 1280px) {
-      .container-responsive {
-        max-width: 1280px;
-      }
+      .container-responsive { max-width: 1280px; }
     }
   </style>
 </head>
@@ -596,32 +546,27 @@
   </div>
 
   <!-- Mobile Navigation Menu -->
-  <div id="mobileMenu"
-    class="mobile-menu fixed top-0 left-0 w-full h-screen bg-white/95 backdrop-blur-xl z-50 transform -translate-x-full transition-transform duration-300 overflow-y-auto">
+  <div id="mobileMenu" class="mobile-menu fixed top-0 left-0 w-full h-screen bg-white/95 backdrop-blur-xl z-50 overflow-y-auto transition-transform duration-300">
     <div class="p-6 h-full flex flex-col">
       <div class="flex justify-between items-center mb-8">
         <div class="flex items-center space-x-3">
-          <div
-            class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
+          <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
             <i class="fas fa-graduation-cap text-white text-lg"></i>
           </div>
           <span class="text-xl font-bold text-slate-800">StudentRoadmap</span>
         </div>
-        <button id="closeMenu" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors"
-          aria-label="Close menu">
+        <button id="closeMenu" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
           <i class="fas fa-times text-slate-600"></i>
         </button>
       </div>
 
       <nav class="flex-1 space-y-4">
         <div class="space-y-2">
-          <a href="about.html"
-            class="flex items-center space-x-3 p-4 rounded-xl bg-primary-50 text-primary-700 font-semibold">
-            <i class="fas fa-map text-primary-600"></i>
+          <a href="about.html" class="flex items-center space-x-3 p-4 rounded-xl bg-primary-50 text-primary-700 font-semibold">
+            <i class="fas fa-users text-primary-600"></i>
             <span>About us</span>
           </a>
-          <a href="roadmap.html"
-            class="flex items-center space-x-3 p-4 rounded-xl bg-primary-50 text-primary-700 font-semibold">
+          <a href="roadmap.html" class="flex items-center space-x-3 p-4 rounded-xl bg-primary-50 text-primary-700 font-semibold">
             <i class="fas fa-map text-primary-600"></i>
             <span>Roadmaps</span>
           </a>
@@ -639,14 +584,12 @@
       <div class="pt-6 border-t border-slate-200 mt-8">
         <div class="flex items-center space-x-4 mb-4">
           <a href="login.html" class="flex-1">
-            <button
-              class="w-full py-3 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors">
+            <button class="w-full py-3 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors">
               Login
             </button>
           </a>
           <a href="signup.html" class="flex-1">
-            <button
-              class="w-full py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-xl hover:bg-primary-50 transition-colors">
+            <button class="w-full py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-xl hover:bg-primary-50 transition-colors">
               Sign Up
             </button>
           </a>
@@ -656,8 +599,8 @@
     </div>
   </div>
 
-  <!-- HEADER INCLUDE -->
-  <?php include 'includes/header.php'; ?>
+  <!-- Header Include -->
+  <div id="header"></div>
 
   <main class="page-bg relative z-10">
     <div class="container-responsive mx-auto px-4 py-8 pt-16">
@@ -688,7 +631,7 @@
             <h2 class="text-2xl font-bold text-slate-800 mb-2">Send us Feedback</h2>
             <p class="text-slate-500 mb-8">Your suggestions help us improve the platform for everyone.</p>
             
-            <form action="process_feedback.php" method="POST" class="space-y-6">
+            <form action="#" method="POST" class="space-y-6" onsubmit="alert('Thank you for your feedback!'); return false;">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-2">
                   <label for="name" class="text-sm font-semibold text-slate-700 ml-1">Full Name</label>
@@ -755,18 +698,15 @@
           class="social-card animate-fade-in gradient-border group">
           <div class="flex items-start gap-4">
             <div class="social-icon instagram-gradient">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram logo">
+              <i class="fab fa-instagram text-white text-2xl"></i>
             </div>
             <div class="social-card-content">
               <h3 class="social-card-title">Instagram</h3>
               <p class="social-card-handle">@studentroadmap</p>
-              <p class="social-card-description">Daily career tips, student stories, and visual roadmaps. Join our
-                community for inspiration!</p>
+              <p class="social-card-description">Daily career tips, student stories, and visual roadmaps. Join our community for inspiration!</p>
               <div class="social-card-features">
-                <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
                 Daily Posts • Live Q&A Sessions
               </div>
@@ -779,18 +719,15 @@
           class="social-card animate-fade-in gradient-border group">
           <div class="flex items-start gap-4">
             <div class="social-icon twitter-gradient">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/X_icon_2.svg" alt="X (Twitter) logo">
+              <i class="fab fa-x-twitter text-white text-2xl"></i>
             </div>
             <div class="social-card-content">
               <h3 class="social-card-title">Twitter / X</h3>
               <p class="social-card-handle">@studentroadmap</p>
-              <p class="social-card-description">Quick career insights, industry news, and thread discussions. Stay
-                updated in real-time!</p>
+              <p class="social-card-description">Quick career insights, industry news, and thread discussions. Stay updated in real-time!</p>
               <div class="social-card-features">
-                <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
                 Real-time Updates • Career Threads
               </div>
@@ -803,19 +740,15 @@
           class="social-card animate-fade-in gradient-border group">
           <div class="flex items-start gap-4">
             <div class="social-icon linkedin-gradient">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png"
-                alt="LinkedIn logo">
+              <i class="fab fa-linkedin-in text-white text-2xl"></i>
             </div>
             <div class="social-card-content">
               <h3 class="social-card-title">LinkedIn</h3>
               <p class="social-card-handle">Student Roadmap</p>
-              <p class="social-card-description">Professional networking, job opportunities, and expert articles.
-                Connect with industry professionals!</p>
+              <p class="social-card-description">Professional networking, job opportunities, and expert articles. Connect with industry professionals!</p>
               <div class="social-card-features">
-                <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
                 Job Alerts • Professional Network
               </div>
@@ -828,19 +761,15 @@
           class="social-card animate-fade-in gradient-border group">
           <div class="flex items-start gap-4">
             <div class="social-icon youtube-gradient">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png"
-                alt="YouTube logo">
+              <i class="fab fa-youtube text-white text-2xl"></i>
             </div>
             <div class="social-card-content">
               <h3 class="social-card-title">YouTube</h3>
               <p class="social-card-handle">@studentroadmap</p>
-              <p class="social-card-description">Video tutorials, career guides, and success stories. Subscribe for
-                weekly content!</p>
+              <p class="social-card-description">Video tutorials, career guides, and success stories. Subscribe for weekly content!</p>
               <div class="social-card-features">
-                <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
                 Weekly Videos • Live Workshops
               </div>
@@ -853,18 +782,15 @@
           class="social-card animate-fade-in gradient-border group">
           <div class="flex items-start gap-4">
             <div class="social-icon whatsapp-gradient">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp logo">
+              <i class="fab fa-whatsapp text-white text-2xl"></i>
             </div>
             <div class="social-card-content">
               <h3 class="social-card-title">WhatsApp</h3>
               <p class="social-card-handle">+91 98765 43210</p>
-              <p class="social-card-description">Instant career guidance, quick queries, and personalized support. Chat
-                with us anytime!</p>
+              <p class="social-card-description">Instant career guidance, quick queries, and personalized support. Chat with us anytime!</p>
               <div class="social-card-features">
-                <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clip-rule="evenodd" />
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                 </svg>
                 Instant Help • Career Advice
               </div>
@@ -881,9 +807,7 @@
         <div class="relative">
           <div class="absolute -top-4 -left-4 text-primary-200 text-4xl quote-mark">"</div>
           <p class="text-2xl font-semibold text-slate-800 leading-relaxed">
-            Your career journey starts here — <span
-              class="bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">stay connected,
-              stay inspired.</span>
+            Your career journey starts here — <span class="bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">stay connected, stay inspired.</span>
           </p>
           <div class="absolute -bottom-4 -right-4 text-primary-200 text-4xl quote-mark">"</div>
         </div>
@@ -895,50 +819,87 @@
 
     <div class="mt-20"></div>
 
-    <!-- Footer Placeholder -->
-    <!-- FOOTER INCLUDE -->
-    <?php include 'includes/footer.php'; ?>
+    <!-- Footer Include -->
+    <div id="footer"></div>
     </div>
   </main>
 
   <!-- Back to Top Button -->
-  <button id="backToTop"
-    class="back-to-top fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50"
-    aria-label="Back to top">
+  <button id="backToTop" class="back-to-top fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50" aria-label="Back to top">
     <i class="fas fa-arrow-up text-xl"></i>
   </button>
 
   <script>
-    // Dynamic Include Function for Header and Footer
-    // Dynamic Include Function removed as we use PHP includes now
+    // Load Header and Footer
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load header
+      fetch('components/header.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('header').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading header:', error));
+      
+      // Load footer
+      fetch('components/footer.html')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('footer').innerHTML = data;
+        })
+        .catch(error => console.error('Error loading footer:', error));
 
-    // Mobile menu functionality removed: Handled by Auth.initHeader() in auth.js
+      // Mobile Menu Functionality
+      const menuBtn = document.querySelector('.mobile-menu-btn');
+      const closeMenu = document.getElementById('closeMenu');
+      const mobileMenu = document.getElementById('mobileMenu');
+      
+      if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', function() {
+          mobileMenu.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+      }
+      
+      if (closeMenu && mobileMenu) {
+        closeMenu.addEventListener('click', function() {
+          mobileMenu.classList.remove('active');
+          document.body.style.overflow = '';
+        });
+        
+        // Close menu when clicking on links
+        const links = mobileMenu.querySelectorAll('a');
+        links.forEach(link => {
+          link.addEventListener('click', function() {
+            mobileMenu.classList.remove('active');
+            document.body.style.overflow = '';
+          });
+        });
+      }
 
-    // Add social icon hover animation
-    document.querySelectorAll('.social-icon').forEach(icon => {
-      icon.addEventListener('mouseenter', function () {
-        this.style.transform = 'scale(1.1) rotate(5deg)';
+      // Back to Top Button
+      const backToTop = document.getElementById('backToTop');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 500) {
+          backToTop.classList.add('visible');
+        } else {
+          backToTop.classList.remove('visible');
+        }
       });
 
-      icon.addEventListener('mouseleave', function () {
-        this.style.transform = 'scale(1) rotate(0deg)';
+      backToTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
-    });
 
-    // Preload critical resources
-    const preloadImages = [
-      'https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png',
-      'https://upload.wikimedia.org/wikipedia/commons/5/5a/X_icon_2.svg',
-      'https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png',
-      'https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png',
-      'https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg'
-    ];
-
-    preloadImages.forEach(src => {
-      const img = new Image();
-      img.src = src;
+      // Social icon hover animation
+      document.querySelectorAll('.social-icon').forEach(icon => {
+        icon.addEventListener('mouseenter', function () {
+          this.style.transform = 'scale(1.1) rotate(5deg)';
+        });
+        icon.addEventListener('mouseleave', function () {
+          this.style.transform = 'scale(1) rotate(0deg)';
+        });
+      });
     });
   </script>
 </body>
-
 </html>
