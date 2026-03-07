@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career Pathfinder Quiz</title>
+    <title>Career Pathfinder Quiz - StudentRoadmap</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    
     <script>
         tailwind.config = {
             theme: {
@@ -20,24 +23,44 @@
                             600: '#16a34a',
                         },
                         primary: {
-                            50: '#f0fcff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
+                            50: '#f5f0ff',
+                            100: '#ede0ff',
+                            200: '#d9baff',
+                            300: '#c28fff',
+                            400: '#a864ff',
+                            500: '#8f3eff',
+                            600: '#7520e6',
+                            700: '#5c15b8',
+                            800: '#44118a',
+                            900: '#2f0d5c',
                         },
                         secondary: {
-                            500: '#8b5cf6',
-                            600: '#7c3aed',
+                            50: '#fff0ed',
+                            100: '#ffe0d9',
+                            200: '#ffb9aa',
+                            300: '#ff8f7a',
+                            400: '#ff6b4a',
+                            500: '#ff4d1c',
+                            600: '#e63e0f',
+                            700: '#b8300b',
+                            800: '#8a2408',
+                            900: '#5c1805',
                         },
-                        gradient: {
-                            start: '#e0f2fe',
-                            end: '#f0fcff',
+                        tertiary: {
+                            50: '#e6fffa',
+                            100: '#ccfff5',
+                            200: '#99ffeb',
+                            300: '#66ffe0',
+                            400: '#33ffd6',
+                            500: '#00c9a7',
+                            600: '#00b38f',
+                            700: '#008c70',
+                            800: '#006651',
+                            900: '#004031',
+                        },
+                        accent: {
+                            500: '#ffb347',
+                            600: '#ff9f1c',
                         }
                     },
                     animation: {
@@ -74,8 +97,8 @@
                             '50%': { transform: 'translateY(-5px)' },
                         },
                         glow: {
-                            '0%': { boxShadow: '0 0 5px rgba(14, 165, 233, 0.3)' },
-                            '100%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.6)' },
+                            '0%': { boxShadow: '0 0 5px rgba(143, 62, 255, 0.3)' },
+                            '100%': { boxShadow: '0 0 20px rgba(143, 62, 255, 0.6)' },
                         },
                         textReveal: {
                             '0%': {
@@ -128,13 +151,15 @@
             }
         }
     </script>
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(-45deg, #f0f9ff, #e0f2fe, #f8fafc, #f0f9ff);
+            background: linear-gradient(-45deg, #f5f0ff, #ede0ff, #fff0ed, #e6fffa);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             min-height: 100vh;
@@ -146,10 +171,54 @@
             50% { background-position: 100% 50%; }
         }
 
+        /* Enhanced Header */
+        .header-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(143, 62, 255, 0.1);
+        }
+
+        /* Critical CSS with new color palette */
+        :root {
+            --primary-color: #8f3eff;
+            --primary-dark: #7520e6;
+            --secondary-color: #ff6b4a;
+            --tertiary-color: #00c9a7;
+            --accent-gradient: linear-gradient(135deg, #8f3eff, #ff6b4a, #00c9a7);
+        }
+
+        /* Premium Buttons */
+        .btn-premium, .btn-gradient {
+            background: var(--accent-gradient);
+            color: white !important;
+            font-weight: 600;
+            padding: 0.875rem 2rem;
+            border-radius: 100px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px -5px rgba(143, 62, 255, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-premium:hover, .btn-gradient:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 15px 30px -5px rgba(143, 62, 255, 0.4);
+            filter: brightness(1.1);
+            color: white !important;
+        }
+
         /* Page wrapper */
         .page-bg {
+            background: radial-gradient(circle at top right, rgba(143, 62, 255, 0.1), transparent),
+                        radial-gradient(circle at bottom left, rgba(255, 107, 74, 0.1), transparent),
+                        radial-gradient(circle at center, rgba(0, 201, 167, 0.05), transparent);
+            min-height: 100vh;
             position: relative;
-            z-index: 10;
         }
 
         /* Animated background blobs */
@@ -164,7 +233,7 @@
         .blob-1 {
             width: 500px;
             height: 500px;
-            background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+            background: linear-gradient(135deg, #8f3eff, #ff6b4a);
             top: -250px;
             right: -250px;
             animation: blob 20s infinite;
@@ -173,7 +242,7 @@
         .blob-2 {
             width: 400px;
             height: 400px;
-            background: linear-gradient(135deg, #8b5cf6, #0ea5e9);
+            background: linear-gradient(135deg, #00c9a7, #8f3eff);
             bottom: -200px;
             left: -200px;
             animation: blob 25s infinite reverse;
@@ -194,11 +263,11 @@
             background: #f1f1f1; 
         }
         ::-webkit-scrollbar-thumb {
-            background: #888; 
+            background: #8f3eff; 
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #555; 
+            background: #7520e6; 
         }
 
         /* Animations */
@@ -231,44 +300,58 @@
 
         /* Option Card Hover Effects */
         .option-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 2px solid #f1f5f9;
-            background: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            border-radius: 1rem;
         }
+        
         .option-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
-            border-color: #0ea5e9;
-            background: #f0f9ff;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -5px rgba(143, 62, 255, 0.15);
+            border-color: rgba(143, 62, 255, 0.5);
+            background: rgba(255, 255, 255, 0.95);
         }
+        
         .option-card.selected {
-            background: linear-gradient(135deg, #0ea5e9, #0284c7);
-            border-color: #0ea5e9;
+            background: var(--accent-gradient);
+            border: none;
             color: white !important;
-            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+            box-shadow: 0 10px 30px -5px rgba(143, 62, 255, 0.4);
+            transform: scale(1.02);
         }
+        
         .option-card.selected p {
+            color: white !important;
+            font-weight: 600;
+        }
+        
+        .option-card.selected i {
             color: white !important;
         }
 
         /* Glass Card for the quiz container */
         .quiz-glass {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
         }
 
         /* Hero text styling */
         .hero-text-gradient {
-            color: #0f172a;
-            background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+            background: var(--accent-gradient);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+            display: inline-block;
         }
+        
         .hero-text-gradient span {
             -webkit-text-fill-color: currentcolor;
         }
@@ -276,24 +359,41 @@
         /* Progress Bar */
         .progress-bar-container {
             width: 100%;
-            height: 6px;
-            background-color: #e5e7eb;
+            height: 8px;
+            background-color: rgba(226, 232, 240, 0.5);
             border-radius: 999px;
             overflow: hidden;
             margin-bottom: 2rem;
+            backdrop-filter: blur(5px);
         }
+        
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            background: var(--accent-gradient);
             width: 0%;
-            transition: width 0.4s ease;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: translateX(-100%);
+            animation: shimmer 2s infinite;
         }
 
         /* Result Card Specifics */
         .result-card {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
 
         /* Confetti Canvas */
@@ -306,6 +406,11 @@
             pointer-events: none;
             z-index: 50;
         }
+
+        /* Animation delays */
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
     </style>
 </head>
 <body class="text-slate-800">
@@ -315,13 +420,27 @@
         <div class="bg-blob blob-2"></div>
     </div>
 
-    <!-- Header Include -->
-    <div id="header"></div>
+    <!-- Static Header -->
+    <header class="fixed top-0 left-0 w-full bg-white/80 backdrop-blur-md border-b border-primary-100 z-50">
+        <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">StudentRoadmap</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-slate-700 hover:text-primary-500 transition-colors font-medium">Home</a>
+                <a href="roadmap.html" class="text-slate-700 hover:text-primary-500 transition-colors font-medium">Roadmaps</a>
+                <a href="quiz.html" class="text-slate-700 hover:text-primary-500 transition-colors font-medium">Quiz</a>
+                <a href="resources.html" class="text-slate-700 hover:text-primary-500 transition-colors font-medium">Resources</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="login.html" class="text-slate-700 hover:text-primary-500 transition-colors font-medium">Login</a>
+                <a href="signup.html" class="px-6 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-bold rounded-full shadow-lg hover:shadow-primary-500/40 transition-all duration-300 hover:-translate-y-1 text-sm">Sign Up Free</a>
+            </div>
+        </nav>
+    </header>
 
     <canvas id="confetti-canvas"></canvas>
 
     <!-- Main Content -->
-    <main class="page-bg relative z-10">
+    <main class="page-bg relative z-10 pt-24">
         <div class="container mx-auto px-4 py-4 md:py-8">
             <div id="app-container" class="w-full max-w-3xl quiz-glass rounded-[1.5rem] md:rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] overflow-hidden relative min-h-[500px] md:min-h-[550px] flex flex-col mx-auto transition-all duration-500">
         
@@ -342,7 +461,7 @@
                         </div>
                     </div>
                     <div class="progress-bar-container bg-slate-100 h-2">
-                        <div id="progress-fill" class="progress-bar rounded-full shadow-[0_0_10px_rgba(14,165,233,0.3)]"></div>
+                        <div id="progress-fill" class="progress-bar rounded-full shadow-[0_0_10px_rgba(143,62,255,0.3)]"></div>
                     </div>
                 </div>
 
@@ -377,7 +496,7 @@
                                 <p class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">10 Ques</p>
                             </div>
                             <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm">
-                                <i class="fas fa-bolt text-amber-500 mb-1.5 text-sm"></i>
+                                <i class="fas fa-bolt text-tertiary-500 mb-1.5 text-sm"></i>
                                 <p class="text-[10px] font-bold text-slate-700 uppercase tracking-wider">Instant</p>
                             </div>
                         </div>
@@ -387,7 +506,7 @@
                                 <span>Start Assessment</span>
                                 <i class="fas fa-arrow-right ml-3 group-hover:translate-x-1 transition-transform"></i>
                             </button>
-                            <!-- Resume button injected via JS -->
+                            <!-- Resume button will be injected here via JS -->
                         </div>
                     </div>
 
@@ -404,16 +523,16 @@
                     <!-- RESULT SCREEN -->
                     <div id="result-screen" class="hidden w-full h-full flex flex-col items-center justify-center p-1">
                         <div class="result-card w-full p-6 md:p-8 text-center scale-in relative overflow-hidden backdrop-blur-xl bg-white/90 border border-white/20 rounded-3xl">
-                            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+                            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary-500 via-secondary-500 to-tertiary-500"></div>
                             
                             <div class="mb-4 text-6xl animate-float" id="result-icon">🎯</div>
-                            <h2 class="text-[10px] md:text-xs font-bold text-indigo-600 uppercase tracking-widest mb-2">Your Recommended Field</h2>
+                            <h2 class="text-[10px] md:text-xs font-bold text-primary-600 uppercase tracking-widest mb-2">Your Recommended Field</h2>
                             <h1 id="result-title" class="text-2xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight leading-tight"></h1>
                             <p id="result-desc" class="text-sm md:text-base text-slate-600 mb-6 leading-relaxed max-w-lg mx-auto"></p>
 
                             <div class="bg-slate-50/50 backdrop-blur-sm rounded-xl p-5 md:p-6 mb-8 text-left border border-slate-100 shadow-inner">
                                 <h3 class="font-bold text-slate-800 mb-4 flex items-center text-lg">
-                                    <i class="fas fa-rocket text-indigo-500 mr-3 text-base"></i> Suggested Career Paths
+                                    <i class="fas fa-rocket text-primary-500 mr-3 text-base"></i> Suggested Career Paths
                                 </h3>
                                 <ul id="career-list" class="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3 text-slate-700">
                                     <!-- List items injected via JS -->
@@ -421,12 +540,12 @@
                             </div>
 
                             <div class="space-y-3">
-                                <button onclick="viewRoadmap()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:-translate-y-1 active:scale-95 flex items-center justify-center group text-base">
+                                <button onclick="viewRoadmap()" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:-translate-y-1 active:scale-95 flex items-center justify-center group text-base">
                                     <span>Explore All Careers</span>
                                     <i class="fas fa-compass ml-3 group-hover:rotate-12 transition-transform"></i>
                                 </button>
                                 
-                                <button onclick="resetQuiz()" class="text-slate-400 hover:text-indigo-600 text-xs font-semibold transition-colors flex items-center justify-center mx-auto gap-2">
+                                <button onclick="resetQuiz()" class="text-slate-400 hover:text-primary-600 text-xs font-semibold transition-colors flex items-center justify-center mx-auto gap-2">
                                     <i class="fas fa-undo"></i> Retake Assessment
                                 </button>
                             </div>
@@ -435,11 +554,57 @@
 
                 </div>
             </div>
+            
+            <div class="mt-20"></div>
         </div>
     </main>
 
-    <!-- Footer Include -->
-    <div id="footer"></div>
+    <!-- Static Footer -->
+    <footer class="bg-slate-900 text-white pt-20 pb-10">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-16">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">StudentRoadmap</h3>
+                    <p class="text-slate-400 mb-6">India's most trusted career guidance platform for students after 10th & 12th.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Quick Links</h4>
+                    <ul class="space-y-3 text-slate-400">
+                        <li><a href="index.html" class="hover:text-primary-400 transition-colors">Home</a></li>
+                        <li><a href="roadmap.html" class="hover:text-primary-400 transition-colors">Roadmaps</a></li>
+                        <li><a href="quiz.html" class="hover:text-primary-400 transition-colors">Career Quiz</a></li>
+                        <li><a href="resources.html" class="hover:text-primary-400 transition-colors">Resources</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Popular Careers</h4>
+                    <ul class="space-y-3 text-slate-400">
+                        <li><a href="career_roadmap.html?career=doctor" class="hover:text-primary-400 transition-colors">Doctor</a></li>
+                        <li><a href="career_roadmap.html?career=software-developer" class="hover:text-primary-400 transition-colors">Software Developer</a></li>
+                        <li><a href="career_roadmap.html?career=civil-servant" class="hover:text-primary-400 transition-colors">Civil Servant</a></li>
+                        <li><a href="career_roadmap.html?career=chartered-accountant" class="hover:text-primary-400 transition-colors">CA</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Newsletter</h4>
+                    <p class="text-slate-400 mb-4">Get weekly career tips and updates</p>
+                    <form id="newsletterForm" class="flex flex-col space-y-3">
+                        <input type="email" placeholder="Your email" class="px-4 py-3 bg-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        <button type="submit" class="px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white text-sm font-bold rounded-xl hover:shadow-lg hover:shadow-primary-500/30 transition-all hover:-translate-y-1">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+                <p>&copy; 2024 StudentRoadmap. All rights reserved. Made with ❤️ for Indian students.</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- Back to Top Button -->
     <button id="backToTop"
@@ -447,121 +612,30 @@
         <i class="fas fa-arrow-up text-xl"></i>
     </button>
 
+    <!-- Exit Confirmation Modal -->
+    <div id="exit-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 opacity-0">
+        <div class="bg-white/90 backdrop-blur-xl rounded-[2rem] p-8 max-w-sm w-full mx-4 shadow-2xl transform scale-95 transition-all duration-300 border border-white/20">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-bounce">
+                    <i class="fas fa-exclamation-triangle text-amber-500 text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">Wait, don't go!</h3>
+                <p class="text-slate-500 mb-6">You're on a roll! If you leave now, you'll lose your progress on this question.</p>
+                
+                <div class="flex flex-col gap-3">
+                    <button id="btn-stay" class="w-full btn-premium py-3 rounded-xl shadow-lg">
+                        <i class="fas fa-play mr-2"></i> Keep Going
+                    </button>
+                    <button id="btn-leave" class="w-full py-3 text-slate-400 hover:text-rose-500 font-semibold transition-colors">
+                        Leave Anyway
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-    
-    // Load Header and Footer with Universal Mobile Menu Support
-    document.addEventListener('DOMContentLoaded', function() {
-        // Load header
-        fetch('components/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-                
-                // Try to find and setup mobile menu after header loads
-                setTimeout(findAndSetupMobileMenu, 300);
-            })
-            .catch(error => console.error('Error loading header:', error));
-        
-        // Load footer
-        fetch('components/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('footer').innerHTML = data;
-            })
-            .catch(error => console.error('Error loading footer:', error));
-    });
-
-    // Universal function to find and setup mobile menu
-    function findAndSetupMobileMenu() {
-        console.log('Looking for mobile menu elements...');
-        
-        // Try different possible IDs for the menu button
-        const possibleBtnIds = ['mobileMenuBtn', 'menuBtn', 'mobile-btn', 'menu-button', 'hamburger'];
-        // Try different possible IDs for the menu container
-        const possibleMenuIds = ['mobileMenu', 'mobileNav', 'nav-menu', 'menu', 'navigation'];
-        
-        let menuBtn = null;
-        let mobileMenu = null;
-        
-        // Find menu button
-        for (let id of possibleBtnIds) {
-            menuBtn = document.getElementById(id);
-            if (menuBtn) {
-                console.log('Found menu button with id:', id);
-                break;
-            }
-        }
-        
-        // If not found by ID, try by class
-        if (!menuBtn) {
-            menuBtn = document.querySelector('.mobile-menu-btn, .menu-btn, .hamburger');
-            if (menuBtn) console.log('Found menu button by class');
-        }
-        
-        // Find mobile menu
-        for (let id of possibleMenuIds) {
-            mobileMenu = document.getElementById(id);
-            if (mobileMenu) {
-                console.log('Found mobile menu with id:', id);
-                break;
-            }
-        }
-        
-        // If not found by ID, try by class
-        if (!mobileMenu) {
-            mobileMenu = document.querySelector('.mobile-menu, .nav-menu.mobile, .menu');
-            if (mobileMenu) console.log('Found mobile menu by class');
-        }
-        
-        // If we found both elements, set up the click handler
-        if (menuBtn && mobileMenu) {
-            console.log('Mobile menu setup successful!');
-            
-            // Remove any existing click handlers
-            menuBtn.onclick = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
-                    mobileMenu.style.display = 'block';
-                    console.log('Menu opened');
-                } else {
-                    mobileMenu.style.display = 'none';
-                    console.log('Menu closed');
-                }
-            };
-            
-            // Close menu when clicking on links
-            const links = mobileMenu.querySelectorAll('a');
-            links.forEach(link => {
-                link.onclick = function() {
-                    mobileMenu.style.display = 'none';
-                };
-            });
-            
-            // Close menu when clicking outside
-            document.addEventListener('click', function(e) {
-                if (mobileMenu.style.display === 'block' && 
-                    !menuBtn.contains(e.target) && 
-                    !mobileMenu.contains(e.target)) {
-                    mobileMenu.style.display = 'none';
-                }
-            });
-            
-            return true;
-        } else {
-            console.log('Mobile menu elements not found. Button:', !!menuBtn, 'Menu:', !!mobileMenu);
-            // Try again after a delay
-            setTimeout(findAndSetupMobileMenu, 500);
-            return false;
-        }
-    }
-
-    // --- Your existing quiz code continues below ---
-    // (Keep all your questions, results, and quiz functions here)
-
-
-        // --- Quiz Data and Functions (keep all your existing quiz code below) ---
+        // --- Data ---
         const questions = [
             {
                 text: "Which activity do you enjoy the most?",
@@ -730,6 +804,9 @@
         // --- State ---
         let currentQuestion = 0;
         let scores = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+        let userAnswers = [];
+        let isQuizInProgress = false;
+        let intendedUrl = null;
 
         // --- DOM Elements ---
         const startScreen = document.getElementById('start-screen');
@@ -740,6 +817,12 @@
         const optionsContainer = document.getElementById('options-container');
         const progressFill = document.getElementById('progress-fill');
         const questionCounter = document.getElementById('question-counter');
+        const exitModal = document.getElementById('exit-modal');
+        const exitModalContent = exitModal?.querySelector('div');
+        const btnStay = document.getElementById('btn-stay');
+        const btnLeave = document.getElementById('btn-leave');
+
+        // --- Functions ---
 
         // Check for Resume on load
         window.addEventListener('DOMContentLoaded', () => {
@@ -763,11 +846,11 @@
             
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 300) {
-                    backToTopBtn.classList.remove('opacity-0', 'translate-y-4');
-                    backToTopBtn.classList.add('opacity-100', 'translate-y-0');
+                    backToTopBtn.style.opacity = '1';
+                    backToTopBtn.style.transform = 'translateY(0)';
                 } else {
-                    backToTopBtn.classList.remove('opacity-100', 'translate-y-0');
-                    backToTopBtn.classList.add('opacity-0', 'translate-y-4');
+                    backToTopBtn.style.opacity = '0';
+                    backToTopBtn.style.transform = 'translateY(1rem)';
                 }
             });
 
@@ -777,18 +860,38 @@
                     behavior: 'smooth'
                 });
             });
-        });
 
-        // Prompt before leaving if quiz is in progress
-        window.addEventListener('beforeunload', (e) => {
-            const savedState = localStorage.getItem('quiz_persistence');
-            if (savedState) {
+            // Newsletter form submission
+            const newsletterForm = document.getElementById('newsletterForm');
+            newsletterForm?.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                e.returnValue = '';
-            }
+                const email = e.target.querySelector('input[type="email"]').value;
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                submitBtn.disabled = true;
+
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Subscribed!';
+                submitBtn.classList.add('bg-green-500', 'hover:bg-green-600');
+
+                e.target.reset();
+
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.classList.remove('bg-green-500', 'hover:bg-green-600');
+                    submitBtn.disabled = false;
+                }, 3000);
+            });
         });
 
         function startQuiz(resume = false) {
+            isQuizInProgress = true;
+            history.pushState({ quiz: true }, "", window.location.href);
+            initExitIntent();
+
             if (!resume) {
                 localStorage.removeItem('quiz_persistence');
                 currentQuestion = 0;
@@ -841,12 +944,14 @@
                 optionsContainer.appendChild(btn);
             });
 
+            // Update Progress
             const progress = ((currentQuestion + 1) / questions.length) * 100;
             progressFill.style.width = `${progress}%`;
             questionCounter.textContent = `${currentQuestion + 1}/${questions.length}`;
         }
 
         function handleAnswer(type, selectedBtn) {
+            // Visual feedback
             const allOptions = optionsContainer.children;
             for (let btn of allOptions) {
                 btn.classList.remove('selected');
@@ -856,14 +961,17 @@
             selectedBtn.classList.add('selected');
             selectedBtn.style.opacity = '1';
 
+            // Record Score
             scores[type]++;
             
+            // Save persistence state
             localStorage.setItem('quiz_persistence', JSON.stringify({
                 currentQuestion: currentQuestion + 1,
                 scores: scores,
                 timestamp: Date.now()
             }));
 
+            // Delay for next question
             setTimeout(() => {
                 currentQuestion++;
                 if (currentQuestion < questions.length) {
@@ -875,10 +983,13 @@
         }
 
         function showResults() {
+            isQuizInProgress = false;
+
             questionScreen.classList.add('hidden');
             quizHeader.classList.add('hidden');
             resultScreen.classList.remove('hidden');
             
+            // Calculate Winner
             let maxScore = -1;
             let winner = 'A';
 
@@ -889,17 +1000,33 @@
                 }
             }
 
+            // Populate Data
             const resultData = results[winner];
             document.getElementById('result-title').innerText = resultData.title;
             document.getElementById('result-desc').innerText = resultData.desc;
             document.getElementById('result-icon').innerText = resultData.icon;
             
+            // Update Colors dynamically based on winner
+            const resultIcon = document.getElementById('result-icon');
             const resultTitleLabel = document.querySelector('#result-screen h2');
-            const topBar = document.querySelector('.result-card .absolute.top-0');
+            const roadmapBtn = document.querySelector('#result-screen button');
+            const resultCard = document.querySelector('.result-card');
+            const topBar = resultCard.querySelector('.absolute.top-0');
 
-            resultTitleLabel.className = `text-[10px] md:text-xs font-bold text-${resultData.color}-600 uppercase tracking-widest mb-2`;
-            topBar.className = `absolute top-0 left-0 w-full h-2 bg-${resultData.color}-500`;
+            // Get color based on winner
+            let colorClass = 'primary';
+            if (winner === 'A') colorClass = 'emerald';
+            else if (winner === 'B') colorClass = 'rose';
+            else if (winner === 'C') colorClass = 'blue';
+            else if (winner === 'D') colorClass = 'amber';
+            else if (winner === 'E') colorClass = 'purple';
 
+            // Reset classes
+            resultTitleLabel.className = `text-[10px] md:text-xs font-bold text-${colorClass}-600 uppercase tracking-widest mb-2`;
+            roadmapBtn.className = `w-full bg-${colorClass}-600 hover:bg-${colorClass}-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:-translate-y-1 active:scale-95 flex items-center justify-center group text-base`;
+            topBar.className = `absolute top-0 left-0 w-full h-2 bg-${colorClass}-500`;
+
+            // Populate Career List with clickable links
             const list = document.getElementById('career-list');
             list.innerHTML = '';
             
@@ -907,12 +1034,12 @@
                 const li = document.createElement('li');
                 li.className = "group/item";
                 li.innerHTML = `
-                    <a href="career_roadmap_${career.slug}.html" class="flex items-center p-3 hover:bg-white hover:shadow-md rounded-xl transition-all duration-300 border border-transparent hover:border-${resultData.color}-100">
-                        <div class="w-8 h-8 rounded-lg bg-${resultData.color}-100 flex items-center justify-center mr-4 group-hover/item:scale-110 transition-transform">
-                            <i class="fas fa-arrow-right text-${resultData.color}-600 text-xs"></i>
+                    <a href="career_roadmap.html?career=${career.slug}" class="flex items-center p-3 hover:bg-white hover:shadow-md rounded-xl transition-all duration-300 border border-transparent hover:border-${colorClass}-100">
+                        <div class="w-8 h-8 rounded-lg bg-${colorClass}-100 flex items-center justify-center mr-4 group-hover/item:scale-110 transition-transform">
+                            <i class="fas fa-arrow-right text-${colorClass}-600 text-xs"></i>
                         </div>
                         <span class="text-gray-700 font-semibold group-hover/item:text-gray-900">${career.name}</span>
-                        <span class="ml-auto text-xs font-medium text-gray-400 group-hover/item:text-${resultData.color}-500 flex items-center">
+                        <span class="ml-auto text-xs font-medium text-gray-400 group-hover/item:text-${colorClass}-500 flex items-center">
                             View Roadmap <i class="fas fa-chevron-right ml-2"></i>
                         </span>
                     </a>
@@ -920,9 +1047,13 @@
                 list.appendChild(li);
             });
 
+            // Set Roadmap Link
             window.viewRoadmap = () => window.location.href = 'roadmap.html';
 
+            // Confetti Effect
             fireConfetti();
+            
+            // Clear persistence
             localStorage.removeItem('quiz_persistence');
         }
 
@@ -935,6 +1066,7 @@
             startScreen.classList.add('fade-in');
         }
 
+        // --- Confetti Logic ---
         function fireConfetti() {
             const canvas = document.getElementById('confetti-canvas');
             const ctx = canvas.getContext('2d');
@@ -943,7 +1075,7 @@
 
             const particles = [];
             const particleCount = 150;
-            const colors = ['#6366f1', '#ec4899', '#10b981', '#f59e0b', '#3b82f6'];
+            const colors = ['#8f3eff', '#ff6b4a', '#00c9a7', '#ffb347', '#7520e6'];
 
             for (let i = 0; i < particleCount; i++) {
                 particles.push({
@@ -993,13 +1125,72 @@
             animate();
         }
         
+        // Resize canvas on window resize
         window.addEventListener('resize', () => {
             const canvas = document.getElementById('confetti-canvas');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
-    </script>
 
+        // Show Modal
+        function showExitModal(url) {
+            intendedUrl = url;
+            exitModal.classList.remove('hidden');
+            void exitModal.offsetWidth;
+            exitModal.classList.remove('opacity-0');
+            exitModalContent.classList.remove('scale-95');
+            exitModalContent.classList.add('scale-100');
+
+            if (!url) {
+                history.pushState({ quiz: true }, "", window.location.href);
+            }
+        }
+
+        // Hide Modal
+        function hideExitModal() {
+            exitModal.classList.add('opacity-0');
+            exitModalContent.classList.remove('scale-100');
+            exitModalContent.classList.add('scale-95');
+            setTimeout(() => {
+                exitModal.classList.add('hidden');
+                intendedUrl = null;
+            }, 300);
+        }
+
+        // Handle Stay
+        btnStay?.addEventListener('click', hideExitModal);
+
+        // Handle Leave
+        btnLeave?.addEventListener('click', () => {
+            isQuizInProgress = false;
+            
+            if (intendedUrl) {
+                window.location.href = intendedUrl;
+            } else {
+                history.go(-2);
+            }
+        });
+
+        // Initialize Listeners
+        function initExitIntent() {
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    if (!href || href.startsWith('#') || href.startsWith('javascript:') || link.target === '_blank') return;
+                    
+                    if (isQuizInProgress) {
+                        e.preventDefault();
+                        showExitModal(href);
+                    }
+                });
+            });
+
+            window.addEventListener('popstate', (e) => {
+                if (isQuizInProgress) {
+                    showExitModal(null);
+                }
+            });
+        }
+    </script>
 </body>
 </html>
-
