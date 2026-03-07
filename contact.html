@@ -11,7 +11,6 @@
 
   <!-- Tailwind + plugins -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
-  <script src="assets/js/auth.js"></script>
 
   <!-- Poppins font -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -35,25 +34,41 @@
               600: '#16a34a',
             },
             primary: {
-              50: '#f0fcff',
-              100: '#e0f2fe',
-              200: '#bae6fd',
-              300: '#7dd3fc',
-              400: '#38bdf8',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              700: '#0369a1',
-              800: '#075985',
-              900: '#0c4a6e',
+              50: '#f5f0ff',
+              100: '#ede0ff',
+              200: '#d9baff',
+              300: '#c28fff',
+              400: '#a864ff',
+              500: '#8f3eff',
+              600: '#7520e6',
+              700: '#5c15b8',
+              800: '#44118a',
+              900: '#2f0d5c',
             },
             secondary: {
-              500: '#8b5cf6',
-              600: '#7c3aed',
+              50: '#fff0ed',
+              100: '#ffe0d9',
+              200: '#ffb9aa',
+              300: '#ff8f7a',
+              400: '#ff6b4a',
+              500: '#ff4d1c',
+              600: '#e63e0f',
+              700: '#b8300b',
+              800: '#8a2408',
+              900: '#5c1805',
             },
-            gradient: {
-              start: '#e0f2fe',
-              end: '#f0fcff',
-            }
+            tertiary: {
+              50: '#e6fffa',
+              100: '#ccfff5',
+              200: '#99ffeb',
+              300: '#66ffe0',
+              400: '#33ffd6',
+              500: '#00c9a7',
+              600: '#00b38f',
+              700: '#008c70',
+              800: '#006651',
+              900: '#004031',
+            },
           },
           animation: {
             'fade-in': 'fadeIn 0.8s ease-in-out',
@@ -90,8 +105,8 @@
               '50%': { transform: 'translateY(-5px)' },
             },
             glow: {
-              '0%': { boxShadow: '0 0 5px rgba(14, 165, 233, 0.3)' },
-              '100%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.6)' },
+              '0%': { boxShadow: '0 0 5px rgba(143, 62, 255, 0.3)' },
+              '100%': { boxShadow: '0 0 20px rgba(143, 62, 255, 0.6)' },
             },
             textReveal: {
               '0%': {
@@ -150,9 +165,11 @@
 
   <style>
     :root {
-      --primary-color: #0ea5e9;
-      --primary-dark: #0284c7;
-      --secondary-color: #8b5cf6;
+      --primary-color: #8f3eff;
+      --primary-dark: #7520e6;
+      --secondary-color: #ff6b4a;
+      --tertiary-color: #00c9a7;
+      --accent-gradient: linear-gradient(135deg, #8f3eff, #ff6b4a, #00c9a7);
     }
 
     * {
@@ -167,7 +184,7 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      background: linear-gradient(135deg, #f8fafc 0%, #f0f9ff 100%);
+      background: linear-gradient(135deg, #faf5ff 0%, #fff5f0 100%);
       min-height: 100vh;
     }
 
@@ -177,7 +194,7 @@
 
     /* Page Background with animated gradient */
     .page-bg {
-      background: linear-gradient(-45deg, #f0f9ff, #e0f2fe, #f8fafc, #f0f9ff);
+      background: linear-gradient(-45deg, #f5f0ff, #ede0ff, #fff0ed, #e6fffa);
       background-size: 400% 400%;
       animation: gradientShift 15s ease infinite;
       min-height: 100vh;
@@ -197,7 +214,7 @@
     .blob-1 {
       width: 500px;
       height: 500px;
-      background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+      background: linear-gradient(135deg, #8f3eff, #ff6b4a);
       top: -250px;
       right: -250px;
       animation: blob 20s infinite;
@@ -206,17 +223,17 @@
     .blob-2 {
       width: 400px;
       height: 400px;
-      background: linear-gradient(135deg, #8b5cf6, #0ea5e9);
+      background: linear-gradient(135deg, #00c9a7, #8f3eff);
       bottom: -200px;
       left: -200px;
       animation: blob 25s infinite reverse;
     }
 
-    @keyframes blob {
-      0% { transform: translate(0px, 0px) scale(1); }
-      33% { transform: translate(30px, -50px) scale(1.1); }
-      66% { transform: translate(-20px, 20px) scale(0.9); }
-      100% { transform: translate(0px, 0px) scale(1); }
+    /* Enhanced Header */
+    .header-glass {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(143, 62, 255, 0.1);
     }
 
     /* Enhanced Cards */
@@ -225,14 +242,14 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow:
-        0 8px 32px rgba(14, 165, 233, 0.1),
+        0 8px 32px rgba(143, 62, 255, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .glass-card:hover {
       transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(14, 165, 233, 0.15);
+      box-shadow: 0 20px 40px rgba(143, 62, 255, 0.15);
     }
 
     .gradient-border {
@@ -244,7 +261,7 @@
       content: '';
       position: absolute;
       inset: -2px;
-      background: linear-gradient(135deg, #0ea5e9, #8b5cf6, #0ea5e9);
+      background: var(--accent-gradient);
       border-radius: 1.5rem;
       z-index: -1;
       opacity: 0.3;
@@ -253,7 +270,7 @@
 
     /* Enhanced Buttons */
     .btn-gradient {
-      background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+      background: linear-gradient(135deg, #8f3eff 0%, #ff6b4a 100%);
       position: relative;
       overflow: hidden;
       transition: all 0.3s ease;
@@ -261,7 +278,7 @@
 
     .btn-gradient:hover {
       transform: translateY(-3px);
-      box-shadow: 0 15px 30px rgba(14, 165, 233, 0.3);
+      box-shadow: 0 15px 30px rgba(143, 62, 255, 0.3);
     }
 
     .btn-gradient::after {
@@ -296,7 +313,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(139, 92, 246, 0.1));
+      background: linear-gradient(135deg, rgba(143, 62, 255, 0.1), rgba(255, 107, 74, 0.1));
       border-radius: 16px;
     }
 
@@ -311,22 +328,17 @@
     }
 
     ::-webkit-scrollbar-thumb {
-      background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+      background: linear-gradient(135deg, #8f3eff, #ff6b4a);
       border-radius: 5px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background: linear-gradient(135deg, #0284c7, #7c3aed);
+      background: linear-gradient(135deg, #7520e6, #ff4d1c);
     }
 
     /* Floating Animation for Elements */
     .floating {
       animation: float 6s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
     }
 
     /* UNIFIED SOCIAL MEDIA CARD STYLES */
@@ -339,16 +351,14 @@
       background: rgba(255, 255, 255, 0.7);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px rgba(14, 165, 233, 0.1),
+      box-shadow: 0 8px 32px rgba(143, 62, 255, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
       padding: 1.5rem;
-      display: block;
-      text-decoration: none;
     }
 
     .social-card:hover {
       transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 40px rgba(14, 165, 233, 0.15);
+      box-shadow: 0 20px 40px rgba(143, 62, 255, 0.15);
     }
 
     /* Social Icon Container */
@@ -362,6 +372,23 @@
       position: relative;
       overflow: hidden;
       flex-shrink: 0;
+    }
+
+    .social-icon::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      background: inherit;
+      filter: blur(5px);
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    .social-icon img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
     }
 
     /* Platform-specific gradients */
@@ -415,7 +442,7 @@
       display: flex;
       align-items: center;
       font-size: 0.75rem;
-      color: #0ea5e9;
+      color: #8f3eff;
     }
 
     .social-card-features svg {
@@ -440,11 +467,6 @@
     .mobile-menu {
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
-      transform: translateX(-100%);
-    }
-
-    .mobile-menu.active {
-      transform: translateX(0);
     }
 
     /* Responsive Utilities */
@@ -461,6 +483,11 @@
       .social-icon {
         width: 50px;
         height: 50px;
+      }
+
+      .social-icon img {
+        width: 20px;
+        height: 20px;
       }
 
       .social-card-title {
@@ -491,6 +518,24 @@
       }
     }
 
+    /* Accessibility */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Page Load Animation */
+    .page-load {
+      animation: fadeIn 0.5s ease-out;
+    }
+
     /* Back to Top Button */
     .back-to-top {
       opacity: 0;
@@ -503,17 +548,20 @@
       transform: translateY(0);
     }
 
+    /* Fix for image loading */
     img {
       max-width: 100%;
       height: auto;
     }
 
+    /* Touch-friendly button sizes */
     button,
     a[role="button"] {
       min-height: 44px;
       min-width: 44px;
     }
 
+    /* Container for consistent layout */
     .container-responsive {
       width: 100%;
       padding-right: 1rem;
@@ -523,16 +571,41 @@
     }
 
     @media (min-width: 640px) {
-      .container-responsive { max-width: 640px; }
+      .container-responsive {
+        max-width: 640px;
+      }
     }
+
     @media (min-width: 768px) {
-      .container-responsive { max-width: 768px; }
+      .container-responsive {
+        max-width: 768px;
+      }
     }
+
     @media (min-width: 1024px) {
-      .container-responsive { max-width: 1024px; }
+      .container-responsive {
+        max-width: 1024px;
+      }
     }
+
     @media (min-width: 1280px) {
-      .container-responsive { max-width: 1280px; }
+      .container-responsive {
+        max-width: 1280px;
+      }
+    }
+
+    /* Toast notifications */
+    .toast-success {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .toast-error {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    /* Animation delays */
+    .animation-delay-2000 {
+      animation-delay: 2s;
     }
   </style>
 </head>
@@ -546,27 +619,32 @@
   </div>
 
   <!-- Mobile Navigation Menu -->
-  <div id="mobileMenu" class="mobile-menu fixed top-0 left-0 w-full h-screen bg-white/95 backdrop-blur-xl z-50 overflow-y-auto transition-transform duration-300">
+  <div id="mobileMenu"
+    class="mobile-menu fixed top-0 left-0 w-full h-screen bg-white/95 backdrop-blur-xl z-50 transform -translate-x-full transition-transform duration-300 overflow-y-auto">
     <div class="p-6 h-full flex flex-col">
       <div class="flex justify-between items-center mb-8">
         <div class="flex items-center space-x-3">
-          <div class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
+          <div
+            class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
             <i class="fas fa-graduation-cap text-white text-lg"></i>
           </div>
           <span class="text-xl font-bold text-slate-800">StudentRoadmap</span>
         </div>
-        <button id="closeMenu" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
+        <button id="closeMenu" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors"
+          aria-label="Close menu">
           <i class="fas fa-times text-slate-600"></i>
         </button>
       </div>
 
       <nav class="flex-1 space-y-4">
         <div class="space-y-2">
-          <a href="about.html" class="flex items-center space-x-3 p-4 rounded-xl bg-primary-50 text-primary-700 font-semibold">
-            <i class="fas fa-users text-primary-600"></i>
+          <a href="about.html"
+            class="flex items-center space-x-3 p-4 rounded-xl bg-primary-50 text-primary-700 font-semibold">
+            <i class="fas fa-info-circle text-primary-600"></i>
             <span>About us</span>
           </a>
-          <a href="roadmap.html" class="flex items-center space-x-3 p-4 rounded-xl bg-primary-50 text-primary-700 font-semibold">
+          <a href="roadmap.html"
+            class="flex items-center space-x-3 p-4 rounded-xl bg-primary-50 text-primary-700 font-semibold">
             <i class="fas fa-map text-primary-600"></i>
             <span>Roadmaps</span>
           </a>
@@ -584,12 +662,14 @@
       <div class="pt-6 border-t border-slate-200 mt-8">
         <div class="flex items-center space-x-4 mb-4">
           <a href="login.html" class="flex-1">
-            <button class="w-full py-3 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors">
+            <button
+              class="w-full py-3 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors">
               Login
             </button>
           </a>
           <a href="signup.html" class="flex-1">
-            <button class="w-full py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-xl hover:bg-primary-50 transition-colors">
+            <button
+              class="w-full py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-xl hover:bg-primary-50 transition-colors">
               Sign Up
             </button>
           </a>
@@ -599,8 +679,68 @@
     </div>
   </div>
 
-  <!-- Header Include -->
-  <div id="header"></div>
+  <!-- Static Header -->
+  <header class="sticky top-0 z-40 bg-white shadow-sm border-b border-slate-200">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center space-x-3 group">
+          <div
+            class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+            <i class="fas fa-graduation-cap text-white text-lg"></i>
+          </div>
+          <div>
+            <span class="text-xl font-bold text-slate-800">StudentRoadmap</span>
+            <p class="text-xs text-slate-500">Your Career Navigation Partner</p>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex items-center space-x-8">
+          <a href="roadmap.html"
+            class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+            <i class="fas fa-map text-primary-500"></i>
+            <span>Roadmaps</span>
+          </a>
+
+          <a href="quiz.html"
+            class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+            <i class="fas fa-question-circle text-primary-500"></i>
+            <span>Career Quiz</span>
+          </a>
+          <a href="about.html"
+            class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+            <i class="fas fa-users text-primary-500"></i>
+            <span>About Us</span>
+          </a>
+
+          <a href="contact.html"
+            class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+            <i class="fas fa-envelope text-primary-500"></i>
+            <span>Contact</span>
+          </a>
+        </nav>
+
+        <!-- Desktop Auth Buttons -->
+        <div id="desktopAuthContainer" class="hidden lg:flex items-center space-x-4">
+          <a href="login.html" class="px-6 py-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors">
+            Sign In
+          </a>
+          <a href="signup.html"
+            class="px-6 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-primary-500/30 transition-all duration-300 hover:-translate-y-1">
+            Get Started Free
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="flex lg:hidden items-center space-x-3">
+          <button id="menuButton" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
+            <i class="fas fa-bars text-slate-600"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
 
   <main class="page-bg relative z-10">
     <div class="container-responsive mx-auto px-4 py-8 pt-16">
@@ -631,7 +771,7 @@
             <h2 class="text-2xl font-bold text-slate-800 mb-2">Send us Feedback</h2>
             <p class="text-slate-500 mb-8">Your suggestions help us improve the platform for everyone.</p>
             
-            <form action="#" method="POST" class="space-y-6" onsubmit="alert('Thank you for your feedback!'); return false;">
+            <form id="contactForm" class="space-y-6" onsubmit="handleContactSubmit(event)">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-2">
                   <label for="name" class="text-sm font-semibold text-slate-700 ml-1">Full Name</label>
@@ -698,15 +838,18 @@
           class="social-card animate-fade-in gradient-border group">
           <div class="flex items-start gap-4">
             <div class="social-icon instagram-gradient">
-              <i class="fab fa-instagram text-white text-2xl"></i>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram logo">
             </div>
             <div class="social-card-content">
               <h3 class="social-card-title">Instagram</h3>
               <p class="social-card-handle">@studentroadmap</p>
-              <p class="social-card-description">Daily career tips, student stories, and visual roadmaps. Join our community for inspiration!</p>
+              <p class="social-card-description">Daily career tips, student stories, and visual roadmaps. Join our
+                community for inspiration!</p>
               <div class="social-card-features">
-                <svg fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd" />
                 </svg>
                 Daily Posts • Live Q&A Sessions
               </div>
@@ -719,15 +862,18 @@
           class="social-card animate-fade-in gradient-border group">
           <div class="flex items-start gap-4">
             <div class="social-icon twitter-gradient">
-              <i class="fab fa-x-twitter text-white text-2xl"></i>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/X_icon_2.svg" alt="X (Twitter) logo">
             </div>
             <div class="social-card-content">
               <h3 class="social-card-title">Twitter / X</h3>
               <p class="social-card-handle">@studentroadmap</p>
-              <p class="social-card-description">Quick career insights, industry news, and thread discussions. Stay updated in real-time!</p>
+              <p class="social-card-description">Quick career insights, industry news, and thread discussions. Stay
+                updated in real-time!</p>
               <div class="social-card-features">
-                <svg fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd" />
                 </svg>
                 Real-time Updates • Career Threads
               </div>
@@ -740,15 +886,19 @@
           class="social-card animate-fade-in gradient-border group">
           <div class="flex items-start gap-4">
             <div class="social-icon linkedin-gradient">
-              <i class="fab fa-linkedin-in text-white text-2xl"></i>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png"
+                alt="LinkedIn logo">
             </div>
             <div class="social-card-content">
               <h3 class="social-card-title">LinkedIn</h3>
               <p class="social-card-handle">Student Roadmap</p>
-              <p class="social-card-description">Professional networking, job opportunities, and expert articles. Connect with industry professionals!</p>
+              <p class="social-card-description">Professional networking, job opportunities, and expert articles.
+                Connect with industry professionals!</p>
               <div class="social-card-features">
-                <svg fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd" />
                 </svg>
                 Job Alerts • Professional Network
               </div>
@@ -761,15 +911,19 @@
           class="social-card animate-fade-in gradient-border group">
           <div class="flex items-start gap-4">
             <div class="social-icon youtube-gradient">
-              <i class="fab fa-youtube text-white text-2xl"></i>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png"
+                alt="YouTube logo">
             </div>
             <div class="social-card-content">
               <h3 class="social-card-title">YouTube</h3>
               <p class="social-card-handle">@studentroadmap</p>
-              <p class="social-card-description">Video tutorials, career guides, and success stories. Subscribe for weekly content!</p>
+              <p class="social-card-description">Video tutorials, career guides, and success stories. Subscribe for
+                weekly content!</p>
               <div class="social-card-features">
-                <svg fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd" />
                 </svg>
                 Weekly Videos • Live Workshops
               </div>
@@ -782,15 +936,18 @@
           class="social-card animate-fade-in gradient-border group">
           <div class="flex items-start gap-4">
             <div class="social-icon whatsapp-gradient">
-              <i class="fab fa-whatsapp text-white text-2xl"></i>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp logo">
             </div>
             <div class="social-card-content">
               <h3 class="social-card-title">WhatsApp</h3>
               <p class="social-card-handle">+91 98765 43210</p>
-              <p class="social-card-description">Instant career guidance, quick queries, and personalized support. Chat with us anytime!</p>
+              <p class="social-card-description">Instant career guidance, quick queries, and personalized support. Chat
+                with us anytime!</p>
               <div class="social-card-features">
-                <svg fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clip-rule="evenodd" />
                 </svg>
                 Instant Help • Career Advice
               </div>
@@ -807,7 +964,9 @@
         <div class="relative">
           <div class="absolute -top-4 -left-4 text-primary-200 text-4xl quote-mark">"</div>
           <p class="text-2xl font-semibold text-slate-800 leading-relaxed">
-            Your career journey starts here — <span class="bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">stay connected, stay inspired.</span>
+            Your career journey starts here — <span
+              class="bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">stay connected,
+              stay inspired.</span>
           </p>
           <div class="absolute -bottom-4 -right-4 text-primary-200 text-4xl quote-mark">"</div>
         </div>
@@ -819,42 +978,101 @@
 
     <div class="mt-20"></div>
 
-    <!-- Footer Include -->
-    <div id="footer"></div>
     </div>
   </main>
 
+  <!-- Static Footer -->
+  <footer class="bg-slate-900 text-white pt-20 pb-10">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-16">
+        <div>
+          <h3 class="text-2xl font-bold mb-6 bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">StudentRoadmap</h3>
+          <p class="text-slate-400 mb-6">India's most trusted career guidance platform for students after 10th & 12th.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="w-10 h-10 bg-slate-800 rounded-full flex items-center justify-center hover:bg-primary-600 transition-colors"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-6">Quick Links</h4>
+          <ul class="space-y-3 text-slate-400">
+            <li><a href="index.html" class="hover:text-primary-400 transition-colors">Home</a></li>
+            <li><a href="roadmap.html" class="hover:text-primary-400 transition-colors">Roadmaps</a></li>
+            <li><a href="quiz.html" class="hover:text-primary-400 transition-colors">Career Quiz</a></li>
+            <li><a href="resources.html" class="hover:text-primary-400 transition-colors">Resources</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-6">Popular Careers</h4>
+          <ul class="space-y-3 text-slate-400">
+            <li><a href="career_roadmap.html?career=doctor" class="hover:text-primary-400 transition-colors">Doctor</a></li>
+            <li><a href="career_roadmap.html?career=software-developer" class="hover:text-primary-400 transition-colors">Software Developer</a></li>
+            <li><a href="career_roadmap.html?career=civil-servant" class="hover:text-primary-400 transition-colors">Civil Servant</a></li>
+            <li><a href="career_roadmap.html?career=chartered-accountant" class="hover:text-primary-400 transition-colors">CA</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-6">Newsletter</h4>
+          <p class="text-slate-400 mb-4">Get weekly career tips and updates</p>
+          <form id="newsletterForm" class="flex flex-col space-y-3">
+            <input type="email" placeholder="Your email" class="px-4 py-3 bg-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500">
+            <button type="submit" class="px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white text-sm font-bold rounded-xl hover:shadow-lg hover:shadow-primary-500/30 transition-all hover:-translate-y-1">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <div class="border-t border-slate-800 pt-8 text-center text-slate-500 text-sm">
+        <p>&copy; 2024 StudentRoadmap. All rights reserved. Made with ❤️ for Indian students.</p>
+      </div>
+    </div>
+  </footer>
+
   <!-- Back to Top Button -->
-  <button id="backToTop" class="back-to-top fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50" aria-label="Back to top">
+  <button id="backToTop"
+    class="back-to-top fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 z-50"
+    aria-label="Back to top">
     <i class="fas fa-arrow-up text-xl"></i>
   </button>
 
- <script>
-    // Load Header and Footer
+  <script>
+    // Mobile menu functionality
     document.addEventListener('DOMContentLoaded', function() {
-      // Load header
-      fetch('components/header.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('header').innerHTML = data;
-          
-          // Wait a bit for header to be fully loaded then setup mobile menu
-          setTimeout(setupMobileMenu, 300);
-        })
-        .catch(error => console.error('Error loading header:', error));
-      
-      // Load footer
-      fetch('components/footer.html')
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById('footer').innerHTML = data;
-        })
-        .catch(error => console.error('Error loading footer:', error));
+      const menuButton = document.getElementById('menuButton');
+      const closeMenu = document.getElementById('closeMenu');
+      const mobileMenu = document.getElementById('mobileMenu');
 
-      // Back to Top Button
+      function openMenu() {
+        mobileMenu.classList.remove('-translate-x-full');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenuFunc() {
+        mobileMenu.classList.add('-translate-x-full');
+        document.body.style.overflow = '';
+      }
+
+      menuButton?.addEventListener('click', openMenu);
+      closeMenu?.addEventListener('click', closeMenuFunc);
+
+      // Close menu when clicking on a link
+      const menuLinks = mobileMenu?.querySelectorAll('a');
+      menuLinks?.forEach(link => {
+        link.addEventListener('click', closeMenuFunc);
+      });
+
+      // Close menu on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !mobileMenu?.classList.contains('-translate-x-full')) {
+          closeMenuFunc();
+        }
+      });
+
+      // Back to top button
       const backToTop = document.getElementById('backToTop');
+      
       window.addEventListener('scroll', () => {
-        if (window.scrollY > 500) {
+        if (window.scrollY > 300) {
           backToTop.classList.add('visible');
         } else {
           backToTop.classList.remove('visible');
@@ -862,99 +1080,135 @@
       });
 
       backToTop.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       });
 
-      // Social icon hover animation
+      // Newsletter form submission
+      const newsletterForm = document.getElementById('newsletterForm');
+      newsletterForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = e.target.querySelector('input[type="email"]').value;
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        submitBtn.disabled = true;
+
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Show success message
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Subscribed!';
+        submitBtn.classList.add('bg-green-500', 'hover:bg-green-600');
+
+        // Reset form
+        e.target.reset();
+
+        // Reset button after 3 seconds
+        setTimeout(() => {
+          submitBtn.innerHTML = originalText;
+          submitBtn.classList.remove('bg-green-500', 'hover:bg-green-600');
+          submitBtn.disabled = false;
+        }, 3000);
+      });
+
+      // Add social icon hover animation
       document.querySelectorAll('.social-icon').forEach(icon => {
         icon.addEventListener('mouseenter', function () {
           this.style.transform = 'scale(1.1) rotate(5deg)';
         });
+
         icon.addEventListener('mouseleave', function () {
           this.style.transform = 'scale(1) rotate(0deg)';
         });
       });
+
+      // Preload critical resources
+      const preloadImages = [
+        'https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png',
+        'https://upload.wikimedia.org/wikipedia/commons/5/5a/X_icon_2.svg',
+        'https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png',
+        'https://upload.wikimedia.org/wikipedia/commons/4/42/YouTube_icon_%282013-2017%29.png',
+        'https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg'
+      ];
+
+      preloadImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+      });
     });
 
-    // Separate function to setup mobile menu
-    function setupMobileMenu() {
-      console.log('Setting up mobile menu...');
+    // Contact form submission handler
+    function handleContactSubmit(event) {
+      event.preventDefault();
       
-      // Try different possible selectors for the menu button
-      const possibleButtonSelectors = [
-        '#mobileMenuBtn',
-        '.mobile-menu-btn',
-        'button:has(.fa-bars)',
-        'button:contains("☰")',
-        'button[class*="menu"]',
-        '.hamburger'
-      ];
+      const form = event.target;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
       
-      let menuBtn = null;
+      // Get form data
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const subject = document.getElementById('subject').value;
+      const message = document.getElementById('message').value;
       
-      // Find the menu button
-      for (let selector of possibleButtonSelectors) {
-        const element = document.querySelector(selector);
-        if (element) {
-          menuBtn = element;
-          console.log('Found menu button with selector:', selector);
-          break;
-        }
-      }
+      // Show loading state
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
       
-      // If still not found, look for any button with menu-like text or icon
-      if (!menuBtn) {
-        const allButtons = document.querySelectorAll('button');
-        for (let btn of allButtons) {
-          if (btn.innerHTML.includes('☰') || btn.innerHTML.includes('fa-bars')) {
-            menuBtn = btn;
-            console.log('Found menu button by content');
-            break;
-          }
-        }
-      }
-      
-      const closeMenu = document.getElementById('closeMenu');
-      const mobileMenu = document.getElementById('mobileMenu');
-      
-      if (menuBtn && mobileMenu) {
-        console.log('Mobile menu setup successful!');
+      // Simulate API call (replace with actual fetch in production)
+      setTimeout(() => {
+        // Show success toast
+        showToast('success', 'Message Sent!', 'Thank you for your feedback.');
         
-        // Remove any existing event listeners by cloning
-        const newBtn = menuBtn.cloneNode(true);
-        menuBtn.parentNode.replaceChild(newBtn, menuBtn);
+        // Reset form
+        form.reset();
         
-        newBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          mobileMenu.classList.add('active');
-          document.body.style.overflow = 'hidden';
-          console.log('Menu opened');
-        });
-      } else {
-        console.log('Mobile menu elements not found. Button:', !!menuBtn, 'Menu:', !!mobileMenu);
-        // Try again after a delay
-        setTimeout(setupMobileMenu, 500);
-      }
+        // Reset button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }, 1500);
+    }
+
+    // Toast notification function
+    function showToast(type, title, message) {
+      const toast = document.createElement('div');
+      toast.className = `fixed bottom-4 right-4 toast-${type === 'success' ? 'success' : 'error'} text-white px-6 py-4 rounded-xl shadow-2xl flex items-center space-x-3 z-50 animate-fade-in`;
       
-      if (closeMenu && mobileMenu) {
-        closeMenu.addEventListener('click', function() {
-          mobileMenu.classList.remove('active');
-          document.body.style.overflow = '';
-          console.log('Menu closed');
-        });
-        
-        // Close menu when clicking on links
-        const links = mobileMenu.querySelectorAll('a');
-        links.forEach(link => {
-          link.addEventListener('click', function() {
-            mobileMenu.classList.remove('active');
-            document.body.style.overflow = '';
-          });
-        });
-      }
+      const icon = type === 'success' ? 'check-circle' : 'exclamation-circle';
+      
+      toast.innerHTML = `
+        <i class="fas fa-${icon} text-xl"></i>
+        <div>
+          <h4 class="font-bold">${title}</h4>
+          <p class="text-sm opacity-90">${message}</p>
+        </div>
+      `;
+      
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-10');
+        setTimeout(() => toast.remove(), 500);
+      }, 5000);
+    }
+
+    // Check for URL parameters (for demo purposes)
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+
+    if (status === 'success') {
+      showToast('success', 'Message Sent!', 'Thank you for your feedback.');
+      // Clean URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (status === 'error') {
+      showToast('error', 'Error Sending', 'Please try again later.');
+      window.history.replaceState({}, document.title, window.location.pathname);
     }
   </script>
 </body>
-</html>
 
+</html>
