@@ -1,199 +1,330 @@
-<!-- Simple Header -->
-<header style="background: white; border-bottom: 2px solid #0ea5e9; padding: 12px 0; font-family: 'Poppins', sans-serif; position: sticky; top: 0; z-index: 1000; width: 100%;">
-  <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between;">
-    
-    <!-- Logo -->
-    <a href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-      <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #0ea5e9, #8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
-        🎓
+<!-- Mobile Navigation Menu -->
+<div id="mobileMenu"
+  class="mobile-menu fixed top-0 left-0 w-full h-screen bg-white/95 backdrop-blur-xl z-50 transform -translate-x-full transition-transform duration-300">
+  <div class="p-6 h-full flex flex-col">
+    <div class="flex justify-between items-center mb-8">
+      <div class="flex items-center space-x-3">
+        <div
+          class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
+          <i class="fas fa-graduation-cap text-white text-lg"></i>
+        </div>
+        <span class="text-xl font-bold text-slate-800">StudentRoadmap</span>
       </div>
-      <span style="font-size: 20px; font-weight: bold; color: #1e293b;">StudentRoadmap</span>
-    </a>
-    
-    <!-- Desktop Navigation -->
-    <div class="desktop-menu">
-      <a href="index.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Home</a>
-      <a href="roadmap.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Roadmaps</a>
-      <a href="quiz.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Quiz</a>
-      <a href="about.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">About</a>
-      <a href="contact.html" style="margin: 0 15px; color: #4b5563; text-decoration: none; font-weight: 500;">Contact</a>
+      <button id="closeMenu" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
+        <i class="fas fa-times text-slate-600"></i>
+      </button>
     </div>
-    
-    <!-- Desktop Auth - Dynamic based on login state -->
-    <div class="desktop-auth" id="desktopAuthContainer">
-      <!-- This will be populated by JavaScript -->
-    </div>
-    
-    <!-- Mobile Menu Button -->
-    <button id="mobileMenuBtn" style="display: none; background: none; border: none; font-size: 28px; cursor: pointer; color: #0ea5e9; padding: 10px;">
-      ☰
-    </button>
-  </div>
 
-  <!-- Mobile Menu -->
-  <div id="mobileMenu" style="display: none; background: white; padding: 20px; border-top: 1px solid #e2e8f0; width: 100%;">
-    <div style="display: flex; flex-direction: column; gap: 5px;">
-      <a href="index.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">Home</a>
-      <a href="roadmap.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">Roadmaps</a>
-      <a href="quiz.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">Quiz</a>
-      <a href="about.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">About</a>
-      <a href="contact.html" style="padding: 15px; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; display: block;">Contact</a>
-      <div id="mobileAuthContainer" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 2px solid #e2e8f0;">
-        <!-- This will be populated by JavaScript -->
+    <nav class="flex-1">
+      <div class="space-y-2">
+        <a href="about.html"
+          class="flex items-center space-x-3 p-4 rounded-xl bg-primary-50 text-primary-700 font-semibold">
+          <i class="fas fa-info-circle text-primary-600"></i>
+          <span>About Us</span>
+        </a>
+        <a href="roadmap.html"
+          class="flex items-center space-x-3 p-4 rounded-xl bg-primary-50 text-primary-700 font-semibold">
+          <i class="fas fa-map text-primary-600"></i>
+          <span>Roadmaps</span>
+        </a>
+        <a href="quiz.html" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-slate-50 font-medium">
+          <i class="fas fa-question-circle text-primary-600"></i>
+          <span>Career Quiz</span>
+        </a>
+        <a href="contact.html" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-slate-50 font-medium">
+          <i class="fas fa-envelope text-primary-600"></i>
+          <span>Contact</span>
+        </a>
+      </div>
+    </nav>
+
+    <div id="mobileAuthContainer" class="pt-6 border-t border-slate-200">
+      <div class="flex items-center space-x-4 mb-4">
+        <a href="login.html" class="flex-1">
+          <button
+            class="w-full py-3 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-colors">
+            Login
+          </button>
+        </a>
+        <a href="signup.html" class="flex-1">
+          <button
+            class="w-full py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-xl hover:bg-primary-50 transition-colors">
+            Sign Up
+          </button>
+        </a>
+      </div>
+      <p class="text-sm text-slate-500 text-center">Get personalized career guidance</p>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="sticky top-0 z-40 bg-white shadow-sm border-b border-slate-200">
+  <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center space-x-3 group">
+        <div
+          class="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+          <i class="fas fa-graduation-cap text-white text-lg"></i>
+        </div>
+        <div>
+          <span class="text-xl font-bold text-slate-800">StudentRoadmap</span>
+          <p class="text-xs text-slate-500">Your Career Navigation Partner</p>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center space-x-8">
+        <a href="roadmap.html"
+          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+          <i class="fas fa-map text-primary-500"></i>
+          <span>Roadmaps</span>
+        </a>
+
+        <a href="quiz.html"
+          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+          <i class="fas fa-question-circle text-primary-500"></i>
+          <span>Career Quiz</span>
+        </a>
+        <a href="about.html"
+          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+          <i class="fas fa-users text-primary-500"></i>
+          <span>About Us</span>
+        </a>
+
+        <a href="contact.html"
+          class="flex items-center space-x-2 font-medium text-slate-700 hover:text-primary-600 transition-colors">
+          <i class="fas fa-envelope text-primary-500"></i>
+          <span>Contact</span>
+        </a>
+      </nav>
+
+      <!-- Desktop Auth Buttons -->
+      <div id="desktopAuthContainer" class="hidden lg:flex items-center space-x-4">
+        <a href="login.html" class="px-6 py-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors">
+          Sign In
+        </a>
+        <a href="signup.html"
+          class="px-6 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white font-semibold rounded-xl hover:shadow-lg hover:shadow-primary-500/30 transition-all duration-300 hover:-translate-y-1">
+          Get Started Free
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="flex lg:hidden items-center space-x-3">
+        <button id="menuButton" class="p-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition-colors">
+          <i class="fas fa-bars text-slate-600"></i>
+        </button>
       </div>
     </div>
   </div>
 </header>
 
-<style>
-  @media (max-width: 768px) {
-    .desktop-menu, .desktop-auth {
-      display: none !important;
-    }
-    #mobileMenuBtn {
-      display: block !important;
-    }
-  }
-  
-  @media (min-width: 769px) {
-    .desktop-menu, .desktop-auth {
-      display: flex !important;
-    }
-    #mobileMenuBtn {
-      display: none !important;
-    }
-    #mobileMenu {
-      display: none !important;
-    }
-  }
-
-  /* User profile styles */
-  .user-profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 5px 10px;
-    background: #f8fafc;
-    border-radius: 40px;
-    border: 1px solid #e2e8f0;
-  }
-  
-  .user-avatar {
-    width: 32px;
-    height: 32px;
-    background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 600;
-    font-size: 14px;
-  }
-  
-  .user-name {
-    font-weight: 500;
-    color: #1e293b;
-  }
-  
-  .logout-btn {
-    color: #ef4444;
-    text-decoration: none;
-    font-size: 14px;
-    margin-left: 5px;
-  }
-  
-  .logout-btn:hover {
-    color: #dc2626;
-  }
-</style>
-
+<!-- Script for mobile menu functionality -->
 <script>
-  // Check login state and update UI
   document.addEventListener('DOMContentLoaded', function() {
-    updateAuthUI();
-  });
-
-  function updateAuthUI() {
-    // Check if user is logged in (you can modify this based on your auth system)
-    const user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user') || 'null');
-    
-    const desktopAuth = document.getElementById('desktopAuthContainer');
-    const mobileAuth = document.getElementById('mobileAuthContainer');
-    
-    if (user) {
-      // User is logged in - show profile
-      const userInitial = user.name ? user.name.charAt(0).toUpperCase() : 'U';
-      
-      // Desktop view
-      desktopAuth.innerHTML = `
-        <div class="user-profile">
-          <div class="user-avatar">${userInitial}</div>
-          <span class="user-name">${user.name || 'User'}</span>
-          <a href="#" onclick="logout(); return false;" class="logout-btn" title="Logout">
-            <i class="fas fa-sign-out-alt"></i>
-          </a>
-        </div>
-      `;
-      
-      // Mobile view
-      mobileAuth.innerHTML = `
-        <div style="background: #f8fafc; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #0ea5e9, #8b5cf6); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">${userInitial}</div>
-            <div>
-              <div style="font-weight: 600; color: #1e293b;">${user.name || 'User'}</div>
-              <div style="font-size: 12px; color: #64748b;">${user.email || ''}</div>
-            </div>
-          </div>
-        </div>
-        <a href="#" onclick="logout(); return false;" style="background: #ef4444; color: white; padding: 15px; text-align: center; border-radius: 10px; text-decoration: none; font-weight: 600;">Logout</a>
-      `;
-    } else {
-      // User is not logged in - show sign in/sign up buttons
-      desktopAuth.innerHTML = `
-        <a href="login.html" style="margin-right: 15px; color: #0ea5e9; text-decoration: none; font-weight: 600;">Sign In</a>
-        <a href="signup.html" style="background: #0ea5e9; color: white; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 600;">Get Started</a>
-      `;
-      
-      mobileAuth.innerHTML = `
-        <a href="login.html" style="padding: 15px; color: #0ea5e9; text-decoration: none; border: 2px solid #0ea5e9; border-radius: 10px; text-align: center; font-weight: 600; display: block;">Sign In</a>
-        <a href="signup.html" style="background: #0ea5e9; color: white; padding: 15px; text-align: center; border-radius: 10px; text-decoration: none; font-weight: 600; display: block; margin-top: 10px;">Get Started Free</a>
-      `;
-    }
-  }
-
-  // Logout function
-  function logout() {
-    localStorage.removeItem('user');
-    sessionStorage.removeItem('user');
-    updateAuthUI();
-    window.location.href = 'index.html';
-    return false;
-  }
-
-  // Mobile menu toggle
-  document.addEventListener('DOMContentLoaded', function() {
-    const menuBtn = document.getElementById('mobileMenuBtn');
+    const menuButton = document.getElementById('menuButton');
+    const closeMenu = document.getElementById('closeMenu');
     const mobileMenu = document.getElementById('mobileMenu');
-    
-    if (menuBtn && mobileMenu) {
-      menuBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
-          mobileMenu.style.display = 'block';
-        } else {
-          mobileMenu.style.display = 'none';
-        }
-      });
-      
-      // Close menu when clicking on links
-      const links = mobileMenu.querySelectorAll('a');
-      links.forEach(link => {
-        link.addEventListener('click', function() {
-          mobileMenu.style.display = 'none';
-        });
-      });
+
+    function openMenu() {
+      mobileMenu.classList.remove('-translate-x-full');
+      document.body.style.overflow = 'hidden';
     }
+
+    function closeMenuFunc() {
+      mobileMenu.classList.add('-translate-x-full');
+      document.body.style.overflow = '';
+    }
+
+    menuButton.addEventListener('click', openMenu);
+    closeMenu.addEventListener('click', closeMenuFunc);
+
+    // Close menu when clicking on a link
+    const menuLinks = mobileMenu.querySelectorAll('a');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', closeMenuFunc);
+    });
+
+    // Close menu on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !mobileMenu.classList.contains('-translate-x-full')) {
+        closeMenuFunc();
+      }
+    });
   });
 </script>
+
+<!-- Additional CSS for enhanced styling -->
+<style>
+  /* Enhanced hover effects */
+  .header-glass {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Mobile menu animations */
+  .mobile-menu {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Desktop navigation link hover effect */
+  .lg\\:flex a {
+    position: relative;
+  }
+
+  .lg\\:flex a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    transition: width 0.3s ease;
+  }
+
+  .lg\\:flex a:hover::after {
+    width: 100%;
+  }
+
+  /* Button hover effects */
+  #desktopAuthContainer a:last-child {
+    position: relative;
+    overflow: hidden;
+  }
+
+  #desktopAuthContainer a:last-child::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  #desktopAuthContainer a:last-child:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Mobile menu auth buttons */
+  #mobileAuthContainer button {
+    transition: all 0.3s ease;
+  }
+
+  #mobileAuthContainer a:first-child button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px var(--primary-color);
+  }
+
+  #mobileAuthContainer a:last-child button:hover {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-color: transparent;
+  }
+
+  /* Logo animation */
+  .group:hover .w-10.h-10 {
+    animation: bounce 0.5s ease;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  /* Mobile menu items hover */
+  #mobileMenu nav a {
+    transition: all 0.3s ease;
+  }
+
+  #mobileMenu nav a:hover {
+    transform: translateX(5px);
+    background: linear-gradient(90deg, var(--primary-50), transparent);
+  }
+
+  /* Active link state */
+  .nav-active {
+    color: var(--primary-color);
+    font-weight: 600;
+  }
+
+  .nav-active i {
+    color: var(--primary-color);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 1024px) {
+    header .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    header .container {
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+    }
+    
+    .w-10.h-10 {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+    
+    .text-xl {
+      font-size: 1.1rem;
+    }
+    
+    .text-xs {
+      font-size: 0.65rem;
+    }
+  }
+
+  /* Smooth scrolling for mobile menu */
+  .mobile-menu {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Backdrop blur enhancement */
+  .backdrop-blur-xl {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* Gradient text for active states */
+  .gradient-text {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Mobile menu close button hover */
+  #closeMenu:hover {
+    transform: rotate(90deg);
+  }
+
+  /* Desktop auth buttons hover effect */
+  #desktopAuthContainer a:first-child:hover {
+    color: var(--primary-dark);
+    transform: translateY(-1px);
+  }
+
+  /* Add these CSS variables if not already defined */
+  :root {
+    --primary-color: #8f3eff;
+    --primary-dark: #7520e6;
+    --primary-50: #f5f0ff;
+    --secondary-color: #ff6b4a;
+    --secondary-500: #ff6b4a;
+    --primary-500: #8f3eff;
+    --primary-600: #7520e6;
+  }
+</style>
